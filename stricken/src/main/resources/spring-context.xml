@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<context:annotation-config />
+
+	<bean id="stricken" class="stricken.Stricken">
+		<property name="windowTitle" value="Stricken" />
+		<property name="windowSize" ref="windowSize" />
+		<property name="mainMenu" ref="mainMenu" />
+		<property name="board" ref="board" />
+		<property name="gameScreen" ref="gameScreen" />
+		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
+	</bean>
+
+	<bean id="windowSize" class="java.awt.Dimension">
+		<constructor-arg value="352" />
+		<constructor-arg value="352" />
+	</bean>
+	<bean id="spriteSize" class="java.awt.Dimension">
+		<constructor-arg value="32" />
+		<constructor-arg value="32" />
+	</bean>
+
+	<bean id="mainMenu" class="stricken.ui.Menu">
+		<constructor-arg ref="eventContext" />
+	</bean>
+
+	<bean id="gameScreen" class="stricken.ui.GameScreen">
+		<constructor-arg>
+			<list>
+				<ref bean="board" />
+				<ref bean="infoLayer" />
+				<ref bean="dialogLayer" />
+				<ref bean="inGameMenuLayer" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="board" class="stricken.board.Board">
+		<constructor-arg ref="eventContext" />
+		<property name="spriteSize" ref="spriteSize" />
+	</bean>
+
+	<bean id="infoLayer" class="stricken.ui.InfoLayer" />
+	<bean id="dialogLayer" class="stricken.ui.DialogLayer" />
+	<bean id="inGameMenuLayer" class="stricken.ui.InGameMenuLayer">
+		<constructor-arg ref="eventContext" />
+	</bean>
+
+	<bean id="eventContext" class="stricken.event.GameEventContext" />
+
+</beans>
