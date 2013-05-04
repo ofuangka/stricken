@@ -1,6 +1,6 @@
 package stricken.ui;
 
-import stricken.event.GameEventContext;
+import stricken.Stricken;
 import stricken.event.IEventContext;
 
 public class WaitMenuItem extends AbstractMenuItem {
@@ -14,8 +14,7 @@ public class WaitMenuItem extends AbstractMenuItem {
 	@Override
 	public void execute() {
 		IEventContext eventContext = parent.getEventContext();
-		eventContext.fire(GameEventContext.CLEAR_IN_GAME_MENUS);
-		eventContext.fire(GameEventContext.NEXT_TURN);
+		eventContext.fire(Stricken.Event.END_OF_TURN);
 	}
 
 }

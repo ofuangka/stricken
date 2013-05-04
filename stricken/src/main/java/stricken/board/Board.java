@@ -49,6 +49,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	private List<Critter> sequence = new ArrayList<Critter>();
 
 	private List<Tile> disabledTiles = new ArrayList<Tile>();
+	private List<Tile> targetableTiles = new ArrayList<Tile>();
 	private List<Tile> targetedTiles = new ArrayList<Tile>();
 
 	private List<AbstractBoardControlMode> modeHistory = new ArrayList<AbstractBoardControlMode>();
@@ -83,6 +84,13 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 			disabledTiles.remove(0).setDisabled(false);
 		}
 		repaint();
+	}
+	
+	public void clearTargetableTiles() {
+		log.info("Clearing targetable Tile objects...");
+		while (!targetableTiles.isEmpty()) {
+			targetableTiles.remove(0).setTargetable(false);
+		}
 	}
 
 	public void clearTargetedTiles() {
@@ -242,6 +250,10 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 
 	public void nextTurn() {
 		log.info("Starting new turn...");
+		
+		clearDisabledTiles();
+		clearTargetableTiles();
+		clearTargetedTiles();
 
 		modeHistory.clear();
 
@@ -340,6 +352,18 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	public void space() {
 		getCurrentKeySink().space();
 	}
+	
+	public void setTargetable(List<Tile> tilesToSet) {
+		if (tilesToSet != null) {
+			for (Tile tile : tilesToSet) {
+				tile.setTargetable(true);
+				targetableTiles.add(tile);
+			}
+			repaint();
+		} else {
+			log.warn("setTargetable called with null Tile List");
+		}
+	}
 
 	public void targetTiles(List<Tile> tilesToTarget) {
 		if (tilesToTarget != null) {
@@ -347,8 +371,10 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 				tile.setTargeted(true);
 				targetedTiles.add(tile);
 			}
+			repaint();
+		} else {
+			log.warn("targetTiles called with null Tile List");
 		}
-		repaint();
 	}
 
 	/**
@@ -425,6 +451,10 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 
 	public void popMode() {
 		modeHistory.remove(modeHistory.size() - 1);
+		refreshMode();
+	}
+	
+	public void refreshMode() {
 		modeHistory.get(modeHistory.size() - 1).enableAndTargetTiles();
 	}
 }

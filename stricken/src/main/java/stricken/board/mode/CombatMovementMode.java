@@ -1,19 +1,14 @@
 package stricken.board.mode;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import stricken.Stricken;
 import stricken.board.Board;
 import stricken.board.Critter;
 import stricken.board.Tile;
 import stricken.collector.CombatMovementTileCollector;
 import stricken.common.Direction;
-import stricken.event.GameEventContext;
 import stricken.event.IEventContext;
-import stricken.ui.AbstractMenuItem;
-import stricken.ui.AttackMenuItem;
-import stricken.ui.Menu;
-import stricken.ui.WaitMenuItem;
 
 public class CombatMovementMode extends AbstractBoardControlMode {
 
@@ -31,12 +26,7 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 
 	@Override
 	public void enter() {
-		Menu menu = new Menu(eventContext);
-		List<AbstractMenuItem> items = new ArrayList<AbstractMenuItem>();
-		items.add(new AttackMenuItem(menu));
-		items.add(new WaitMenuItem(menu));
-		menu.setItems(items);
-		eventContext.fire(GameEventContext.IN_GAME_MENU, menu);
+		eventContext.fire(Stricken.Event.SHOW_COMBAT_ACTION_MENU);
 	}
 
 	@Override
@@ -67,6 +57,7 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 		board.enableTiles(getValidTiles(me));
 	}
 
+	@Override
 	public void resetToOriginalState() {
 
 		Critter me = board.getControllingCritter();

@@ -79,7 +79,7 @@ public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 	public IKeySink getCurrentKeySink() {
 		for (int i = 0; i < layers.size(); i++) {
 			ILayer layer = layers.get(layers.size() - i - 1);
-			if (!layer.isEmpty()) {
+			if (layer.isVisible() && !layer.isEmpty()) {
 				return layer;
 			}
 		}

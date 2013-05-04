@@ -24,7 +24,9 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	/**
 	 * This method should store the mode's state
 	 */
-	public abstract void readAndStoreState();
+	public void readAndStoreState() {
+		
+	}
 
 	/**
 	 * This method does all of the enabling and targeting of tiles necessary for
@@ -36,7 +38,9 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	/**
 	 * This method resets the mode without recreating its state
 	 */
-	public abstract void resetToOriginalState();
+	public void resetToOriginalState() {
+		
+	}
 
 	@Override
 	public void backspace() {

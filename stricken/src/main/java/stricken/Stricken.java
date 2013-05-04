@@ -20,18 +20,32 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import stricken.action.CritterAction;
+import stricken.action.CritterActionFactory;
+import stricken.action.NoopAction;
 import stricken.board.Board;
+import stricken.board.mode.TargetingMode;
 import stricken.common.StrickenConstants;
+import stricken.event.AbstractEventContext;
+import stricken.event.IEvent;
+import stricken.event.IEventHandler;
+import stricken.ui.AbstractMenuItem;
+import stricken.ui.CritterActionMenuItem;
 import stricken.ui.GameScreen;
 import stricken.ui.IKeySink;
 import stricken.ui.InGameMenuLayer;
 import stricken.ui.Menu;
+import stricken.ui.WaitMenuItem;
 
-public class Stricken {
+public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	/* constants */
 	private static final String APP_CTX_FILE_LOCATION = "spring-context.xml";
 	private static final String STRICKEN_BEAN_ID = "stricken";
+
+	public enum Event implements IEvent {
+		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION
+	}
 
 	/* static variables */
 	private static final Logger log = Logger.getLogger(Stricken.class);
@@ -64,9 +78,19 @@ public class Stricken {
 	private Board board;
 	private InGameMenuLayer inGameMenuLayer;
 
+	private CritterActionFactory critterActionFactory;
+
 	/* configuration variables */
 	private Dimension windowSize;
 	private String windowTitle;
+
+	public Stricken() {
+		// iterate over the event types, creating them and subscribing to them
+		for (Event event : Event.values()) {
+			createEvent(event);
+			subscribe(event, this);
+		}
+	}
 
 	public void bootstrap() {
 		log.info("Bootstrapping...");
@@ -290,9 +314,71 @@ public class Stricken {
 		contentPane.removeAll();
 		contentPane.add(screen, new GridBagConstraints());
 	}
-	
+
 	@Required
 	public void setInGameMenuLayer(InGameMenuLayer inGameMenuLayer) {
 		this.inGameMenuLayer = inGameMenuLayer;
+	}
+
+	@Override
+	public void handleEvent(IEvent event, Object arg) {
+		switch ((Event) event) {
+		case END_OF_TURN: {
+			handleEndOfTurn();
+			break;
+		}
+		case CRITTER_ACTION: {
+			handleCritterAction((CritterAction) arg);
+			break;
+		}
+		case SHOW_COMBAT_ACTION_MENU: {
+			handleShowCombatActionMenu();
+			break;
+		}
+		case POP_IN_GAME_MENU: {
+			handlePopInGameMenu();
+			break;
+		}
+		default: {
+			log.warn("No handler defined for event '" + event + "'");
+			break;
+		}
+		}
+	}
+
+	public void handleEndOfTurn() {
+		inGameMenuLayer.clearMenus();
+		inGameMenuLayer.setVisible(true);
+		board.nextTurn();
+	}
+
+	public void handlePopInGameMenu() {
+		if (inGameMenuLayer.isVisible()) {
+			inGameMenuLayer.popMenu();
+		} else {
+			inGameMenuLayer.setVisible(true);
+		}
+	}
+
+	public void handleCritterAction(CritterAction action) {
+		board.pushMode(new TargetingMode(board, this, action));
+		inGameMenuLayer.setVisible(false);
+	}
+
+	public void handleShowCombatActionMenu() {
+		Menu menu = new Menu(this);
+		List<AbstractMenuItem> items = new ArrayList<AbstractMenuItem>();
+		CritterAction attack = critterActionFactory.get("");
+		AbstractMenuItem attackMenuItem = new CritterActionMenuItem(menu,
+				"Attack", attack);
+		items.add(attackMenuItem);
+		items.add(new WaitMenuItem(menu));
+		menu.setItems(items);
+		inGameMenuLayer.addMenu(menu);
+	}
+
+	@Required
+	public void setCritterActionFactory(CritterActionFactory critterActionFactory) {
+		this.critterActionFactory = critterActionFactory;
 	}
 }

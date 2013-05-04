@@ -23,7 +23,8 @@ public class Tile extends AbstractPositionedSprite {
 
 	private static final int DEFAULT_MOVEMENT_COST = 1;
 
-	private static final Color TARGETABLE_COLOR = new Color(0, 0, 0, 50);
+	private static final Color DISABLED_COLOR = new Color(0, 0, 0, 50);
+	private static final Color TARGETABLE_COLOR = new Color(255, 255, 255, 50);
 	private static final Color TARGETED_COLOR = new Color(255, 0, 0, 255);
 
 	private Tile[] adjacents = new Tile[4];
@@ -35,6 +36,7 @@ public class Tile extends AbstractPositionedSprite {
 
 	private boolean disabled;
 	private boolean targeted;
+	private boolean targetable;
 
 	public Tile(Dimension spriteSize, int x, int y) {
 		super(spriteSize);
@@ -85,7 +87,7 @@ public class Tile extends AbstractPositionedSprite {
 		 */
 
 		if (isDisabled()) {
-			g2d.setColor(TARGETABLE_COLOR);
+			g2d.setColor(DISABLED_COLOR);
 			g2d.fillRect(0, 0, spriteSize.width, spriteSize.height);
 		}
 
@@ -93,6 +95,11 @@ public class Tile extends AbstractPositionedSprite {
 			g2d.drawImage(piece.getImage(), 0, 0, spriteSize.width,
 					spriteSize.height, 0, 0, spriteSize.width,
 					spriteSize.height, null);
+		}
+		
+		if (isTargetable()) {
+			g2d.setColor(TARGETABLE_COLOR);
+			g2d.fillRect(0, 0, spriteSize.width, spriteSize.height);
 		}
 
 		if (isTargeted()) {
@@ -137,6 +144,10 @@ public class Tile extends AbstractPositionedSprite {
 	public boolean isOccupied() {
 		return occupant != null;
 	}
+	
+	public boolean isTargetable() {
+		return targetable;
+	}
 
 	public boolean isTargeted() {
 		return targeted;
@@ -170,6 +181,10 @@ public class Tile extends AbstractPositionedSprite {
 
 	public void setRight(Tile right) {
 		adjacents[1] = right;
+	}
+	
+	public void setTargetable(boolean targetable) {
+		this.targetable = targetable;
 	}
 
 	public void setTargeted(boolean targeted) {

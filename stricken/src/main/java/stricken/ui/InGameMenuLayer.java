@@ -11,12 +11,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import stricken.event.GameEventContext;
-import stricken.event.IEventContext;
-import stricken.event.IEventHandler;
-
 public class InGameMenuLayer extends JPanel implements ILayer,
-		IDelegatingKeySink, IEventHandler {
+		IDelegatingKeySink {
 
 	private static final long serialVersionUID = -194016976519008438L;
 
@@ -25,20 +21,15 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 	public static final int MARGIN_VERTICAL = 1;
 	public static final int MARGIN_HORIZONTAL = 1;
 
-	private List<Menu> previousMenus = new ArrayList<Menu>();
 	private List<Menu> menus = new ArrayList<Menu>();
 
 	private JLabel spacer = new JLabel();
 
-	public InGameMenuLayer(IEventContext eventContext) {
+	public InGameMenuLayer() {
 		super(new GridBagLayout());
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(MARGIN_VERTICAL,
 				MARGIN_HORIZONTAL, MARGIN_VERTICAL, MARGIN_HORIZONTAL));
-		eventContext.subscribe(GameEventContext.IN_GAME_MENU, this);
-		eventContext.subscribe(GameEventContext.CLEAR_IN_GAME_MENUS, this);
-		eventContext.subscribe(GameEventContext.SHOW_PREVIOUS_IN_GAME_MENU,
-				this);
 	}
 
 	public void addMenu(Menu menu) {
@@ -53,17 +44,11 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 		add(menu, gc);
 		menus.add(menu);
 
-		resetSpacer();
+		refreshSpacer();
 
 		revalidate();
 
 		repaint();
-	}
-
-	public void showPrevious() {
-		for (Menu menu : previousMenus) {
-			addMenu(menu);
-		}
 	}
 
 	@Override
@@ -71,13 +56,14 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 		popMenu();
 	}
 
+	/**
+	 * Removes all Menus from this layer's UI and backend
+	 */
 	public void clearMenus() {
-		previousMenus.clear();
-		previousMenus.addAll(menus);
 		while (!menus.isEmpty()) {
 			remove(menus.remove(0));
 		}
-		resetSpacer();
+		refreshSpacer();
 		revalidate();
 		repaint();
 	}
@@ -107,17 +93,6 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 	}
 
 	@Override
-	public void handleEvent(String type, Object arg) {
-		if (GameEventContext.IN_GAME_MENU.equals(type)) {
-			addMenu((Menu) arg);
-		} else if (GameEventContext.CLEAR_IN_GAME_MENUS.equals(type)) {
-			clearMenus();
-		} else if (GameEventContext.SHOW_PREVIOUS_IN_GAME_MENU.equals(type)) {
-			showPrevious();
-		}
-	}
-
-	@Override
 	public boolean isEmpty() {
 		return menus.isEmpty();
 	}
@@ -127,15 +102,22 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 		popMenu();
 	}
 
+	/**
+	 * Removes the topmost menu (if it exists)
+	 */
 	public void popMenu() {
 		if (menus.size() > 0) {
 			remove(menus.remove(menus.size() - 1));
-			resetSpacer();
+			refreshSpacer();
 			repaint();
 		}
 	}
 
-	private void resetSpacer() {
+	/**
+	 * Removes the previous spacer and adds a new one to handle any changes in
+	 * UI
+	 */
+	private void refreshSpacer() {
 		remove(spacer);
 		GridBagConstraints spacerGc = new GridBagConstraints();
 		spacerGc.gridx = menus.size();

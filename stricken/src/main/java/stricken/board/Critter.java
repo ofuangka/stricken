@@ -8,12 +8,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import stricken.collector.AbstractDecayingTileCollector;
-import stricken.collector.ITileCollector;
-import stricken.collector.SingleTileCollector;
-import stricken.effect.AttackTileEffect;
-import stricken.skill.Skill;
-
 public class Critter extends AbstractBoardPiece {
 
 	public static final String DEATH_EVENT = "death";
@@ -39,34 +33,6 @@ public class Critter extends AbstractBoardPiece {
 		super(spriteSize);
 		this.color = color;
 		setTakingUpSpace(true);
-	}
-
-	public Skill getAttack() {
-		ITileCollector range = new AbstractDecayingTileCollector() {
-
-			@Override
-			protected int getCostThreshold() {
-				return 1;
-			}
-
-			@Override
-			protected int getTileCost(Tile tile) {
-				return 1;
-			}
-
-			@Override
-			protected boolean isTileValid(Tile tile) {
-				return tile != null && tile.isOccupied();
-			}
-
-			@Override
-			protected boolean isInclusive() {
-				return false;
-			}
-
-		};
-		ITileCollector aoe = new SingleTileCollector();
-		return new Skill(range, aoe, new AttackTileEffect());
 	}
 
 	@Override

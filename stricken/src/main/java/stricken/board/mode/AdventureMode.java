@@ -56,16 +56,4 @@ public class AdventureMode extends AbstractBoardControlMode {
 		tryMove(Direction.UP);
 	}
 
-	@Override
-	public void readAndStoreState() {
-		// do nothing
-
-	}
-
-	@Override
-	public void resetToOriginalState() {
-		// do nothing
-
-	}
-
 }

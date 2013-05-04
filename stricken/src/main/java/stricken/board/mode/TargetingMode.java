@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import stricken.Stricken;
+import stricken.action.CritterAction;
+import stricken.action.ITileEffect;
 import stricken.board.Board;
 import stricken.board.Critter;
 import stricken.board.Tile;
 import stricken.collector.ITileCollector;
-import stricken.effect.ITileEffect;
-import stricken.event.GameEventContext;
 import stricken.event.IEventContext;
-import stricken.skill.Skill;
 
 public class TargetingMode extends AbstractBoardControlMode {
 
@@ -22,11 +22,11 @@ public class TargetingMode extends AbstractBoardControlMode {
 	private List<Tile> selectableTiles;
 	private Tile targetingSeedTile;
 	private int currentIndex;
-	private final Skill skill;
+	private final CritterAction action;
 
-	public TargetingMode(Board board, IEventContext eventContext, Skill skill) {
+	public TargetingMode(Board board, IEventContext eventContext, CritterAction action) {
 		super(board, eventContext);
-		this.skill = skill;
+		this.action = action;
 	}
 
 	@Override
@@ -43,28 +43,29 @@ public class TargetingMode extends AbstractBoardControlMode {
 			// controlling critter
 			Critter controllingCritter = board.getControllingCritter();
 
-			ITileCollector aoe = skill.getAreaOfEffect();
-			ITileEffect tileEffect = skill.getTileEffect();
+			ITileCollector aoe = action.getAreaOfEffect();
+			ITileEffect tileEffect = action.getTileEffect();
 
 			List<Tile> affectedTiles = aoe.collect(selectableTiles
 					.get(currentIndex));
 			for (Tile tile : affectedTiles) {
 				tileEffect.execute(controllingCritter, tile);
 			}
-			board.clearDisabledTiles();
-			board.clearTargetedTiles();
-			board.nextTurn();
+			log.info("Valid tile selection, ending turn");
+			eventContext.fire(Stricken.Event.END_OF_TURN);
 		} else {
-			board.clearDisabledTiles();
-			board.clearTargetedTiles();
-			board.nextTurn();
+			log.warn("Invalid tile selection, ending turn");
+			eventContext.fire(Stricken.Event.END_OF_TURN);
 		}
 	}
 
 	@Override
 	public void esc() {
+		board.clearDisabledTiles();
+		board.clearTargetableTiles();
+		board.clearTargetedTiles();
 		board.popMode();
-		eventContext.fire(GameEventContext.SHOW_PREVIOUS_IN_GAME_MENU);
+		eventContext.fire(Stricken.Event.POP_IN_GAME_MENU);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 	}
 
 	protected void renderCrosshair() {
-		ITileCollector aoe = skill.getAreaOfEffect();
+		ITileCollector aoe = action.getAreaOfEffect();
 		List<Tile> crosshairTiles = aoe.collect(selectableTiles
 				.get(currentIndex));
 		board.targetTiles(crosshairTiles);
@@ -101,11 +102,16 @@ public class TargetingMode extends AbstractBoardControlMode {
 	public void enableAndTargetTiles() {
 		currentIndex = NO_SELECTABLE_TILE_INDEX;
 		board.disableAllTiles();
+		board.clearTargetableTiles();
 		board.clearTargetedTiles();
 		Critter controllingCritter = board.getControllingCritter();
 		targetingSeedTile = board.getTile(controllingCritter.getX(),
 				controllingCritter.getY());
-		selectableTiles = skill.getRange().collect(targetingSeedTile);
+		List<Tile> targetableTiles = action.getTargetableRange().collect(targetingSeedTile);
+		if (!targetableTiles.isEmpty()) {
+			board.setTargetable(targetableTiles);
+		}
+		selectableTiles = action.getActualRange().collect(targetingSeedTile);
 		if (!selectableTiles.isEmpty()) {
 			currentIndex = 0;
 			board.enableTiles(selectableTiles);
@@ -121,18 +127,6 @@ public class TargetingMode extends AbstractBoardControlMode {
 	@Override
 	public void up() {
 		right();
-	}
-
-	@Override
-	public void readAndStoreState() {
-		// do nothing
-
-	}
-
-	@Override
-	public void resetToOriginalState() {
-		// do nothing
-
 	}
 
 }

@@ -1,9 +1,9 @@
 package stricken.event;
 
 public interface IEventContext {
-	public void fire(String type);
+	public void fire(IEvent event);
 
-	public void fire(String type, Object arg);
+	public void fire(IEvent event, Object arg);
 
-	public void subscribe(String type, IEventHandler handler);
+	public void subscribe(IEvent event, IEventHandler handler);
 }
