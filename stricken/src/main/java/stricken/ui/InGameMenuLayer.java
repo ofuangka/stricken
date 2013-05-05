@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import stricken.ui.menu.Menu;
+
 public class InGameMenuLayer extends JPanel implements ILayer,
 		IDelegatingKeySink {
 
@@ -99,7 +101,7 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 
 	@Override
 	public void left() {
-		popMenu();
+		
 	}
 
 	/**

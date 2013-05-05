@@ -1,4 +1,4 @@
-package stricken.ui;
+package stricken.ui.menu;
 
 import java.awt.Color;
 

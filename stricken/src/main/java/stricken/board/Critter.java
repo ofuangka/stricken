@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Critter extends AbstractBoardPiece {
@@ -19,6 +21,9 @@ public class Critter extends AbstractBoardPiece {
 
 	private static final Color DEFAULT_COLOR = Color.magenta;
 	private static final Color SELECTED_OUTLINE_COLOR = Color.red;
+
+	private String weapon;
+	private List<String> magic = new ArrayList<String>();
 
 	private Color color;
 	private boolean selected;
@@ -70,6 +75,22 @@ public class Critter extends AbstractBoardPiece {
 
 	public void setStat(String key, Integer value) {
 		stats.put(key, value);
+	}
+
+	public String getWeapon() {
+		return weapon;
+	}
+
+	public List<String> getMagic() {
+		return magic;
+	}
+
+	public void setWeapon(String weapon) {
+		this.weapon = weapon;
+	}
+
+	public void setMagic(List<String> magic) {
+		this.magic = magic;
 	}
 
 }

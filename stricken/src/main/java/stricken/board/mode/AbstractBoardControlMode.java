@@ -1,5 +1,6 @@
 package stricken.board.mode;
 
+import stricken.Stricken;
 import stricken.board.Board;
 import stricken.event.IEventContext;
 import stricken.ui.IKeySink;
@@ -49,7 +50,7 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 
 	@Override
 	public void esc() {
-
+		eventContext.fire(Stricken.Event.SHOW_SYSTEM_MENU);
 	}
 
 	@Override

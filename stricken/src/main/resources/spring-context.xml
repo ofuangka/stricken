@@ -13,7 +13,7 @@
 		<property name="board" ref="board" />
 		<property name="gameScreen" ref="gameScreen" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
-		<property name="critterActionFactory" ref="critterActionFactory" />
+		<property name="critterMenuFactory" ref="critterMenuFactory" />
 	</bean>
 
 	<bean id="windowSize" class="java.awt.Dimension">
@@ -25,7 +25,7 @@
 		<constructor-arg value="32" />
 	</bean>
 
-	<bean id="mainMenu" class="stricken.ui.Menu">
+	<bean id="mainMenu" class="stricken.ui.menu.Menu">
 		<constructor-arg ref="stricken" />
 	</bean>
 
@@ -48,6 +48,11 @@
 	<bean id="infoLayer" class="stricken.ui.InfoLayer" />
 	<bean id="dialogLayer" class="stricken.ui.DialogLayer" />
 	<bean id="inGameMenuLayer" class="stricken.ui.InGameMenuLayer" />
+	
+	<bean id="critterMenuFactory" class="stricken.ui.menu.CritterMenuFactory">
+		<constructor-arg ref="stricken" />
+		<property name="critterActionFactory" ref="critterActionFactory" />
+	</bean>
 	
 	<bean id="critterActionFactory" class="stricken.action.CritterActionFactory" />
 

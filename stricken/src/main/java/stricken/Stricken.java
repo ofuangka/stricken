@@ -21,21 +21,17 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import stricken.action.CritterAction;
-import stricken.action.CritterActionFactory;
-import stricken.action.NoopAction;
 import stricken.board.Board;
 import stricken.board.mode.TargetingMode;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
 import stricken.event.IEvent;
 import stricken.event.IEventHandler;
-import stricken.ui.AbstractMenuItem;
-import stricken.ui.CritterActionMenuItem;
 import stricken.ui.GameScreen;
 import stricken.ui.IKeySink;
 import stricken.ui.InGameMenuLayer;
-import stricken.ui.Menu;
-import stricken.ui.WaitMenuItem;
+import stricken.ui.menu.CritterMenuFactory;
+import stricken.ui.menu.Menu;
 
 public class Stricken extends AbstractEventContext implements IEventHandler {
 
@@ -44,7 +40,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private static final String STRICKEN_BEAN_ID = "stricken";
 
 	public enum Event implements IEvent {
-		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION
+		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_SYSTEM_MENU
 	}
 
 	/* static variables */
@@ -78,7 +74,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private Board board;
 	private InGameMenuLayer inGameMenuLayer;
 
-	private CritterActionFactory critterActionFactory;
+	private CritterMenuFactory critterMenuFactory;
 
 	/* configuration variables */
 	private Dimension windowSize;
@@ -335,8 +331,16 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			handleShowCombatActionMenu();
 			break;
 		}
+		case PUSH_IN_GAME_SUBMENU: {
+			handlePushInGameSubMenu((Menu) arg);
+			break;
+		}
 		case POP_IN_GAME_MENU: {
 			handlePopInGameMenu();
+			break;
+		}
+		case SHOW_SYSTEM_MENU: {
+			handleShowSystemMenu();
 			break;
 		}
 		default: {
@@ -344,6 +348,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			break;
 		}
 		}
+	}
+
+	private void handlePushInGameSubMenu(Menu menu) {
+		inGameMenuLayer.addMenu(menu);
+
 	}
 
 	public void handleEndOfTurn() {
@@ -366,19 +375,16 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	public void handleShowCombatActionMenu() {
-		Menu menu = new Menu(this);
-		List<AbstractMenuItem> items = new ArrayList<AbstractMenuItem>();
-		CritterAction attack = critterActionFactory.get("");
-		AbstractMenuItem attackMenuItem = new CritterActionMenuItem(menu,
-				"Attack", attack);
-		items.add(attackMenuItem);
-		items.add(new WaitMenuItem(menu));
-		menu.setItems(items);
-		inGameMenuLayer.addMenu(menu);
+		inGameMenuLayer.addMenu(critterMenuFactory.getCombatActionMenu(board
+				.getControllingCritter()));
+	}
+
+	public void handleShowSystemMenu() {
+
 	}
 
 	@Required
-	public void setCritterActionFactory(CritterActionFactory critterActionFactory) {
-		this.critterActionFactory = critterActionFactory;
+	public void setCritterMenuFactory(CritterMenuFactory critterMenuFactory) {
+		this.critterMenuFactory = critterMenuFactory;
 	}
 }

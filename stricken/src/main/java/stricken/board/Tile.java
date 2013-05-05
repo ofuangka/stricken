@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,6 +21,29 @@ import org.apache.log4j.Logger;
 public class Tile extends AbstractPositionedSprite {
 
 	private static final Logger log = Logger.getLogger(Tile.class);
+
+	public static final Comparator<Tile> TOP_BOTTOM_LEFT_RIGHT = new Comparator<Tile>() {
+
+		@Override
+		public int compare(Tile o1, Tile o2) {
+			int y1 = o1.getY();
+			int y2 = o2.getY();
+			int x1 = o1.getX();
+			int x2 = o2.getX();
+
+			int ret = -1;
+			if (y1 > y2) {
+				ret = 1;
+			} else if (y1 == y2) {
+				if (x1 > x2) {
+					ret = 1;
+				} else if (x1 == x2) {
+					ret = 0;
+				}
+			}
+			return ret;
+		}
+	};
 
 	private static final int DEFAULT_MOVEMENT_COST = 1;
 
@@ -96,7 +120,7 @@ public class Tile extends AbstractPositionedSprite {
 					spriteSize.height, 0, 0, spriteSize.width,
 					spriteSize.height, null);
 		}
-		
+
 		if (isTargetable()) {
 			g2d.setColor(TARGETABLE_COLOR);
 			g2d.fillRect(0, 0, spriteSize.width, spriteSize.height);
@@ -144,7 +168,7 @@ public class Tile extends AbstractPositionedSprite {
 	public boolean isOccupied() {
 		return occupant != null;
 	}
-	
+
 	public boolean isTargetable() {
 		return targetable;
 	}
@@ -182,7 +206,7 @@ public class Tile extends AbstractPositionedSprite {
 	public void setRight(Tile right) {
 		adjacents[1] = right;
 	}
-	
+
 	public void setTargetable(boolean targetable) {
 		this.targetable = targetable;
 	}

@@ -1,6 +1,7 @@
 package stricken.collector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +48,11 @@ public abstract class AbstractDecayingTileCollector implements ITileCollector {
 		if (!isInclusive()) {
 			validTiles.remove(targetTile);
 		}
-		return new ArrayList<Tile>(validTiles);
+
+		// sort the tiles
+		List<Tile> ret = new ArrayList<Tile>(validTiles);
+		Collections.sort(ret, Tile.TOP_BOTTOM_LEFT_RIGHT);
+		return ret;
 	}
 
 	/**

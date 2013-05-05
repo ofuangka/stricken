@@ -1,4 +1,4 @@
-package stricken.ui;
+package stricken.ui.menu;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import stricken.event.IEventContext;
+import stricken.ui.IKeySink;
 
 public class Menu extends JPanel implements IKeySink {
 
@@ -100,7 +101,7 @@ public class Menu extends JPanel implements IKeySink {
 
 	@Override
 	public void right() {
-		executeCurrentItem();
+
 	}
 
 	public void setItems(List<AbstractMenuItem> items) {
