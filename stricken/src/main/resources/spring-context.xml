@@ -54,6 +54,8 @@
 		<property name="critterActionFactory" ref="critterActionFactory" />
 	</bean>
 	
-	<bean id="critterActionFactory" class="stricken.action.CritterActionFactory" />
+	<bean id="critterActionFactory" class="stricken.action.CritterActionFactory">
+		<constructor-arg ref="stricken" />
+	</bean>
 
 </beans>

@@ -153,7 +153,7 @@ public class Tile extends AbstractPositionedSprite {
 		return movementCost;
 	}
 
-	public AbstractPositionedSprite getOccupant() {
+	public AbstractBoardPiece getOccupant() {
 		return occupant;
 	}
 

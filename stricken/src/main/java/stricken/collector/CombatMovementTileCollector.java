@@ -1,6 +1,7 @@
 package stricken.collector;
 
 import stricken.board.Critter;
+import stricken.board.Critter.Stat;
 import stricken.board.Tile;
 
 public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
@@ -9,7 +10,7 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 
 	@Override
 	protected int getCostThreshold() {
-		return critter.getStat(Critter.SPEED);
+		return critter.getStat(Stat.SPEED);
 	}
 
 	@Override

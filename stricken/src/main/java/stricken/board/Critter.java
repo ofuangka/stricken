@@ -12,23 +12,21 @@ import java.util.Map;
 
 public class Critter extends AbstractBoardPiece {
 
-	public static final String DEATH_EVENT = "death";
-
-	public static final String HP = "hp";
-	public static final String MAXHP = "maxhp";
-	public static final String SPEED = "speed";
-	public static final String STRENGTH = "strength";
+	public enum Stat {
+		HP, MAXHP, SPEED, STRENGTH
+	}
 
 	private static final Color DEFAULT_COLOR = Color.magenta;
 	private static final Color SELECTED_OUTLINE_COLOR = Color.red;
 
-	private String weapon;
-	private List<String> magic = new ArrayList<String>();
+	private String attack;
+	private List<String> talents = new ArrayList<String>();
+	private List<String> items = new ArrayList<String>();
 
 	private Color color;
 	private boolean selected;
 
-	private Map<String, Integer> stats = new HashMap<String, Integer>();
+	private Map<Stat, Integer> stats = new HashMap<Stat, Integer>();
 
 	public Critter(Dimension spriteSize) {
 		this(spriteSize, DEFAULT_COLOR);
@@ -61,7 +59,7 @@ public class Critter extends AbstractBoardPiece {
 		return ret;
 	}
 
-	public Integer getStat(String key) {
+	public Integer getStat(Stat key) {
 		return (stats.containsKey(key)) ? stats.get(key) : 3;
 	}
 
@@ -73,24 +71,32 @@ public class Critter extends AbstractBoardPiece {
 		this.selected = selected;
 	}
 
-	public void setStat(String key, Integer value) {
+	public void setStat(Stat key, Integer value) {
 		stats.put(key, value);
 	}
 
-	public String getWeapon() {
-		return weapon;
+	public String getAttack() {
+		return attack;
 	}
 
-	public List<String> getMagic() {
-		return magic;
+	public List<String> getTalents() {
+		return talents;
 	}
 
-	public void setWeapon(String weapon) {
-		this.weapon = weapon;
+	public void setAttack(String attack) {
+		this.attack = attack;
 	}
 
-	public void setMagic(List<String> magic) {
-		this.magic = magic;
+	public void setTalents(List<String> talents) {
+		this.talents = talents;
+	}
+
+	public List<String> getItems() {
+		return items;
+	}
+
+	public void setItems(List<String> items) {
+		this.items = items;
 	}
 
 }

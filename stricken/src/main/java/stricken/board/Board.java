@@ -58,6 +58,11 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		this.eventContext = eventContext;
 	}
 
+	public void removeCritter(Critter critter) {
+		sequence.remove(critter);
+		critters.remove(critter);
+	}
+
 	/**
 	 * Sets the controlling Critter and calls repaint()
 	 * 
@@ -85,7 +90,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		}
 		repaint();
 	}
-	
+
 	public void clearTargetableTiles() {
 		log.info("Clearing targetable Tile objects...");
 		while (!targetableTiles.isEmpty()) {
@@ -239,18 +244,18 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		}
 		placePiece(new Critter(spriteSize), 5, 5);
 
-		Random rand = new Random(System.currentTimeMillis());
-		int numPieces = rand.nextInt(11) + 1;
+		Random random = eventContext.getRandom();
+		int numPieces = random.nextInt(11) + 1;
 		for (int i = 0; i < numPieces; i++) {
-			placePiece(new Critter(spriteSize, new Color(rand.nextInt(255),
-					rand.nextInt(255), rand.nextInt(255))), rand.nextInt(11),
-					rand.nextInt(11));
+			placePiece(new Critter(spriteSize, new Color(random.nextInt(255),
+					random.nextInt(255), random.nextInt(255))),
+					random.nextInt(11), random.nextInt(11));
 		}
 	}
 
 	public void nextTurn() {
 		log.info("Starting new turn...");
-		
+
 		clearDisabledTiles();
 		clearTargetableTiles();
 		clearTargetedTiles();
@@ -352,7 +357,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	public void space() {
 		getCurrentKeySink().space();
 	}
-	
+
 	public void setTargetable(List<Tile> tilesToSet) {
 		if (tilesToSet != null) {
 			for (Tile tile : tilesToSet) {
@@ -453,7 +458,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		modeHistory.remove(modeHistory.size() - 1);
 		refreshMode();
 	}
-	
+
 	public void refreshMode() {
 		modeHistory.get(modeHistory.size() - 1).enableAndTargetTiles();
 	}

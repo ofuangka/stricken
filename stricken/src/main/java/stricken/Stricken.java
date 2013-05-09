@@ -22,6 +22,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import stricken.action.CritterAction;
 import stricken.board.Board;
+import stricken.board.Critter;
 import stricken.board.mode.TargetingMode;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
@@ -40,7 +41,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private static final String STRICKEN_BEAN_ID = "stricken";
 
 	public enum Event implements IEvent {
-		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_SYSTEM_MENU
+		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_SYSTEM_MENU, CRITTER_DEATH
 	}
 
 	/* static variables */
@@ -381,6 +382,10 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public void handleShowSystemMenu() {
 
+	}
+
+	public void handleCritterDeath(Critter deceased) {
+		board.removeCritter(deceased);
 	}
 
 	@Required

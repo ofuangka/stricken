@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -47,6 +48,8 @@ public class AbstractEventContext implements IEventContext {
 	private Logger log = Logger.getLogger(getClass());
 
 	private Map<IEvent, EventTracker> events = new HashMap<IEvent, EventTracker>();
+	
+	private static Random random = new Random(System.currentTimeMillis());
 
 	protected void createEvent(IEvent event) {
 		events.put(event, new EventTracker(event));
@@ -72,6 +75,10 @@ public class AbstractEventContext implements IEventContext {
 			log.warn("Attempt to subscribe event " + event
 					+ " that has not been created");
 		}
+	}
+	
+	public Random getRandom() {
+		return random;
 	}
 
 }

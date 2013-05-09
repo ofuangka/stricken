@@ -2,14 +2,16 @@ package stricken.action;
 
 import stricken.board.Critter;
 import stricken.board.Tile;
+import stricken.board.Critter.Stat;
 import stricken.collector.AbstractDecayingTileCollector;
 import stricken.collector.ITileCollector;
 import stricken.collector.SingleTileCollector;
+import stricken.event.IEventContext;
 
 public class CritterActionFactory {
 
-	private ITileCollector SINGLE = new SingleTileCollector();
-	private ITileCollector ADJACENT_INCLUSIVE_IGNORE_OCCUPANTS = new AbstractDecayingTileCollector() {
+	private static final ITileCollector SINGLE = new SingleTileCollector();
+	private static final ITileCollector ADJACENT_INCLUSIVE_IGNORE_OCCUPANTS = new AbstractDecayingTileCollector() {
 
 		@Override
 		protected boolean isInclusive() {
@@ -31,7 +33,7 @@ public class CritterActionFactory {
 			return tile != null;
 		}
 	};
-	private ITileCollector ADJACENT_NON_INCLUSIVE_IGNORE_OCCUPANTS = new AbstractDecayingTileCollector() {
+	private static final ITileCollector ADJACENT_NON_INCLUSIVE_IGNORE_OCCUPANTS = new AbstractDecayingTileCollector() {
 
 		@Override
 		protected boolean isInclusive() {
@@ -54,8 +56,7 @@ public class CritterActionFactory {
 		}
 
 	};
-
-	private ITileCollector ADJACENT_NON_INCLUSIVE_OCCUPANTS_ONLY = new AbstractDecayingTileCollector() {
+	private static final ITileCollector ADJACENT_NON_INCLUSIVE_OCCUPANTS_ONLY = new AbstractDecayingTileCollector() {
 
 		@Override
 		protected boolean isInclusive() {
@@ -79,16 +80,26 @@ public class CritterActionFactory {
 
 	};
 
+	private IEventContext eventContext;
+
+	public CritterActionFactory(IEventContext eventContext) {
+		this.eventContext = eventContext;
+	}
+
+	public String getLabel(String id) {
+		return "Label";
+	}
+
 	public CritterAction get(String id, Critter critter) {
 		ITileCollector targetableRange = ADJACENT_NON_INCLUSIVE_IGNORE_OCCUPANTS;
 		ITileCollector actualRange = ADJACENT_NON_INCLUSIVE_OCCUPANTS_ONLY;
 		ITileCollector aoe = SINGLE;
 
-		if ("smnf".equals(id)) {
-			aoe = ADJACENT_INCLUSIVE_IGNORE_OCCUPANTS;
-		}
+		int lookupDamageRange = 1;
+		int lookupModifier = 0;
 
-		ITileEffect effect = new AttackTileEffect();
+		ITileEffect effect = new StatDrivenAttackTileEffect(Stat.STRENGTH,
+				lookupDamageRange, lookupModifier, eventContext);
 		return new CritterAction(targetableRange, actualRange, aoe, effect);
 	}
 }
