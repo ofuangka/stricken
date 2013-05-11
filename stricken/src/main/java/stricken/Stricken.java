@@ -36,13 +36,13 @@ import stricken.ui.menu.Menu;
 
 public class Stricken extends AbstractEventContext implements IEventHandler {
 
-	/* constants */
-	private static final String APP_CTX_FILE_LOCATION = "spring-context.xml";
-	private static final String STRICKEN_BEAN_ID = "stricken";
-
 	public enum Event implements IEvent {
 		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_SYSTEM_MENU, CRITTER_DEATH
 	}
+	/* constants */
+	private static final String APP_CTX_FILE_LOCATION = "spring-context.xml";
+
+	private static final String STRICKEN_BEAN_ID = "stricken";
 
 	/* static variables */
 	private static final Logger log = Logger.getLogger(Stricken.class);
@@ -250,14 +250,99 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		screen.setPreferredSize(windowSize);
 	}
 
+	public void handleCritterAction(CritterAction action) {
+		board.pushMode(new TargetingMode(board, this, action));
+		inGameMenuLayer.setVisible(false);
+	}
+
+	public void handleCritterDeath(Critter deceased) {
+		board.removeCritter(deceased);
+	}
+
+	public void handleEndOfTurn() {
+		inGameMenuLayer.clearMenus();
+		inGameMenuLayer.setVisible(true);
+		board.nextTurn();
+	}
+
+	@Override
+	public void handleEvent(IEvent event, Object arg) {
+		switch ((Event) event) {
+		case END_OF_TURN: {
+			handleEndOfTurn();
+			break;
+		}
+		case CRITTER_ACTION: {
+			handleCritterAction((CritterAction) arg);
+			break;
+		}
+		case SHOW_COMBAT_ACTION_MENU: {
+			handleShowCombatActionMenu();
+			break;
+		}
+		case PUSH_IN_GAME_SUBMENU: {
+			handlePushInGameSubMenu((Menu) arg);
+			break;
+		}
+		case POP_IN_GAME_MENU: {
+			handlePopInGameMenu();
+			break;
+		}
+		case SHOW_SYSTEM_MENU: {
+			handleShowSystemMenu();
+			break;
+		}
+		case CRITTER_DEATH: {
+			handleCritterDeath((Critter) arg);
+			break;
+		}
+		default: {
+			log.warn("No handler defined for event '" + event + "'");
+			break;
+		}
+		}
+	}
+
+	public void handlePopInGameMenu() {
+		if (inGameMenuLayer.isVisible()) {
+			inGameMenuLayer.popMenu();
+		} else {
+			inGameMenuLayer.setVisible(true);
+		}
+	}
+
+	private void handlePushInGameSubMenu(Menu menu) {
+		inGameMenuLayer.addMenu(menu);
+
+	}
+
+	public void handleShowCombatActionMenu() {
+		inGameMenuLayer.addMenu(critterMenuFactory.getCombatActionMenu(board
+				.getControllingCritter()));
+	}
+
+	public void handleShowSystemMenu() {
+
+	}
+
 	@Required
 	public void setBoard(Board board) {
 		this.board = board;
 	}
 
 	@Required
+	public void setCritterMenuFactory(CritterMenuFactory critterMenuFactory) {
+		this.critterMenuFactory = critterMenuFactory;
+	}
+
+	@Required
 	public void setGameScreen(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
+	}
+
+	@Required
+	public void setInGameMenuLayer(InGameMenuLayer inGameMenuLayer) {
+		this.inGameMenuLayer = inGameMenuLayer;
 	}
 
 	@Required
@@ -310,86 +395,5 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		}
 		contentPane.removeAll();
 		contentPane.add(screen, new GridBagConstraints());
-	}
-
-	@Required
-	public void setInGameMenuLayer(InGameMenuLayer inGameMenuLayer) {
-		this.inGameMenuLayer = inGameMenuLayer;
-	}
-
-	@Override
-	public void handleEvent(IEvent event, Object arg) {
-		switch ((Event) event) {
-		case END_OF_TURN: {
-			handleEndOfTurn();
-			break;
-		}
-		case CRITTER_ACTION: {
-			handleCritterAction((CritterAction) arg);
-			break;
-		}
-		case SHOW_COMBAT_ACTION_MENU: {
-			handleShowCombatActionMenu();
-			break;
-		}
-		case PUSH_IN_GAME_SUBMENU: {
-			handlePushInGameSubMenu((Menu) arg);
-			break;
-		}
-		case POP_IN_GAME_MENU: {
-			handlePopInGameMenu();
-			break;
-		}
-		case SHOW_SYSTEM_MENU: {
-			handleShowSystemMenu();
-			break;
-		}
-		default: {
-			log.warn("No handler defined for event '" + event + "'");
-			break;
-		}
-		}
-	}
-
-	private void handlePushInGameSubMenu(Menu menu) {
-		inGameMenuLayer.addMenu(menu);
-
-	}
-
-	public void handleEndOfTurn() {
-		inGameMenuLayer.clearMenus();
-		inGameMenuLayer.setVisible(true);
-		board.nextTurn();
-	}
-
-	public void handlePopInGameMenu() {
-		if (inGameMenuLayer.isVisible()) {
-			inGameMenuLayer.popMenu();
-		} else {
-			inGameMenuLayer.setVisible(true);
-		}
-	}
-
-	public void handleCritterAction(CritterAction action) {
-		board.pushMode(new TargetingMode(board, this, action));
-		inGameMenuLayer.setVisible(false);
-	}
-
-	public void handleShowCombatActionMenu() {
-		inGameMenuLayer.addMenu(critterMenuFactory.getCombatActionMenu(board
-				.getControllingCritter()));
-	}
-
-	public void handleShowSystemMenu() {
-
-	}
-
-	public void handleCritterDeath(Critter deceased) {
-		board.removeCritter(deceased);
-	}
-
-	@Required
-	public void setCritterMenuFactory(CritterMenuFactory critterMenuFactory) {
-		this.critterMenuFactory = critterMenuFactory;
 	}
 }

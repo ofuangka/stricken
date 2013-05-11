@@ -35,6 +35,32 @@ public class TargetingMode extends AbstractBoardControlMode {
 	}
 
 	@Override
+	public void enableAndTargetTiles() {
+		currentIndex = NO_SELECTABLE_TILE_INDEX;
+		board.disableAllTiles();
+		board.clearTargetableTiles();
+		board.clearTargetedTiles();
+		Critter controllingCritter = board.getControllingCritter();
+		targetingSeedTile = board.getTile(controllingCritter.getX(),
+				controllingCritter.getY());
+		List<Tile> targetableTiles = action.getTargetableRange().collect(targetingSeedTile);
+		if (!targetableTiles.isEmpty()) {
+			board.setTargetable(targetableTiles);
+		}
+		selectableTiles = action.getActualRange().collect(targetingSeedTile);
+		if (!selectableTiles.isEmpty()) {
+			currentIndex = 0;
+			board.enableTiles(selectableTiles);
+			renderCrosshair();
+
+		} else {
+			// error handling
+			log.warn("No selectable tiles");
+		}
+
+	}
+
+	@Override
 	public void enter() {
 
 		if (currentIndex != NO_SELECTABLE_TILE_INDEX) {
@@ -96,32 +122,6 @@ public class TargetingMode extends AbstractBoardControlMode {
 					: currentIndex + 1;
 			renderCrosshair();
 		}
-	}
-
-	@Override
-	public void enableAndTargetTiles() {
-		currentIndex = NO_SELECTABLE_TILE_INDEX;
-		board.disableAllTiles();
-		board.clearTargetableTiles();
-		board.clearTargetedTiles();
-		Critter controllingCritter = board.getControllingCritter();
-		targetingSeedTile = board.getTile(controllingCritter.getX(),
-				controllingCritter.getY());
-		List<Tile> targetableTiles = action.getTargetableRange().collect(targetingSeedTile);
-		if (!targetableTiles.isEmpty()) {
-			board.setTargetable(targetableTiles);
-		}
-		selectableTiles = action.getActualRange().collect(targetingSeedTile);
-		if (!selectableTiles.isEmpty()) {
-			currentIndex = 0;
-			board.enableTiles(selectableTiles);
-			renderCrosshair();
-
-		} else {
-			// error handling
-			log.warn("No selectable tiles");
-		}
-
 	}
 
 	@Override

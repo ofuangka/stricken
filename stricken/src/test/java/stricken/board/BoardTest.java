@@ -38,9 +38,14 @@ public class BoardTest {
 	}
 
 	@Test
-	public void testPlacePiece() {
-		Assert.assertEquals(piece.getX(), 3);
-		Assert.assertEquals(piece.getY(), 3);
+	public void testGetAdjacentTilesIntInt() {
+		Tile[] adjacentTiles = testObj.getAdjacentTiles(0, 0);
+
+		// check that the tiles are null for the top and left
+		Assert.assertNull(adjacentTiles[0]);
+		Assert.assertNotNull(adjacentTiles[1]);
+		Assert.assertNotNull(adjacentTiles[2]);
+		Assert.assertNull(adjacentTiles[3]);
 	}
 
 	@Test
@@ -55,22 +60,17 @@ public class BoardTest {
 	}
 
 	@Test
-	public void testGetAdjacentTilesIntInt() {
-		Tile[] adjacentTiles = testObj.getAdjacentTiles(0, 0);
-
-		// check that the tiles are null for the top and left
-		Assert.assertNull(adjacentTiles[0]);
-		Assert.assertNotNull(adjacentTiles[1]);
-		Assert.assertNotNull(adjacentTiles[2]);
-		Assert.assertNull(adjacentTiles[3]);
-	}
-
-	@Test
 	public void testIsInBounds() {
 		Assert.assertTrue(testObj.isInBounds(0, 0));
 		Assert.assertTrue(testObj.isInBounds(3, 3));
 		Assert.assertFalse(testObj.isInBounds(-1, 0));
 		Assert.assertFalse(testObj.isInBounds(4, 0));
+	}
+
+	@Test
+	public void testPlacePiece() {
+		Assert.assertEquals(piece.getX(), 3);
+		Assert.assertEquals(piece.getY(), 3);
 	}
 
 	@Test

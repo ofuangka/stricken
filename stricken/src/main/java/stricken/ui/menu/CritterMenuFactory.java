@@ -22,7 +22,8 @@ public class CritterMenuFactory {
 
 		@Override
 		public void execute() {
-			// do nothing
+			IEventContext eventContext = parent.getEventContext();
+			eventContext.fire(Stricken.Event.POP_IN_GAME_MENU);
 		}
 	}
 
@@ -88,26 +89,6 @@ public class CritterMenuFactory {
 		return ret;
 	}
 
-	public Menu getTalentMenu(Critter critter) {
-		Menu ret = new Menu(eventContext);
-		List<AbstractMenuItem> menuItems = new ArrayList<AbstractMenuItem>();
-
-		List<String> talents = critter.getTalents();
-
-		if (talents == null || talents.isEmpty()) {
-			menuItems.add(new NoopMenuItem(ret, NO_TALENT_LABEL));
-		} else {
-			for (String talent : talents) {
-				menuItems.add(new CritterActionMenuItem(ret,
-						critterActionFactory.getLabel(talent),
-						critterActionFactory.get(talent, critter)));
-			}
-		}
-
-		ret.setItems(menuItems);
-		return ret;
-	}
-
 	public Menu getItemMenu(Critter critter) {
 		Menu ret = new Menu(eventContext);
 		List<AbstractMenuItem> menuItems = new ArrayList<AbstractMenuItem>();
@@ -121,6 +102,26 @@ public class CritterMenuFactory {
 				menuItems.add(new CritterActionMenuItem(ret,
 						critterActionFactory.getLabel(item),
 						critterActionFactory.get(item, critter)));
+			}
+		}
+
+		ret.setItems(menuItems);
+		return ret;
+	}
+
+	public Menu getTalentMenu(Critter critter) {
+		Menu ret = new Menu(eventContext);
+		List<AbstractMenuItem> menuItems = new ArrayList<AbstractMenuItem>();
+
+		List<String> talents = critter.getTalents();
+
+		if (talents == null || talents.isEmpty()) {
+			menuItems.add(new NoopMenuItem(ret, NO_TALENT_LABEL));
+		} else {
+			for (String talent : talents) {
+				menuItems.add(new CritterActionMenuItem(ret,
+						critterActionFactory.getLabel(talent),
+						critterActionFactory.get(talent, critter)));
 			}
 		}
 

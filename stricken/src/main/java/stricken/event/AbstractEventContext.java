@@ -68,6 +68,10 @@ public class AbstractEventContext implements IEventContext {
 		}
 	}
 
+	public Random getRandom() {
+		return random;
+	}
+	
 	public void subscribe(IEvent event, IEventHandler handler) {
 		if (events.containsKey(event)) {
 			events.get(event).subscribe(handler);
@@ -75,10 +79,6 @@ public class AbstractEventContext implements IEventContext {
 			log.warn("Attempt to subscribe event " + event
 					+ " that has not been created");
 		}
-	}
-	
-	public Random getRandom() {
-		return random;
 	}
 
 }

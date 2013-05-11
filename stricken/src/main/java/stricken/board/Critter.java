@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Critter extends AbstractBoardPiece {
-
+	
 	public enum Stat {
 		HP, MAXHP, SPEED, STRENGTH
 	}
+
+	public static int DEFAULT_STAT_VALUE = 0;
 
 	private static final Color DEFAULT_COLOR = Color.magenta;
 	private static final Color SELECTED_OUTLINE_COLOR = Color.red;
@@ -38,6 +40,10 @@ public class Critter extends AbstractBoardPiece {
 		setTakingUpSpace(true);
 	}
 
+	public String getAttack() {
+		return attack;
+	}
+
 	@Override
 	public BufferedImage getImage() {
 		BufferedImage ret = new BufferedImage(spriteSize.width,
@@ -59,12 +65,28 @@ public class Critter extends AbstractBoardPiece {
 		return ret;
 	}
 
+	public List<String> getItems() {
+		return items;
+	}
+
 	public Integer getStat(Stat key) {
-		return (stats.containsKey(key)) ? stats.get(key) : 3;
+		return (stats.containsKey(key)) ? stats.get(key) : DEFAULT_STAT_VALUE;
+	}
+
+	public List<String> getTalents() {
+		return talents;
 	}
 
 	public boolean isSelected() {
 		return selected;
+	}
+
+	public void setAttack(String attack) {
+		this.attack = attack;
+	}
+
+	public void setItems(List<String> items) {
+		this.items = items;
 	}
 
 	public void setSelected(boolean selected) {
@@ -75,28 +97,8 @@ public class Critter extends AbstractBoardPiece {
 		stats.put(key, value);
 	}
 
-	public String getAttack() {
-		return attack;
-	}
-
-	public List<String> getTalents() {
-		return talents;
-	}
-
-	public void setAttack(String attack) {
-		this.attack = attack;
-	}
-
 	public void setTalents(List<String> talents) {
 		this.talents = talents;
-	}
-
-	public List<String> getItems() {
-		return items;
-	}
-
-	public void setItems(List<String> items) {
-		this.items = items;
 	}
 
 }

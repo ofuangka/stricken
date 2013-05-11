@@ -58,11 +58,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		this.eventContext = eventContext;
 	}
 
-	public void removeCritter(Critter critter) {
-		sequence.remove(critter);
-		critters.remove(critter);
-	}
-
 	/**
 	 * Sets the controlling Critter and calls repaint()
 	 * 
@@ -242,14 +237,19 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 				}
 			}
 		}
-		placePiece(new Critter(spriteSize), 5, 5);
 
 		Random random = eventContext.getRandom();
 		int numPieces = random.nextInt(11) + 1;
 		for (int i = 0; i < numPieces; i++) {
-			placePiece(new Critter(spriteSize, new Color(random.nextInt(255),
-					random.nextInt(255), random.nextInt(255))),
-					random.nextInt(11), random.nextInt(11));
+			Critter critter = new Critter(spriteSize, new Color(
+					random.nextInt(255), random.nextInt(255),
+					random.nextInt(255)));
+			critter.setStat(Critter.Stat.MAXHP, random.nextInt(3) + 1);
+			critter.setStat(Critter.Stat.HP,
+					critter.getStat(Critter.Stat.MAXHP));
+			critter.setStat(Critter.Stat.STRENGTH, random.nextInt(3) + 1);
+			critter.setStat(Critter.Stat.SPEED, random.nextInt(3) + 1);
+			placePiece(critter, random.nextInt(11), random.nextInt(11));
 		}
 	}
 
@@ -323,6 +323,28 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 
 	}
 
+	public void popMode() {
+		modeHistory.remove(modeHistory.size() - 1);
+		refreshMode();
+	}
+
+	public void pushMode(AbstractBoardControlMode mode) {
+		mode.readAndStoreState();
+		mode.enableAndTargetTiles();
+		modeHistory.add(mode);
+	}
+
+	public void refreshMode() {
+		modeHistory.get(modeHistory.size() - 1).enableAndTargetTiles();
+	}
+
+	public void removeCritter(Critter critter) {
+		getTile(critter.getX(), critter.getY()).remove(critter);
+		sequence.remove(critter);
+		critters.remove(critter);
+		repaint();
+	}
+
 	public void removePiece(AbstractBoardPiece piece) {
 		int x = piece.getX();
 		int y = piece.getY();
@@ -353,11 +375,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		this.spriteSize = spriteSize;
 	}
 
-	@Override
-	public void space() {
-		getCurrentKeySink().space();
-	}
-
 	public void setTargetable(List<Tile> tilesToSet) {
 		if (tilesToSet != null) {
 			for (Tile tile : tilesToSet) {
@@ -368,6 +385,11 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		} else {
 			log.warn("setTargetable called with null Tile List");
 		}
+	}
+
+	@Override
+	public void space() {
+		getCurrentKeySink().space();
 	}
 
 	public void targetTiles(List<Tile> tilesToTarget) {
@@ -446,20 +468,5 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	@Override
 	public void x() {
 		getCurrentKeySink().x();
-	}
-
-	public void pushMode(AbstractBoardControlMode mode) {
-		mode.readAndStoreState();
-		mode.enableAndTargetTiles();
-		modeHistory.add(mode);
-	}
-
-	public void popMode() {
-		modeHistory.remove(modeHistory.size() - 1);
-		refreshMode();
-	}
-
-	public void refreshMode() {
-		modeHistory.get(modeHistory.size() - 1).enableAndTargetTiles();
 	}
 }

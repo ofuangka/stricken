@@ -15,6 +15,11 @@ public class AdventureMode extends AbstractBoardControlMode {
 		tryMove(Direction.DOWN);
 	}
 
+	public void enableAndTargetTiles() {
+		board.clearDisabledTiles();
+		board.clearTargetedTiles();
+	}
+
 	@Override
 	public void enter() {
 		// show in game menu
@@ -28,11 +33,6 @@ public class AdventureMode extends AbstractBoardControlMode {
 	@Override
 	public void right() {
 		tryMove(Direction.RIGHT);
-	}
-
-	public void enableAndTargetTiles() {
-		board.clearDisabledTiles();
-		board.clearTargetedTiles();
 	}
 
 	public void space() {

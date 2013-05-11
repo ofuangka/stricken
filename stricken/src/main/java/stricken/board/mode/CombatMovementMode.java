@@ -25,6 +25,18 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	}
 
 	@Override
+	public void enableAndTargetTiles() {
+
+		Critter me = board.getControllingCritter();
+
+		board.disableAllTiles();
+		board.clearTargetedTiles();
+
+		// figure out which tiles to enable and enable them
+		board.enableTiles(getValidTiles(me));
+	}
+
+	@Override
 	public void enter() {
 		eventContext.fire(Stricken.Event.SHOW_COMBAT_ACTION_MENU);
 	}
@@ -46,15 +58,13 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	}
 
 	@Override
-	public void enableAndTargetTiles() {
-
+	public void readAndStoreState() {
 		Critter me = board.getControllingCritter();
 
-		board.disableAllTiles();
-		board.clearTargetedTiles();
+		// save the initial information
+		origX = me.getX();
+		origY = me.getY();
 
-		// figure out which tiles to enable and enable them
-		board.enableTiles(getValidTiles(me));
 	}
 
 	@Override
@@ -68,16 +78,6 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	@Override
 	public void right() {
 		board.tryMove(Direction.RIGHT);
-	}
-
-	@Override
-	public void readAndStoreState() {
-		Critter me = board.getControllingCritter();
-
-		// save the initial information
-		origX = me.getX();
-		origY = me.getY();
-
 	}
 
 	@Override

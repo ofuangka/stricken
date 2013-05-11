@@ -101,7 +101,9 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 
 	@Override
 	public void left() {
-		
+		if (menus.size() > 1) {
+			popMenu();
+		}
 	}
 
 	/**

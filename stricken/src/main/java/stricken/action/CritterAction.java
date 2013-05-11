@@ -24,16 +24,16 @@ public class CritterAction {
 		this.tileEffect = tileEffect;
 	}
 
+	public ITileCollector getActualRange() {
+		return actualRange;
+	}
+
 	public ITileCollector getAreaOfEffect() {
 		return areaOfEffect;
 	}
 
 	public ITileCollector getTargetableRange() {
 		return targetableRange;
-	}
-
-	public ITileCollector getActualRange() {
-		return actualRange;
 	}
 
 	public ITileEffect getTileEffect() {

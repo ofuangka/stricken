@@ -14,11 +14,6 @@ public class CritterActionFactory {
 	private static final ITileCollector ADJACENT_INCLUSIVE_IGNORE_OCCUPANTS = new AbstractDecayingTileCollector() {
 
 		@Override
-		protected boolean isInclusive() {
-			return true;
-		}
-
-		@Override
 		protected int getCostThreshold() {
 			return 1;
 		}
@@ -26,6 +21,11 @@ public class CritterActionFactory {
 		@Override
 		protected int getTileCost(Tile tile) {
 			return 1;
+		}
+
+		@Override
+		protected boolean isInclusive() {
+			return true;
 		}
 
 		@Override
@@ -36,11 +36,6 @@ public class CritterActionFactory {
 	private static final ITileCollector ADJACENT_NON_INCLUSIVE_IGNORE_OCCUPANTS = new AbstractDecayingTileCollector() {
 
 		@Override
-		protected boolean isInclusive() {
-			return false;
-		}
-
-		@Override
 		protected int getCostThreshold() {
 			return 1;
 		}
@@ -48,6 +43,11 @@ public class CritterActionFactory {
 		@Override
 		protected int getTileCost(Tile tile) {
 			return 1;
+		}
+
+		@Override
+		protected boolean isInclusive() {
+			return false;
 		}
 
 		@Override
@@ -59,11 +59,6 @@ public class CritterActionFactory {
 	private static final ITileCollector ADJACENT_NON_INCLUSIVE_OCCUPANTS_ONLY = new AbstractDecayingTileCollector() {
 
 		@Override
-		protected boolean isInclusive() {
-			return false;
-		}
-
-		@Override
 		protected int getCostThreshold() {
 			return 1;
 		}
@@ -71,6 +66,11 @@ public class CritterActionFactory {
 		@Override
 		protected int getTileCost(Tile tile) {
 			return 1;
+		}
+
+		@Override
+		protected boolean isInclusive() {
+			return false;
 		}
 
 		@Override
@@ -86,10 +86,6 @@ public class CritterActionFactory {
 		this.eventContext = eventContext;
 	}
 
-	public String getLabel(String id) {
-		return "Label";
-	}
-
 	public CritterAction get(String id, Critter critter) {
 		ITileCollector targetableRange = ADJACENT_NON_INCLUSIVE_IGNORE_OCCUPANTS;
 		ITileCollector actualRange = ADJACENT_NON_INCLUSIVE_OCCUPANTS_ONLY;
@@ -101,5 +97,9 @@ public class CritterActionFactory {
 		ITileEffect effect = new StatDrivenAttackTileEffect(Stat.STRENGTH,
 				lookupDamageRange, lookupModifier, eventContext);
 		return new CritterAction(targetableRange, actualRange, aoe, effect);
+	}
+
+	public String getLabel(String id) {
+		return "Label";
 	}
 }

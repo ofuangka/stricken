@@ -22,11 +22,9 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 		this.eventContext = eventContext;
 	}
 
-	/**
-	 * This method should store the mode's state
-	 */
-	public void readAndStoreState() {
-		
+	@Override
+	public void backspace() {
+
 	}
 
 	/**
@@ -36,21 +34,23 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	 */
 	public abstract void enableAndTargetTiles();
 
+	@Override
+	public void esc() {
+		eventContext.fire(Stricken.Event.SHOW_SYSTEM_MENU);
+	}
+
+	/**
+	 * This method should store the mode's state
+	 */
+	public void readAndStoreState() {
+		
+	}
+
 	/**
 	 * This method resets the mode without recreating its state
 	 */
 	public void resetToOriginalState() {
 		
-	}
-
-	@Override
-	public void backspace() {
-
-	}
-
-	@Override
-	public void esc() {
-		eventContext.fire(Stricken.Event.SHOW_SYSTEM_MENU);
 	}
 
 	@Override

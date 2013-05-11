@@ -85,6 +85,10 @@ public class Menu extends JPanel implements IKeySink {
 		}
 	}
 
+	public IEventContext getEventContext() {
+		return eventContext;
+	}
+
 	@Override
 	public void left() {
 
@@ -101,7 +105,11 @@ public class Menu extends JPanel implements IKeySink {
 
 	@Override
 	public void right() {
-
+		AbstractMenuItem currentlySelectedItem = items.get(currentIndex);
+		if (AbstractSubMenuItem.class.isAssignableFrom(currentlySelectedItem
+				.getClass())) {
+			currentlySelectedItem.execute();
+		}
 	}
 
 	public void setItems(List<AbstractMenuItem> items) {
@@ -138,10 +146,6 @@ public class Menu extends JPanel implements IKeySink {
 	@Override
 	public void x() {
 
-	}
-
-	public IEventContext getEventContext() {
-		return eventContext;
 	}
 
 }

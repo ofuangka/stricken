@@ -56,13 +56,6 @@ public abstract class AbstractDecayingTileCollector implements ITileCollector {
 	}
 
 	/**
-	 * Returns true if this TileCollector needs to add itself to the result List
-	 * 
-	 * @return
-	 */
-	protected abstract boolean isInclusive();
-
-	/**
 	 * Implement this method to determine how far the collector is allowed to
 	 * decay
 	 * 
@@ -77,6 +70,13 @@ public abstract class AbstractDecayingTileCollector implements ITileCollector {
 	 * @return
 	 */
 	protected abstract int getTileCost(Tile tile);
+
+	/**
+	 * Returns true if this TileCollector needs to add itself to the result List
+	 * 
+	 * @return
+	 */
+	protected abstract boolean isInclusive();
 
 	/**
 	 * Implement this method to determine if a tile within the threshold should

@@ -18,6 +18,10 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 		return tile.getMovementCost();
 	}
 
+	protected boolean isInclusive() {
+		return true;
+	}
+
 	@Override
 	protected boolean isTileValid(Tile tile) {
 		return tile != null
@@ -26,10 +30,6 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 
 	public void setCritter(Critter critter) {
 		this.critter = critter;
-	}
-
-	protected boolean isInclusive() {
-		return true;
 	}
 
 }
