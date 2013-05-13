@@ -5,6 +5,8 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import stricken.event.IEventContext;
+
 public abstract class AbstractMenuItem extends JLabel {
 
 	private static final long serialVersionUID = -7617853828536450022L;
@@ -15,11 +17,11 @@ public abstract class AbstractMenuItem extends JLabel {
 	public static final int PADDING_VERTICAL = 5;
 	public static final int PADDING_HORIZONTAL = 10;
 
-	protected final Menu parent;
+	protected IEventContext eventContext;
 
-	public AbstractMenuItem(Menu parent, String label) {
+	public AbstractMenuItem(IEventContext eventContext, String label) {
 		super(label);
-		this.parent = parent;
+		this.eventContext = eventContext;
 		setOpaque(true);
 		setForeground(FONT_COLOR);
 		setBackground(DESELECTED);

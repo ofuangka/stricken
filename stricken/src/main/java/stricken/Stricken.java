@@ -20,9 +20,9 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import stricken.action.CritterAction;
 import stricken.board.Board;
-import stricken.board.Critter;
+import stricken.board.critter.Critter;
+import stricken.board.critter.CritterAction;
 import stricken.board.mode.TargetingMode;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
@@ -37,8 +37,9 @@ import stricken.ui.menu.Menu;
 public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public enum Event implements IEvent {
-		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_SYSTEM_MENU, CRITTER_DEATH
+		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_MAIN_MENU, RETURN_TO_GAME, SHOW_SYSTEM_MENU, CRITTER_DEATH, START_GAME, EXIT
 	}
+
 	/* constants */
 	private static final String APP_CTX_FILE_LOCATION = "spring-context.xml";
 
@@ -67,6 +68,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private List<JComponent> shownScreens = new ArrayList<JComponent>();
 	private JFrame window;
 	private Menu mainMenu;
+	private Menu systemMenu;
 	private JPanel contentPane;
 	private JPanel glassPane;
 	private IKeySink currentKeySink;
@@ -94,10 +96,8 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		createWindow();
 		createContentPane();
 		createGlassPane();
-		board.load(null);
-		showScreen(gameScreen);
+		showScreen(mainMenu);
 		showAndCenterWindow();
-		board.nextTurn();
 	}
 
 	/**
@@ -296,11 +296,31 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			handleCritterDeath((Critter) arg);
 			break;
 		}
+		case EXIT: {
+			handleExit();
+			break;
+		}
+		case START_GAME: {
+			handleStartGame();
+			break;
+		}
+		case RETURN_TO_GAME: {
+			showScreen(gameScreen);
+			break;
+		}
+		case SHOW_MAIN_MENU: {
+			showScreen(mainMenu);
+			break;
+		}
 		default: {
 			log.warn("No handler defined for event '" + event + "'");
 			break;
 		}
 		}
+	}
+
+	public void handleExit() {
+		System.exit(0);
 	}
 
 	public void handlePopInGameMenu() {
@@ -322,7 +342,14 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	public void handleShowSystemMenu() {
+		showScreen(systemMenu);
+	}
 
+	public void handleStartGame() {
+		board.clear();
+		board.load(null);
+		showScreen(gameScreen);
+		board.nextTurn();
 	}
 
 	@Required
@@ -346,8 +373,13 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	@Required
-	public void setMainMenu(Menu menu) {
-		this.mainMenu = menu;
+	public void setMainMenu(Menu mainMenu) {
+		this.mainMenu = mainMenu;
+	}
+
+	@Required
+	public void setSystemMenu(Menu systemMenu) {
+		this.systemMenu = systemMenu;
 	}
 
 	@Required
@@ -393,7 +425,12 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		} else {
 			throw new IllegalArgumentException("Screen must implement IKeySink");
 		}
+		if (Menu.class.isAssignableFrom(screen.getClass())) {
+			((Menu) screen).reset();
+		}
 		contentPane.removeAll();
 		contentPane.add(screen, new GridBagConstraints());
+		contentPane.revalidate();
+		contentPane.repaint();
 	}
 }

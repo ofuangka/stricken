@@ -25,6 +25,7 @@ public class Menu extends JPanel implements IKeySink {
 		super(new GridBagLayout());
 		this.eventContext = eventContext;
 		setOpaque(true);
+		setBackground(BG_COLOR);
 	}
 
 	public Menu(IEventContext eventContext, List<AbstractMenuItem> items) {
@@ -95,12 +96,13 @@ public class Menu extends JPanel implements IKeySink {
 	}
 
 	public void reset() {
+		currentIndex = 0;
 		if (items != null) {
-			for (int i = 0; i < items.size(); i++) {
+			items.get(0).uiSelect();
+			for (int i = 1; i < items.size(); i++) {
 				items.get(i).uiDeselect();
 			}
 		}
-		currentIndex = 0;
 	}
 
 	@Override

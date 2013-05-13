@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<context:annotation-config />
 
@@ -10,6 +12,7 @@
 		<property name="windowTitle" value="Stricken" />
 		<property name="windowSize" ref="windowSize" />
 		<property name="mainMenu" ref="mainMenu" />
+		<property name="systemMenu" ref="systemMenu" />
 		<property name="board" ref="board" />
 		<property name="gameScreen" ref="gameScreen" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
@@ -27,6 +30,46 @@
 
 	<bean id="mainMenu" class="stricken.ui.menu.Menu">
 		<constructor-arg ref="stricken" />
+		<constructor-arg>
+			<list>
+				<bean class="stricken.ui.menu.EventMenuItem">
+					<constructor-arg ref="stricken" />
+					<constructor-arg value="Start game" />
+					<constructor-arg>
+						<util:constant static-field="stricken.Stricken.Event.START_GAME" />
+					</constructor-arg>
+				</bean>
+				<bean class="stricken.ui.menu.EventMenuItem">
+					<constructor-arg ref="stricken" />
+					<constructor-arg value="Exit" />
+					<constructor-arg>
+						<util:constant static-field="stricken.Stricken.Event.EXIT" />
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="systemMenu" class="stricken.ui.menu.Menu">
+		<constructor-arg ref="stricken" />
+		<constructor-arg>
+			<list>
+				<bean class="stricken.ui.menu.EventMenuItem">
+					<constructor-arg ref="stricken" />
+					<constructor-arg value="Return to game" />
+					<constructor-arg>
+						<util:constant static-field="stricken.Stricken.Event.RETURN_TO_GAME" />
+					</constructor-arg>
+				</bean>
+				<bean class="stricken.ui.menu.EventMenuItem">
+					<constructor-arg ref="stricken" />
+					<constructor-arg value="Main menu" />
+					<constructor-arg>
+						<util:constant static-field="stricken.Stricken.Event.SHOW_MAIN_MENU" />
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
 	</bean>
 
 	<bean id="gameScreen" class="stricken.ui.GameScreen">
@@ -48,13 +91,13 @@
 	<bean id="infoLayer" class="stricken.ui.InfoLayer" />
 	<bean id="dialogLayer" class="stricken.ui.DialogLayer" />
 	<bean id="inGameMenuLayer" class="stricken.ui.InGameMenuLayer" />
-	
+
 	<bean id="critterMenuFactory" class="stricken.ui.menu.CritterMenuFactory">
 		<constructor-arg ref="stricken" />
 		<property name="critterActionFactory" ref="critterActionFactory" />
 	</bean>
-	
-	<bean id="critterActionFactory" class="stricken.action.CritterActionFactory">
+
+	<bean id="critterActionFactory" class="stricken.board.critter.CritterActionFactory">
 		<constructor-arg ref="stricken" />
 	</bean>
 

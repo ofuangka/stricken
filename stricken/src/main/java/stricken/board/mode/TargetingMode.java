@@ -5,11 +5,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import stricken.Stricken;
-import stricken.action.CritterAction;
-import stricken.action.ITileEffect;
 import stricken.board.Board;
-import stricken.board.Critter;
+import stricken.board.ITileEffect;
 import stricken.board.Tile;
+import stricken.board.critter.Critter;
+import stricken.board.critter.CritterAction;
 import stricken.collector.ITileCollector;
 import stricken.event.IEventContext;
 
@@ -80,8 +80,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 			log.info("Valid tile selection, ending turn");
 			eventContext.fire(Stricken.Event.END_OF_TURN);
 		} else {
-			log.warn("Invalid tile selection, ending turn");
-			eventContext.fire(Stricken.Event.END_OF_TURN);
+			log.warn("Invalid tile selection, please try again");
 		}
 	}
 

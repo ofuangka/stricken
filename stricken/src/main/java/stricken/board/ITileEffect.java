@@ -1,7 +1,6 @@
-package stricken.action;
+package stricken.board;
 
-import stricken.board.Critter;
-import stricken.board.Tile;
+import stricken.board.critter.Critter;
 
 public interface ITileEffect {
 

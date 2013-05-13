@@ -1,4 +1,4 @@
-package stricken.board;
+package stricken.board.critter;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import stricken.board.AbstractBoardPiece;
+
 public class Critter extends AbstractBoardPiece {
-	
+
 	public enum Stat {
 		HP, MAXHP, SPEED, STRENGTH
 	}
@@ -27,6 +29,7 @@ public class Critter extends AbstractBoardPiece {
 
 	private Color color;
 	private boolean selected;
+	private boolean hostile;
 
 	private Map<Stat, Integer> stats = new HashMap<Stat, Integer>();
 
@@ -77,12 +80,20 @@ public class Critter extends AbstractBoardPiece {
 		return talents;
 	}
 
+	public boolean isHostile() {
+		return hostile;
+	}
+
 	public boolean isSelected() {
 		return selected;
 	}
 
 	public void setAttack(String attack) {
 		this.attack = attack;
+	}
+
+	public void setHostile(boolean hostile) {
+		this.hostile = hostile;
 	}
 
 	public void setItems(List<String> items) {

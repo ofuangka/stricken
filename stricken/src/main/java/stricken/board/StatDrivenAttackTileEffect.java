@@ -1,12 +1,10 @@
-package stricken.action;
+package stricken.board;
 
 import java.util.Random;
 
 import stricken.Stricken;
-import stricken.board.AbstractBoardPiece;
-import stricken.board.Critter;
-import stricken.board.Critter.Stat;
-import stricken.board.Tile;
+import stricken.board.critter.Critter;
+import stricken.board.critter.Critter.Stat;
 import stricken.event.IEventContext;
 
 public class StatDrivenAttackTileEffect implements ITileEffect {

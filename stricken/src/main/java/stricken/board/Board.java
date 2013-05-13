@@ -13,6 +13,7 @@ import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
+import stricken.board.critter.Critter;
 import stricken.board.mode.AbstractBoardControlMode;
 import stricken.board.mode.AdventureMode;
 import stricken.board.mode.CombatMovementMode;
@@ -76,6 +77,14 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	@Override
 	public void backspace() {
 		getCurrentKeySink().backspace();
+	}
+	
+	public void clear() {
+		sequence.clear();
+		critters.clear();
+		disabledTiles.clear();
+		targetableTiles.clear();
+		targetedTiles.clear();
 	}
 
 	public void clearDisabledTiles() {
@@ -210,8 +219,16 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	public boolean isInCombat() {
-		// TODO: implement
-		return true;
+		boolean ret = false;
+		if (critters.size() > 1) {
+			for (Critter critter : critters) {
+				if (critter.isHostile()) {
+					ret = true;
+					break;
+				}
+			}
+		}
+		return ret;
 	}
 
 	@Override
@@ -249,7 +266,12 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 					critter.getStat(Critter.Stat.MAXHP));
 			critter.setStat(Critter.Stat.STRENGTH, random.nextInt(3) + 1);
 			critter.setStat(Critter.Stat.SPEED, random.nextInt(3) + 1);
-			placePiece(critter, random.nextInt(11), random.nextInt(11));
+			critter.setHostile(true);
+			int x = random.nextInt(11);
+			int y = random.nextInt(11);
+			if (!getTile(x, y).isOccupied()) {
+				placePiece(critter, x, y);
+			}
 		}
 	}
 

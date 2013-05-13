@@ -1,5 +1,6 @@
-package stricken.action;
+package stricken.board.critter;
 
+import stricken.board.ITileEffect;
 import stricken.collector.ITileCollector;
 
 /**

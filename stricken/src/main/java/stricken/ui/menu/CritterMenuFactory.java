@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Required;
 
 import stricken.Stricken;
-import stricken.action.CritterAction;
-import stricken.action.CritterActionFactory;
-import stricken.board.Critter;
+import stricken.board.critter.Critter;
+import stricken.board.critter.CritterAction;
+import stricken.board.critter.CritterActionFactory;
 import stricken.event.IEventContext;
 
 public class CritterMenuFactory {
@@ -16,13 +16,12 @@ public class CritterMenuFactory {
 	public class NoopMenuItem extends AbstractMenuItem {
 		private static final long serialVersionUID = -8766319162177106177L;
 
-		public NoopMenuItem(Menu parent, String label) {
-			super(parent, label);
+		public NoopMenuItem(IEventContext eventContext, String label) {
+			super(eventContext, label);
 		}
 
 		@Override
 		public void execute() {
-			IEventContext eventContext = parent.getEventContext();
 			eventContext.fire(Stricken.Event.POP_IN_GAME_MENU);
 		}
 	}
@@ -47,11 +46,11 @@ public class CritterMenuFactory {
 		List<AbstractMenuItem> menuItems = new ArrayList<AbstractMenuItem>();
 		CritterAction attack = critterActionFactory.get(critter.getAttack(),
 				critter);
-		AbstractMenuItem attackMenuItem = new CritterActionMenuItem(ret,
-				ATTACK_LABEL, attack);
+		AbstractMenuItem attackMenuItem = new EventMenuItem(eventContext,
+				ATTACK_LABEL, Stricken.Event.CRITTER_ACTION, attack);
 
-		AbstractSubMenuItem talentSubMenuItem = new AbstractSubMenuItem(ret,
-				TALENT_LABEL) {
+		AbstractSubMenuItem talentSubMenuItem = new AbstractSubMenuItem(
+				eventContext, TALENT_LABEL) {
 
 			private static final long serialVersionUID = 815195033986998056L;
 
@@ -61,8 +60,8 @@ public class CritterMenuFactory {
 			}
 
 		};
-		AbstractSubMenuItem itemSubMenuItem = new AbstractSubMenuItem(ret,
-				ITEM_LABEL) {
+		AbstractSubMenuItem itemSubMenuItem = new AbstractSubMenuItem(
+				eventContext, ITEM_LABEL) {
 
 			private static final long serialVersionUID = 6369030028324018292L;
 
@@ -75,12 +74,11 @@ public class CritterMenuFactory {
 		menuItems.add(attackMenuItem);
 		menuItems.add(talentSubMenuItem);
 		menuItems.add(itemSubMenuItem);
-		menuItems.add(new AbstractMenuItem(ret, WAIT_LABEL) {
+		menuItems.add(new AbstractMenuItem(eventContext, WAIT_LABEL) {
 			private static final long serialVersionUID = -4070052990440134098L;
 
 			@Override
 			public void execute() {
-				IEventContext eventContext = parent.getEventContext();
 				eventContext.fire(Stricken.Event.END_OF_TURN);
 			}
 
@@ -96,12 +94,13 @@ public class CritterMenuFactory {
 		List<String> items = critter.getItems();
 
 		if (items == null || items.isEmpty()) {
-			menuItems.add(new NoopMenuItem(ret, NO_ITEM_LABEL));
+			menuItems.add(new NoopMenuItem(eventContext, NO_ITEM_LABEL));
 		} else {
 			for (String item : items) {
-				menuItems.add(new CritterActionMenuItem(ret,
+				menuItems.add(new EventMenuItem(eventContext,
 						critterActionFactory.getLabel(item),
-						critterActionFactory.get(item, critter)));
+						Stricken.Event.CRITTER_ACTION, critterActionFactory
+								.get(item, critter)));
 			}
 		}
 
@@ -116,12 +115,13 @@ public class CritterMenuFactory {
 		List<String> talents = critter.getTalents();
 
 		if (talents == null || talents.isEmpty()) {
-			menuItems.add(new NoopMenuItem(ret, NO_TALENT_LABEL));
+			menuItems.add(new NoopMenuItem(eventContext, NO_TALENT_LABEL));
 		} else {
 			for (String talent : talents) {
-				menuItems.add(new CritterActionMenuItem(ret,
+				menuItems.add(new EventMenuItem(eventContext,
 						critterActionFactory.getLabel(talent),
-						critterActionFactory.get(talent, critter)));
+						Stricken.Event.CRITTER_ACTION, critterActionFactory
+								.get(talent, critter)));
 			}
 		}
 

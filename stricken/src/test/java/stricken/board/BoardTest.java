@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import stricken.board.critter.Critter;
 import stricken.event.IEventContext;
 
 public class BoardTest {
@@ -26,6 +27,14 @@ public class BoardTest {
 			for (int x = 0; x < tiles.length; x++) {
 				for (int y = 0; y < tiles[x].length; y++) {
 					tiles[x][y] = new Tile(spriteSize, x, y);
+					if (isInBounds(x - 1, y)) {
+						tiles[x - 1][y].setRight(tiles[x][y]);
+						tiles[x][y].setLeft(tiles[x - 1][y]);
+					}
+					if (isInBounds(x, y - 1)) {
+						tiles[x][y - 1].setBottom(tiles[x][y]);
+						tiles[x][y].setTop(tiles[x][y - 1]);
+					}
 				}
 			}
 		}

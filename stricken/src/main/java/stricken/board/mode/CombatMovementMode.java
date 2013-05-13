@@ -4,8 +4,8 @@ import java.util.List;
 
 import stricken.Stricken;
 import stricken.board.Board;
-import stricken.board.Critter;
 import stricken.board.Tile;
+import stricken.board.critter.Critter;
 import stricken.collector.CombatMovementTileCollector;
 import stricken.common.Direction;
 import stricken.event.IEventContext;

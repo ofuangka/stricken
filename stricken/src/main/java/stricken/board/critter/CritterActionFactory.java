@@ -1,8 +1,8 @@
-package stricken.action;
+package stricken.board.critter;
 
-import stricken.board.Critter;
+import stricken.board.ITileEffect;
+import stricken.board.StatDrivenAttackTileEffect;
 import stricken.board.Tile;
-import stricken.board.Critter.Stat;
 import stricken.collector.AbstractDecayingTileCollector;
 import stricken.collector.ITileCollector;
 import stricken.collector.SingleTileCollector;
@@ -94,8 +94,9 @@ public class CritterActionFactory {
 		int lookupDamageRange = 1;
 		int lookupModifier = 0;
 
-		ITileEffect effect = new StatDrivenAttackTileEffect(Stat.STRENGTH,
-				lookupDamageRange, lookupModifier, eventContext);
+		ITileEffect effect = new StatDrivenAttackTileEffect(
+				Critter.Stat.STRENGTH, lookupDamageRange, lookupModifier,
+				eventContext);
 		return new CritterAction(targetableRange, actualRange, aoe, effect);
 	}
 
