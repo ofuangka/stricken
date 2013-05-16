@@ -77,7 +77,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 			for (Tile tile : affectedTiles) {
 				tileEffect.execute(controllingCritter, tile);
 			}
-			log.info("Valid tile selection, ending turn");
+			log.debug("Valid tile selection, ending turn");
 			eventContext.fire(Stricken.Event.END_OF_TURN);
 		} else {
 			log.warn("Invalid tile selection, please try again");

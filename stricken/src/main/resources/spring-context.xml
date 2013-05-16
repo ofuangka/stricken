@@ -99,6 +99,7 @@
 
 	<bean id="critterActionFactory" class="stricken.board.critter.CritterActionFactory">
 		<constructor-arg ref="stricken" />
+		<constructor-arg value="classpath:critterActions.xml" />
 	</bean>
 
 </beans>

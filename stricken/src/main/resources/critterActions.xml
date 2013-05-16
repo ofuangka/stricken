@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<critterActions>
+	<critterAction id="null" name="Attack">
+		<collector type="targetable" costThreshold="1" tileCost="1" />
+		<collector type="aoe" costThreshold="0" tileCost="1"
+			isInclusive="true" />
+		<attack stat="strength" />
+	</critterAction>
+	<critterAction id="" name="Attack">
+		<collector type="targetable" costThreshold="1" tileCost="1" />
+		<collector type="aoe" costThreshold="0" tileCost="1"
+			isInclusive="true" />
+		<attack stat="strength" />
+	</critterAction>
+</critterActions>

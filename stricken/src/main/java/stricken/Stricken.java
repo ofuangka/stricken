@@ -105,7 +105,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * to the current keysink
 	 */
 	private void createContentPane() {
-		log.info("Initializing content pane...");
+		log.debug("Initializing content pane...");
 		contentPane = new JPanel(new GridBagLayout());
 		InputMap inputMap = new InputMap();
 		ActionMap actionMap = new ActionMap();
@@ -226,7 +226,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	private void createGlassPane() {
-		log.info("Initializing glass pane...");
+		log.debug("Initializing glass pane...");
 		glassPane = new JPanel(new GridBagLayout());
 		window.setGlassPane(glassPane);
 	}
@@ -235,7 +235,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * Creates and configures the window
 	 */
 	private void createWindow() {
-		log.info("Initializing window...");
+		log.debug("Initializing window...");
 		window = new JFrame(windowTitle);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -396,7 +396,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * Places the window in the center of the screen and sets it visible
 	 */
 	private void showAndCenterWindow() {
-		log.info("Showing and centering window...");
+		log.debug("Showing and centering window...");
 		window.setVisible(true);
 		window.pack();
 		window.setLocationRelativeTo(null);

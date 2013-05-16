@@ -36,7 +36,7 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 
 	public void addMenu(Menu menu) {
 
-		log.info("Adding Menu " + menu);
+		log.debug("Adding Menu " + menu);
 
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = menus.size();

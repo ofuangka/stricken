@@ -65,7 +65,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	 * @param newCritter
 	 */
 	public void assignControl(Critter newCritter) {
-		log.info("Assigning control to Critter " + newCritter + "...");
+		log.debug("Assigning control to Critter " + newCritter + "...");
 		if (controllingCritter != null) {
 			controllingCritter.setSelected(false);
 		}
@@ -88,7 +88,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	public void clearDisabledTiles() {
-		log.info("Clearing disabled Tile objects...");
+		log.debug("Clearing disabled Tile objects...");
 		while (!disabledTiles.isEmpty()) {
 			disabledTiles.remove(0).setDisabled(false);
 		}
@@ -96,14 +96,14 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	public void clearTargetableTiles() {
-		log.info("Clearing targetable Tile objects...");
+		log.debug("Clearing targetable Tile objects...");
 		while (!targetableTiles.isEmpty()) {
 			targetableTiles.remove(0).setTargetable(false);
 		}
 	}
 
 	public void clearTargetedTiles() {
-		log.info("Clearing targeted Tile objects...");
+		log.debug("Clearing targeted Tile objects...");
 		while (!targetedTiles.isEmpty()) {
 			targetedTiles.remove(0).setTargeted(false);
 		}
@@ -111,7 +111,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	private void createSequence() {
-		log.info("Creating Critter sequence...");
+		log.debug("Creating Critter sequence...");
 		// TODO: implement
 		sequence.addAll(critters);
 	}
@@ -276,7 +276,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	public void nextTurn() {
-		log.info("Starting new turn...");
+		log.debug("Starting new turn...");
 
 		clearDisabledTiles();
 		clearTargetableTiles();
@@ -291,7 +291,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		} else {
 
 			if (sequence.isEmpty()) {
-				log.info("Critter sequence empty, starting new round...");
+				log.debug("Critter sequence empty, starting new round...");
 				createSequence();
 			}
 

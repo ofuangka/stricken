@@ -97,10 +97,11 @@ public class CritterMenuFactory {
 			menuItems.add(new NoopMenuItem(eventContext, NO_ITEM_LABEL));
 		} else {
 			for (String item : items) {
-				menuItems.add(new EventMenuItem(eventContext,
-						critterActionFactory.getLabel(item),
-						Stricken.Event.CRITTER_ACTION, critterActionFactory
-								.get(item, critter)));
+				CritterAction critterAction = critterActionFactory.get(item,
+						critter);
+				menuItems.add(new EventMenuItem(eventContext, critterAction
+						.getName(), Stricken.Event.CRITTER_ACTION,
+						critterAction));
 			}
 		}
 
@@ -118,10 +119,11 @@ public class CritterMenuFactory {
 			menuItems.add(new NoopMenuItem(eventContext, NO_TALENT_LABEL));
 		} else {
 			for (String talent : talents) {
-				menuItems.add(new EventMenuItem(eventContext,
-						critterActionFactory.getLabel(talent),
-						Stricken.Event.CRITTER_ACTION, critterActionFactory
-								.get(talent, critter)));
+				CritterAction critterAction = critterActionFactory.get(talent,
+						critter);
+				menuItems.add(new EventMenuItem(eventContext, critterAction
+						.getName(), Stricken.Event.CRITTER_ACTION,
+						critterAction));
 			}
 		}
 

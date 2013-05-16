@@ -32,7 +32,7 @@ public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 	 * @param layers
 	 */
 	public GameScreen(List<ILayer> layers) {
-		log.info("Initializing GameScreen layers...");
+		log.debug("Initializing GameScreen layers...");
 		if (layers != null) {
 
 			for (int i = 0; i < layers.size(); i++) {
