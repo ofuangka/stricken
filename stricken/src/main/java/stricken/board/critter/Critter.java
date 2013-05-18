@@ -15,21 +15,24 @@ import stricken.board.AbstractBoardPiece;
 public class Critter extends AbstractBoardPiece {
 
 	public enum Stat {
-		HP, MAXHP, SPEED, STRENGTH
+		HP, MAXHP, SPEED, STRENGTH, WILL, DAMAGE_RANGE, DAMAGE_MODIFIER
 	}
 
-	public static int DEFAULT_STAT_VALUE = 0;
+	private static int DEFAULT_STAT_VALUE = 0;
+
+	private static final String HTH_ATTACK = "HTH_ATTACK";
 
 	private static final Color DEFAULT_COLOR = Color.magenta;
 	private static final Color SELECTED_OUTLINE_COLOR = Color.red;
 
-	private String attack;
+	private String attack = HTH_ATTACK;
 	private List<String> talents = new ArrayList<String>();
 	private List<String> items = new ArrayList<String>();
 
 	private Color color;
 	private boolean selected;
 	private boolean hostile;
+	private boolean human;
 
 	private Map<Stat, Integer> stats = new HashMap<Stat, Integer>();
 
@@ -41,6 +44,7 @@ public class Critter extends AbstractBoardPiece {
 		super(spriteSize);
 		this.color = color;
 		setTakingUpSpace(true);
+		setStat(Stat.DAMAGE_RANGE, 1);
 	}
 
 	public String getAttack() {
@@ -84,6 +88,10 @@ public class Critter extends AbstractBoardPiece {
 		return hostile;
 	}
 
+	public boolean isHuman() {
+		return human;
+	}
+
 	public boolean isSelected() {
 		return selected;
 	}
@@ -94,6 +102,10 @@ public class Critter extends AbstractBoardPiece {
 
 	public void setHostile(boolean hostile) {
 		this.hostile = hostile;
+	}
+
+	public void setHuman(boolean human) {
+		this.human = human;
 	}
 
 	public void setItems(List<String> items) {

@@ -13,6 +13,7 @@
 		<property name="windowSize" ref="windowSize" />
 		<property name="mainMenu" ref="mainMenu" />
 		<property name="systemMenu" ref="systemMenu" />
+		<property name="youDiedScreen" ref="youDiedScreen" />
 		<property name="board" ref="board" />
 		<property name="gameScreen" ref="gameScreen" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
@@ -64,6 +65,21 @@
 				<bean class="stricken.ui.menu.EventMenuItem">
 					<constructor-arg ref="stricken" />
 					<constructor-arg value="Main menu" />
+					<constructor-arg>
+						<util:constant static-field="stricken.Stricken.Event.SHOW_MAIN_MENU" />
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="youDiedScreen" class="stricken.ui.menu.Menu">
+		<constructor-arg ref="stricken" />
+		<constructor-arg>
+			<list>
+				<bean class="stricken.ui.menu.EventMenuItem">
+					<constructor-arg ref="stricken" />
+					<constructor-arg value="You died" />
 					<constructor-arg>
 						<util:constant static-field="stricken.Stricken.Event.SHOW_MAIN_MENU" />
 					</constructor-arg>

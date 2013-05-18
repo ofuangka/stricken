@@ -12,11 +12,22 @@ import stricken.board.ITileEffect;
 import stricken.board.StatDrivenAttackTileEffect;
 import stricken.board.Tile;
 import stricken.collector.AbstractDecayingTileCollector;
+import stricken.collector.IPredicate;
 import stricken.collector.ITileCollector;
 import stricken.event.IEventContext;
 import stricken.util.AbstractXmlConsumer;
 
+/**
+ * This class produces a CritterAction for a String
+ * 
+ * @author ofuangka
+ * 
+ */
 public class CritterActionFactory extends AbstractXmlConsumer {
+
+	public enum PredicateType {
+		OCCUPIED_BY_CRITTER, ALL_TILES
+	}
 
 	private static final Logger log = Logger
 			.getLogger(CritterActionFactory.class);
@@ -30,53 +41,64 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 	}
 
 	public CritterAction get(String id, Critter critter) {
-		
+
+		// get the main element representing the ID provided
 		String elXpath = "/critterActions/critterAction[@id='" + id + "']";
-		
-		log.info(elXpath);
+		log.debug("Requesting critter using XPath: '" + elXpath + "'...");
+		Element el = (Element) getDocument().selectSingleNode(elXpath);
 
-		Element el = (Element) getDocument().selectSingleNode(
-				elXpath);
-
+		// get the metadata inside the element
 		Element targetableMetadata = (Element) el
 				.selectSingleNode("collector[@type='targetable']");
 		Element aoeMetadata = (Element) el
 				.selectSingleNode("collector[@type='aoe']");
 		Element attackMetadata = (Element) el.selectSingleNode("attack");
 
-		final int targetableCostThreshold = Integer.valueOf(targetableMetadata
-				.valueOf("@costThreshold"));
-
-		final int targetableTileCost = Integer.valueOf(targetableMetadata
-				.valueOf("@tileCost"));
-
-		final boolean targetableIsInclusive = StringUtils
-				.isNotBlank(targetableMetadata.valueOf("@isInclusive"));
-
-		final int aoeCostThreshold = Integer.valueOf(aoeMetadata
-				.valueOf("@costThreshold"));
-		final int aoeTileCost = Integer.valueOf(aoeMetadata
-				.valueOf("@tileCost"));
-		final boolean aoeIsInclusive = StringUtils.isNotBlank(aoeMetadata
-				.valueOf("@isInclusive"));
-
+		// create the critterAction
 		String statName = attackMetadata.valueOf("@stat");
+		ITileCollector targetableRange = getAbstractDecayingTileCollector(
+				Integer.valueOf(targetableMetadata.valueOf("@costThreshold")),
+				Integer.valueOf(targetableMetadata.valueOf("@tileCost")),
+				StringUtils.isNotBlank(targetableMetadata
+						.valueOf("@isInclusive")));
 
-		ITileCollector targetableRange = new AbstractDecayingTileCollector() {
+		ITileCollector aoe = getAbstractDecayingTileCollector(
+				Integer.valueOf(aoeMetadata.valueOf("@costThreshold")),
+				Integer.valueOf(aoeMetadata.valueOf("@tileCost")),
+				StringUtils.isNotBlank(aoeMetadata.valueOf("@isInclusive")));
+
+		int lookupDamageRange = critter.getStat(Critter.Stat.DAMAGE_RANGE);
+		int lookupModifier = critter.getStat(Critter.Stat.DAMAGE_MODIFIER);
+
+		ITileEffect effect = new StatDrivenAttackTileEffect(
+				Critter.Stat.valueOf(statName.toUpperCase()),
+				lookupDamageRange, lookupModifier, eventContext);
+
+		IPredicate<Tile> predicate = getPredicate(targetableMetadata
+				.valueOf("@predicateType"));
+
+		return new CritterAction(el.valueOf("@name"), targetableRange,
+				predicate, aoe, effect);
+	}
+
+	protected AbstractDecayingTileCollector getAbstractDecayingTileCollector(
+			final int costThreshold, final int tileCost,
+			final boolean isInclusive) {
+		return new AbstractDecayingTileCollector() {
 
 			@Override
 			protected int getCostThreshold() {
-				return targetableCostThreshold;
+				return costThreshold;
 			}
 
 			@Override
 			protected int getTileCost(Tile tile) {
-				return targetableTileCost;
+				return tileCost;
 			}
 
 			@Override
 			protected boolean isInclusive() {
-				return targetableIsInclusive;
+				return isInclusive;
 			}
 
 			@Override
@@ -85,61 +107,26 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 			}
 
 		};
-		ITileCollector actualRange = new AbstractDecayingTileCollector() {
+	}
+
+	/**
+	 * Produces a Predicate depending on which PredicateType was passed in
+	 * 
+	 * @param predicateType
+	 * @return
+	 */
+	protected IPredicate<Tile> getPredicate(String predicateTypeName) {
+		IPredicate<Tile> ret = new IPredicate<Tile>() {
 
 			@Override
-			protected int getCostThreshold() {
-				return targetableCostThreshold;
-			}
-
-			@Override
-			protected int getTileCost(Tile tile) {
-				return targetableTileCost;
-			}
-
-			@Override
-			protected boolean isInclusive() {
-				return targetableIsInclusive;
-			}
-
-			@Override
-			protected boolean isTileValid(Tile tile) {
-				return tile != null && tile.isOccupied();
+			public boolean apply(Tile t) {
+				return t != null
+						&& t.isOccupied()
+						&& Critter.class.isAssignableFrom(t.getOccupant()
+								.getClass());
 			}
 
 		};
-		ITileCollector aoe = new AbstractDecayingTileCollector() {
-
-			@Override
-			protected int getCostThreshold() {
-				return aoeCostThreshold;
-			}
-
-			@Override
-			protected int getTileCost(Tile tile) {
-				return aoeTileCost;
-			}
-
-			@Override
-			protected boolean isInclusive() {
-				return aoeIsInclusive;
-			}
-
-			@Override
-			protected boolean isTileValid(Tile tile) {
-				return tile != null && tile.isOccupied();
-			}
-
-		};
-
-		int lookupDamageRange = 1;
-		int lookupModifier = 0;
-
-		ITileEffect effect = new StatDrivenAttackTileEffect(
-				Critter.Stat.valueOf(statName.toUpperCase()),
-				lookupDamageRange, lookupModifier, eventContext);
-
-		return new CritterAction(el.valueOf("@name"), targetableRange,
-				actualRange, aoe, effect);
+		return ret;
 	}
 }

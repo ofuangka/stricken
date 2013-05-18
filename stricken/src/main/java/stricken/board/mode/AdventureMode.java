@@ -10,14 +10,14 @@ public class AdventureMode extends AbstractBoardControlMode {
 		super(board, eventContext);
 	}
 
+	public void configureTileState() {
+		board.clearDisabledTiles();
+		board.clearCrosshair();
+	}
+
 	@Override
 	public void down() {
 		tryMove(Direction.DOWN);
-	}
-
-	public void enableAndTargetTiles() {
-		board.clearDisabledTiles();
-		board.clearTargetedTiles();
 	}
 
 	@Override

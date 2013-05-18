@@ -13,6 +13,7 @@ import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
+import stricken.Stricken;
 import stricken.board.critter.Critter;
 import stricken.board.mode.AbstractBoardControlMode;
 import stricken.board.mode.AdventureMode;
@@ -50,7 +51,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	private List<Critter> sequence = new ArrayList<Critter>();
 
 	private List<Tile> disabledTiles = new ArrayList<Tile>();
-	private List<Tile> targetableTiles = new ArrayList<Tile>();
+	private List<Tile> tilesInTargetingRange = new ArrayList<Tile>();
 	private List<Tile> targetedTiles = new ArrayList<Tile>();
 
 	private List<AbstractBoardControlMode> modeHistory = new ArrayList<AbstractBoardControlMode>();
@@ -78,31 +79,19 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	public void backspace() {
 		getCurrentKeySink().backspace();
 	}
-	
+
 	public void clear() {
 		sequence.clear();
 		critters.clear();
 		disabledTiles.clear();
-		targetableTiles.clear();
+		tilesInTargetingRange.clear();
 		targetedTiles.clear();
 	}
 
-	public void clearDisabledTiles() {
-		log.debug("Clearing disabled Tile objects...");
-		while (!disabledTiles.isEmpty()) {
-			disabledTiles.remove(0).setDisabled(false);
-		}
-		repaint();
-	}
-
-	public void clearTargetableTiles() {
-		log.debug("Clearing targetable Tile objects...");
-		while (!targetableTiles.isEmpty()) {
-			targetableTiles.remove(0).setTargetable(false);
-		}
-	}
-
-	public void clearTargetedTiles() {
+	/**
+	 * Clears all targeted Tiles
+	 */
+	public void clearCrosshair() {
 		log.debug("Clearing targeted Tile objects...");
 		while (!targetedTiles.isEmpty()) {
 			targetedTiles.remove(0).setTargeted(false);
@@ -110,7 +99,28 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		repaint();
 	}
 
-	private void createSequence() {
+	/**
+	 * Enables all tiles
+	 */
+	public void clearDisabledTiles() {
+		log.debug("Removing all out of range tiles...");
+		while (!disabledTiles.isEmpty()) {
+			disabledTiles.remove(0).setEnabled(true);
+		}
+		repaint();
+	}
+
+	/**
+	 * Puts all tiles out of targeting range
+	 */
+	public void clearTargetingRange() {
+		log.debug("Clearing targetable Tile objects...");
+		while (!tilesInTargetingRange.isEmpty()) {
+			tilesInTargetingRange.remove(0).setInTargetingRange(false);
+		}
+	}
+
+	private void createCritterSequence() {
 		log.debug("Creating Critter sequence...");
 		// TODO: implement
 		sequence.addAll(critters);
@@ -119,7 +129,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	public void disableAllTiles() {
 		for (int x = 0; x < tiles.length; x++) {
 			for (int y = 0; y < tiles[x].length; y++) {
-				tiles[x][y].setDisabled(true);
+				tiles[x][y].setEnabled(false);
 				disabledTiles.add(tiles[x][y]);
 			}
 		}
@@ -129,16 +139,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	@Override
 	public void down() {
 		getCurrentKeySink().down();
-	}
-
-	public void enableTiles(List<Tile> tilesToEnable) {
-		if (tilesToEnable != null) {
-			for (Tile tile : tilesToEnable) {
-				tile.setDisabled(false);
-				disabledTiles.remove(tile);
-			}
-		}
-		repaint();
 	}
 
 	@Override
@@ -202,9 +202,14 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	 * 
 	 * @return
 	 */
-	private boolean isGameOver() {
-		// TODO: implement
-		return false;
+	private boolean isHumanOnBoard() {
+		boolean ret = false;
+		for (Critter critter : critters) {
+			if (critter.isHuman()) {
+				return true;
+			}
+		}
+		return ret;
 	}
 
 	/**
@@ -267,6 +272,18 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 			critter.setStat(Critter.Stat.STRENGTH, random.nextInt(3) + 1);
 			critter.setStat(Critter.Stat.SPEED, random.nextInt(3) + 1);
 			critter.setHostile(true);
+			critter.setHuman(random.nextBoolean());
+
+			List<String> talents = new ArrayList<String>();
+
+			if (random.nextBoolean()) {
+				talents.add("FIRE_BOMB");
+			}
+			if (random.nextBoolean()) {
+				talents.add("LIGHTNING_STRIKE");
+			}
+			critter.setTalents(talents);
+
 			int x = random.nextInt(11);
 			int y = random.nextInt(11);
 			if (!getTile(x, y).isOccupied()) {
@@ -279,20 +296,19 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		log.debug("Starting new turn...");
 
 		clearDisabledTiles();
-		clearTargetableTiles();
-		clearTargetedTiles();
+		clearTargetingRange();
+		clearCrosshair();
 
 		modeHistory.clear();
 
 		// check end conditions
-		if (isGameOver()) {
-
-			// return
+		if (!isHumanOnBoard()) {
+			eventContext.fire(Stricken.Event.LOSE_CONDITION);
 		} else {
 
 			if (sequence.isEmpty()) {
 				log.debug("Critter sequence empty, starting new round...");
-				createSequence();
+				createCritterSequence();
 			}
 
 			// figure out who the next controlling piece is
@@ -352,12 +368,12 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 
 	public void pushMode(AbstractBoardControlMode mode) {
 		mode.readAndStoreState();
-		mode.enableAndTargetTiles();
+		mode.configureTileState();
 		modeHistory.add(mode);
 	}
 
 	public void refreshMode() {
-		modeHistory.get(modeHistory.size() - 1).enableAndTargetTiles();
+		modeHistory.get(modeHistory.size() - 1).configureTileState();
 	}
 
 	public void removeCritter(Critter critter) {
@@ -387,9 +403,38 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		// else do nothing (removing a piece that's not on the board)
 	}
 
+	public void renderCrosshair(List<Tile> tilesToTarget) {
+		clearCrosshair();
+		if (tilesToTarget != null) {
+			for (Tile tile : tilesToTarget) {
+				tile.setTargeted(true);
+				targetedTiles.add(tile);
+			}
+			repaint();
+		} else {
+			log.warn("targetTiles called with null Tile List");
+		}
+	}
+
 	@Override
 	public void right() {
 		getCurrentKeySink().right();
+	}
+
+	/**
+	 * This allows movement to the provided Tile List and only to that List
+	 * 
+	 * @param enabledTiles
+	 */
+	public void setEnabledTiles(List<Tile> enabledTiles) {
+		disableAllTiles();
+		if (enabledTiles != null) {
+			for (Tile tile : enabledTiles) {
+				tile.setEnabled(true);
+				disabledTiles.remove(tile);
+			}
+		}
+		repaint();
 	}
 
 	@Required
@@ -397,11 +442,17 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		this.spriteSize = spriteSize;
 	}
 
-	public void setTargetable(List<Tile> tilesToSet) {
-		if (tilesToSet != null) {
-			for (Tile tile : tilesToSet) {
-				tile.setTargetable(true);
-				targetableTiles.add(tile);
+	/**
+	 * Clears any previous targeting range and sets a new one
+	 * 
+	 * @param targetingRange
+	 */
+	public void setTargetingRange(List<Tile> targetingRange) {
+		clearTargetingRange();
+		if (targetingRange != null) {
+			for (Tile tile : targetingRange) {
+				tile.setInTargetingRange(true);
+				tilesInTargetingRange.add(tile);
 			}
 			repaint();
 		} else {
@@ -412,18 +463,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	@Override
 	public void space() {
 		getCurrentKeySink().space();
-	}
-
-	public void targetTiles(List<Tile> tilesToTarget) {
-		if (tilesToTarget != null) {
-			for (Tile tile : tilesToTarget) {
-				tile.setTargeted(true);
-				targetedTiles.add(tile);
-			}
-			repaint();
-		} else {
-			log.warn("targetTiles called with null Tile List");
-		}
 	}
 
 	/**
@@ -470,7 +509,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 			break;
 		}
 		}
-		if (isInBounds(nextX, nextY) && !getTile(nextX, nextY).isDisabled()
+		if (isInBounds(nextX, nextY) && getTile(nextX, nextY).isEnabled()
 				&& !getTile(nextX, nextY).isOccupied()) {
 			placePiece(piece, nextX, nextY);
 			return true;

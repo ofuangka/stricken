@@ -37,7 +37,7 @@ import stricken.ui.menu.Menu;
 public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public enum Event implements IEvent {
-		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_MAIN_MENU, RETURN_TO_GAME, SHOW_SYSTEM_MENU, CRITTER_DEATH, START_GAME, EXIT
+		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_MAIN_MENU, RETURN_TO_GAME, SHOW_SYSTEM_MENU, CRITTER_DEATH, START_GAME, EXIT, LOSE_CONDITION
 	}
 
 	/* constants */
@@ -69,6 +69,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private JFrame window;
 	private Menu mainMenu;
 	private Menu systemMenu;
+	private Menu youDiedScreen;
 	private JPanel contentPane;
 	private JPanel glassPane;
 	private IKeySink currentKeySink;
@@ -84,6 +85,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private String windowTitle;
 
 	public Stricken() {
+
 		// iterate over the event types, creating them and subscribing to them
 		for (Event event : Event.values()) {
 			createEvent(event);
@@ -250,6 +252,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		screen.setPreferredSize(windowSize);
 	}
 
+	/* Event handlers */
 	public void handleCritterAction(CritterAction action) {
 		board.pushMode(new TargetingMode(board, this, action));
 		inGameMenuLayer.setVisible(false);
@@ -259,12 +262,20 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		board.removeCritter(deceased);
 	}
 
+	/**
+	 * Handles an end of turn request. Clears any in game menus, makes the in
+	 * game menu layer visible (some modes set it invisible), and calls the
+	 * board.nextTurn() method
+	 */
 	public void handleEndOfTurn() {
 		inGameMenuLayer.clearMenus();
 		inGameMenuLayer.setVisible(true);
 		board.nextTurn();
 	}
 
+	/**
+	 * Attach all Event handlers
+	 */
 	@Override
 	public void handleEvent(IEvent event, Object arg) {
 		switch ((Event) event) {
@@ -312,6 +323,10 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			showScreen(mainMenu);
 			break;
 		}
+		case LOSE_CONDITION: {
+			showScreen(youDiedScreen);
+			break;
+		}
 		default: {
 			log.warn("No handler defined for event '" + event + "'");
 			break;
@@ -323,6 +338,9 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		System.exit(0);
 	}
 
+	/**
+	 * This method shows the previous inGameMenuLayer (if there was one)
+	 */
 	public void handlePopInGameMenu() {
 		if (inGameMenuLayer.isVisible()) {
 			inGameMenuLayer.popMenu();
@@ -390,6 +408,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	@Required
 	public void setWindowTitle(String windowTitle) {
 		this.windowTitle = windowTitle;
+	}
+
+	@Required
+	public void setYouDiedScreen(Menu youDiedScreen) {
+		this.youDiedScreen = youDiedScreen;
 	}
 
 	/**

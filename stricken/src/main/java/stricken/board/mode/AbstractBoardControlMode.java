@@ -32,7 +32,7 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	 * this mode's state. It should clear all previously enabled and targeted
 	 * tiles before doing the new ones
 	 */
-	public abstract void enableAndTargetTiles();
+	public abstract void configureTileState();
 
 	@Override
 	public void esc() {

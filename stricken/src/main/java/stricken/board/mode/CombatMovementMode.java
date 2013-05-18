@@ -20,20 +20,17 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	}
 
 	@Override
-	public void down() {
-		board.tryMove(Direction.DOWN);
-	}
-
-	@Override
-	public void enableAndTargetTiles() {
+	public void configureTileState() {
 
 		Critter me = board.getControllingCritter();
 
-		board.disableAllTiles();
-		board.clearTargetedTiles();
-
 		// figure out which tiles to enable and enable them
-		board.enableTiles(getValidTiles(me));
+		board.setEnabledTiles(getMovementRange(me));
+	}
+
+	@Override
+	public void down() {
+		board.tryMove(Direction.DOWN);
 	}
 
 	@Override
@@ -46,7 +43,7 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 		resetToOriginalState();
 	}
 
-	private List<Tile> getValidTiles(Critter critter) {
+	private List<Tile> getMovementRange(Critter critter) {
 		CombatMovementTileCollector tileCollector = new CombatMovementTileCollector();
 		tileCollector.setCritter(critter);
 		return tileCollector.collect(board.getTile(origX, origY));

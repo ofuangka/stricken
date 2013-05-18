@@ -13,13 +13,13 @@ public abstract class AbstractXmlFactory<T> extends AbstractXmlConsumer {
 		super(resource);
 	}
 
+	public abstract T get(Element node);
+
 	public T get(String id) {
 		return get((Element) getDocument().selectSingleNode(
 				getBaseElementXpath() + "[@id='" + id + "']"));
 	}
 
 	public abstract String getBaseElementXpath();
-
-	public abstract T get(Element node);
 
 }

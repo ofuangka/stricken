@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <critterActions>
-	<critterAction id="null" name="Attack">
-		<collector type="targetable" costThreshold="1" tileCost="1" />
+	<critterAction id="HTH_ATTACK" name="Attack">
+		<collector type="targetable" costThreshold="1" tileCost="1"
+			predicateType="occupied" />
 		<collector type="aoe" costThreshold="0" tileCost="1"
 			isInclusive="true" />
 		<attack stat="strength" />
 	</critterAction>
-	<critterAction id="" name="Attack">
-		<collector type="targetable" costThreshold="1" tileCost="1" />
-		<collector type="aoe" costThreshold="0" tileCost="1"
+	<critterAction id="FIRE_BOMB" name="Fire bomb">
+		<collector type="targetable" costThreshold="2" tileCost="1"
+			predicateType="occupied" />
+		<collector type="aoe" costThreshold="1" tileCost="1"
 			isInclusive="true" />
 		<attack stat="strength" />
+	</critterAction>
+	<critterAction id="LIGHTNING_STRIKE" name="Lightning strike">
+		<collector type="targetable" costThreshold="4" tileCost="1"
+			predicateType="occupied" />
+		<collector type="aoe" costThreshold="0" tileCost="1"
+			isInclusive="true" />
+		<attack stat="will" />
 	</critterAction>
 </critterActions>
