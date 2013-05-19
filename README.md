@@ -1,3 +1,7 @@
 stricken
 ========
-A poorly designed and self effacing Java turn based strategy game
+A poorly designed and self effacing Java turn based strategy game.
+
+Introduction
+------------
+
