@@ -9,11 +9,14 @@ import org.dom4j.Element;
 import org.springframework.core.io.Resource;
 
 import stricken.board.AbstractCritterTileInteraction;
-import stricken.board.AbstractTargetStatChangeInteraction;
+import stricken.board.ConstantDrivenTargetStatChangeInteraction;
+import stricken.board.SourceStatDrivenTargetStatChangeInteraction;
 import stricken.board.Tile;
+import stricken.board.critter.Critter.Stat;
 import stricken.collector.AbstractDecayingTileCollector;
-import stricken.collector.IPredicate;
+import stricken.collector.AbstractFilteredTileCollector;
 import stricken.collector.ITileCollector;
+import stricken.collector.ITileFilter;
 import stricken.event.IEventContext;
 import stricken.util.AbstractXmlConsumer;
 
@@ -25,8 +28,12 @@ import stricken.util.AbstractXmlConsumer;
  */
 public class CritterActionFactory extends AbstractXmlConsumer {
 
-	public enum PredicateType {
-		OCCUPIED_BY_CRITTER, ALL_TILES
+	public enum TileFilterType {
+		OCCUPIED_BY_CRITTER, NO_FILTER
+	}
+
+	public enum TileEffectType {
+		SOURCE_STAT_DRIVEN_TARGET_STAT_CHANGE, CONSTANT_DRIVEN_TARGET_STAT_CHANGE
 	}
 
 	private static final Logger log = Logger
@@ -43,47 +50,98 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 	public CritterAction get(String id, Critter critter) {
 
 		// get the main element representing the ID provided
-		String elXpath = "/critterActions/critterAction[@id='" + id + "']";
+		String elXpath = "/actions/action[@id='" + id + "']";
 		log.debug("Requesting critter using XPath: '" + elXpath + "'...");
-		return parseCritterAction(
-				(Element) getDocument().selectSingleNode(elXpath), critter);
+		return parseAction((Element) getDocument().selectSingleNode(elXpath),
+				critter);
 	}
 
-	protected CritterAction parseCritterAction(Element el, Critter critter) {
+	protected CritterAction parseAction(Element el, Critter critter) {
 
-		ITileCollector targetingRange = parseTileCollector((Element) el
-				.selectSingleNode("tileCollector[@type='TARGETING_RANGE']"));
+		ITileCollector targetingRange = parseRange((Element) el
+				.selectSingleNode("range[@type='TARGETING']"));
 
-		ITileCollector aoe = parseTileCollector((Element) el
-				.selectSingleNode("tileCollector[@type='AOE']"));
+		ITileCollector actualRange = parseRange((Element) el
+				.selectSingleNode("range[@type='ACTUAL']"));
 
-		AbstractCritterTileInteraction effect = parseInteraction(
-				(Element) el.selectSingleNode("interaction"), critter);
+		ITileCollector aoe = parseRange((Element) el
+				.selectSingleNode("range[@type='AOE']"));
 
-		IPredicate<Tile> predicate = parsePredicate((Element) el
-				.selectSingleNode("predicate"));
+		AbstractCritterTileInteraction effect = parseEffect(
+				(Element) el.selectSingleNode("effect"), critter);
 
 		return new CritterAction(el.valueOf("@name"), targetingRange,
-				predicate, aoe, effect);
+				actualRange, aoe, effect);
 	}
 
-	protected ITileCollector parseTileCollector(Element el) {
+	protected ITileCollector parseRange(Element el) {
 		return getAbstractDecayingTileCollector(
+				parseFilter((Element) el.selectSingleNode("filter")),
 				Integer.valueOf(el.valueOf("@costThreshold")),
 				Integer.valueOf(el.valueOf("@tileCost")),
 				StringUtils.isNotBlank(el.valueOf("@isInclusive")));
 	}
 
-	protected AbstractCritterTileInteraction parseInteraction(Element el,
+	protected AbstractCritterTileInteraction parseEffect(Element el,
 			Critter critter) {
 		AbstractCritterTileInteraction ret = null;
+
+		TileEffectType effectType = TileEffectType.valueOf(el.valueOf("@type"));
+
+		Stat affectedStat = Critter.Stat.valueOf(el.valueOf("@affectedStat"));
+		int effectRange = Integer.valueOf(el.valueOf("@effectRange"));
+		int modifier = Integer.valueOf(el.valueOf("@modifier"));
+		boolean positive = StringUtils.isNotBlank(el.valueOf("@isPositive"));
+
+		switch (effectType) {
+		case CONSTANT_DRIVEN_TARGET_STAT_CHANGE: {
+			int drivingValue = Integer.valueOf("@drivingValue");
+			ret = new ConstantDrivenTargetStatChangeInteraction(drivingValue,
+					affectedStat, effectRange, modifier, positive, eventContext);
+		}
+		default: {
+			Stat drivingStat = Critter.Stat.valueOf(el.valueOf("@drivingStat"));
+			ret = new SourceStatDrivenTargetStatChangeInteraction(drivingStat,
+					affectedStat, effectRange, modifier, positive, eventContext);
+			break;
+		}
+		}
+		ret.setSource(critter);
+		return ret;
+	}
+
+	protected ITileFilter parseFilter(Element el) {
+		ITileFilter ret = null;
+
+		TileFilterType filterType = TileFilterType.valueOf(el.valueOf("@type"));
+
+		switch (filterType) {
+		case OCCUPIED_BY_CRITTER: {
+			ret = new ITileFilter() {
+
+				@Override
+				public boolean apply(Tile t) {
+					return t != null
+							&& t.isOccupied()
+							&& Critter.class.isAssignableFrom(t.getOccupant()
+									.getClass());
+				}
+			};
+			break;
+		}
+		default: {
+			ret = AbstractFilteredTileCollector.NO_FILTER;
+			break;
+		}
+		}
+
 		return ret;
 	}
 
 	protected AbstractDecayingTileCollector getAbstractDecayingTileCollector(
-			final int costThreshold, final int tileCost,
-			final boolean isInclusive) {
-		return new AbstractDecayingTileCollector() {
+			final ITileFilter filter, final int costThreshold,
+			final int tileCost, final boolean isInclusive) {
+		return new AbstractDecayingTileCollector(filter) {
 
 			@Override
 			protected int getCostThreshold() {
@@ -106,26 +164,5 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 			}
 
 		};
-	}
-
-	/**
-	 * Produces a Predicate depending on which PredicateType was passed in
-	 * 
-	 * @param predicateType
-	 * @return
-	 */
-	protected IPredicate<Tile> parsePredicate(Element el) {
-		IPredicate<Tile> ret = new IPredicate<Tile>() {
-
-			@Override
-			public boolean apply(Tile t) {
-				return t != null
-						&& t.isOccupied()
-						&& Critter.class.isAssignableFrom(t.getOccupant()
-								.getClass());
-			}
-
-		};
-		return ret;
 	}
 }

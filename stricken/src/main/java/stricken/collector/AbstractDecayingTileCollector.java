@@ -18,10 +18,15 @@ import stricken.board.Tile;
  * @author ofuangka
  * 
  */
-public abstract class AbstractDecayingTileCollector implements ITileCollector {
+public abstract class AbstractDecayingTileCollector extends
+		AbstractFilteredTileCollector {
+
+	public AbstractDecayingTileCollector(ITileFilter filter) {
+		super(filter);
+	}
 
 	@Override
-	public List<Tile> collect(Tile targetTile) {
+	public List<Tile> _collect(Tile targetTile) {
 		Set<TileCostTracker> open = new HashSet<TileCostTracker>();
 		Set<Tile> validTiles = new HashSet<Tile>();
 		int costThreshold = getCostThreshold();

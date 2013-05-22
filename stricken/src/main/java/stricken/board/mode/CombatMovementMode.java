@@ -6,6 +6,7 @@ import stricken.Stricken;
 import stricken.board.Board;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
+import stricken.collector.AbstractFilteredTileCollector;
 import stricken.collector.CombatMovementTileCollector;
 import stricken.common.Direction;
 import stricken.event.IEventContext;
@@ -44,8 +45,8 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	}
 
 	private List<Tile> getMovementRange(Critter critter) {
-		CombatMovementTileCollector tileCollector = new CombatMovementTileCollector();
-		tileCollector.setCritter(critter);
+		CombatMovementTileCollector tileCollector = new CombatMovementTileCollector(
+				AbstractFilteredTileCollector.NO_FILTER, critter);
 		return tileCollector.collect(board.getTile(origX, origY));
 	}
 

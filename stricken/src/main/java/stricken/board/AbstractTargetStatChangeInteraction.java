@@ -25,10 +25,11 @@ public abstract class AbstractTargetStatChangeInteraction extends
 	private final Stat affectedStat;
 	private final int effectRange;
 	private final int modifier;
+	private final boolean positive;
 	private IEventContext eventContext;
 
 	/**
-	 * The attack damage is calculated as follows: driverValue + random(0,
+	 * The attack damage is calculated a follows: driverValue + random(0,
 	 * damageRange) + modifier
 	 * 
 	 * @param driver
@@ -41,10 +42,11 @@ public abstract class AbstractTargetStatChangeInteraction extends
 	 * @param eventContext
 	 */
 	public AbstractTargetStatChangeInteraction(Stat affects, int effectRange,
-			int modifier, IEventContext eventContext) {
+			int modifier, boolean positive, IEventContext eventContext) {
 		this.affectedStat = affects;
 		this.effectRange = effectRange;
 		this.modifier = modifier;
+		this.positive = positive;
 		this.eventContext = eventContext;
 	}
 
@@ -68,6 +70,10 @@ public abstract class AbstractTargetStatChangeInteraction extends
 
 				int netEffect = getStartingValue(targetTile) + modifier
 						+ random.nextInt(effectRange);
+
+				if (!positive) {
+					netEffect *= -1;
+				}
 
 				int newValue = target.getStat(affectedStat) + netEffect;
 

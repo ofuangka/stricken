@@ -1,17 +1,15 @@
 package stricken.board.mode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import stricken.Stricken;
-import stricken.board.Board;
 import stricken.board.AbstractCritterTileInteraction;
+import stricken.board.Board;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
 import stricken.board.critter.CritterAction;
-import stricken.collector.IPredicate;
 import stricken.collector.ITileCollector;
 import stricken.event.IEventContext;
 
@@ -22,7 +20,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 	private static final Logger log = Logger.getLogger(TargetingMode.class);
 
 	private List<Tile> actualRange;
-	private Tile targetingSeedTile;
+	private Tile targetTile;
 	private int currentIndex;
 	private final CritterAction action;
 
@@ -40,14 +38,14 @@ public class TargetingMode extends AbstractBoardControlMode {
 
 		// get the different range collectors
 		Critter controllingCritter = board.getControllingCritter();
-		targetingSeedTile = board.getTile(controllingCritter.getX(),
+		targetTile = board.getTile(controllingCritter.getX(),
 				controllingCritter.getY());
 		List<Tile> targetingRange = action.getTargetingRange().collect(
-				targetingSeedTile);
+				targetTile);
 		if (!targetingRange.isEmpty()) {
 			board.setTargetingRange(targetingRange);
 		}
-		actualRange = filter(targetingRange, action.getPredicate());
+		actualRange = action.getActualRange().collect(targetTile);
 
 		// if anything is in targeting range, render the crosshair on the first
 		// potential target
@@ -99,16 +97,6 @@ public class TargetingMode extends AbstractBoardControlMode {
 		board.clearCrosshair();
 		board.popMode();
 		eventContext.fire(Stricken.Event.POP_IN_GAME_MENU);
-	}
-
-	public List<Tile> filter(List<Tile> tiles, IPredicate<Tile> predicate) {
-		List<Tile> ret = new ArrayList<Tile>();
-		for (Tile tile : tiles) {
-			if (predicate.apply(tile)) {
-				ret.add(tile);
-			}
-		}
-		return ret;
 	}
 
 	@Override

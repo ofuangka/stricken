@@ -7,12 +7,12 @@ import stricken.event.IEventContext;
 public class SourceStatDrivenTargetStatChangeInteraction extends
 		AbstractTargetStatChangeInteraction {
 
-	private Critter.Stat drivingStat;
+	private final Critter.Stat drivingStat;
 
 	public SourceStatDrivenTargetStatChangeInteraction(Stat drivingStat,
-			Stat affects, int effectRange, int modifier,
+			Stat affects, int effectRange, int modifier, boolean positive,
 			IEventContext eventContext) {
-		super(affects, effectRange, modifier, eventContext);
+		super(affects, effectRange, modifier, positive, eventContext);
 		this.drivingStat = drivingStat;
 
 	}

@@ -9,9 +9,9 @@ public class ConstantDrivenTargetStatChangeInteraction extends
 	private final int drivingValue;
 
 	public ConstantDrivenTargetStatChangeInteraction(int drivingValue,
-			Stat affects, int effectRange, int modifier,
+			Stat affects, int effectRange, int modifier, boolean positive,
 			IEventContext eventContext) {
-		super(affects, effectRange, modifier, eventContext);
+		super(affects, effectRange, modifier, positive, eventContext);
 		this.drivingValue = drivingValue;
 	}
 

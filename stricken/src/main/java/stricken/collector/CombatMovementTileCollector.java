@@ -8,6 +8,11 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 
 	private Critter critter;
 
+	public CombatMovementTileCollector(ITileFilter filter, Critter critter) {
+		super(filter);
+		this.critter = critter;
+	}
+
 	@Override
 	protected int getCostThreshold() {
 		return critter.getStat(Stat.SPEED);
@@ -26,10 +31,6 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 	protected boolean isTileValid(Tile tile) {
 		return tile != null
 				&& (!tile.isOccupied() || tile.getOccupant() == critter);
-	}
-
-	public void setCritter(Critter critter) {
-		this.critter = critter;
 	}
 
 }

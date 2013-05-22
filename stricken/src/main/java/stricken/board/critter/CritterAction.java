@@ -1,8 +1,6 @@
 package stricken.board.critter;
 
 import stricken.board.AbstractCritterTileInteraction;
-import stricken.board.Tile;
-import stricken.collector.IPredicate;
 import stricken.collector.ITileCollector;
 
 /**
@@ -14,17 +12,17 @@ import stricken.collector.ITileCollector;
  */
 public class CritterAction {
 	private final String name;
-	private final ITileCollector targetableRange;
-	private final IPredicate<Tile> predicate;
+	private final ITileCollector targetingRange;
+	private final ITileCollector actualRange;
 	private final ITileCollector areaOfEffect;
 	private final AbstractCritterTileInteraction tileEffect;
 
-	public CritterAction(String name, ITileCollector targetableRange,
-			IPredicate<Tile> predicate, ITileCollector areaOfEffect,
+	public CritterAction(String name, ITileCollector targetingRange,
+			ITileCollector actualRange, ITileCollector areaOfEffect,
 			AbstractCritterTileInteraction tileEffect) {
 		this.name = name;
-		this.targetableRange = targetableRange;
-		this.predicate = predicate;
+		this.targetingRange = targetingRange;
+		this.actualRange = actualRange;
 		this.areaOfEffect = areaOfEffect;
 		this.tileEffect = tileEffect;
 	}
@@ -37,12 +35,12 @@ public class CritterAction {
 		return name;
 	}
 
-	public IPredicate<Tile> getPredicate() {
-		return predicate;
+	public ITileCollector getTargetingRange() {
+		return targetingRange;
 	}
 
-	public ITileCollector getTargetingRange() {
-		return targetableRange;
+	public ITileCollector getActualRange() {
+		return actualRange;
 	}
 
 	public AbstractCritterTileInteraction getTileEffect() {
