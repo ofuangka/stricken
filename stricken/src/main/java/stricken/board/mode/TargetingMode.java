@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import stricken.Stricken;
 import stricken.board.Board;
-import stricken.board.ITileEffect;
+import stricken.board.AbstractCritterTileInteraction;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
 import stricken.board.critter.CritterAction;
@@ -75,17 +75,15 @@ public class TargetingMode extends AbstractBoardControlMode {
 
 		if (currentIndex != NO_SELECTABLE_TILE_INDEX) {
 
-			// get the tile collector and tile interaction for the current
-			// controlling critter
-			Critter controllingCritter = board.getControllingCritter();
+			// get the tile collector and tile interaction
 
 			ITileCollector aoe = action.getAreaOfEffect();
-			ITileEffect tileEffect = action.getTileEffect();
+			AbstractCritterTileInteraction tileEffect = action.getTileEffect();
 
 			List<Tile> affectedTiles = aoe.collect(actualRange
 					.get(currentIndex));
 			for (Tile tile : affectedTiles) {
-				tileEffect.execute(controllingCritter, tile);
+				tileEffect.interact(tile);
 			}
 			log.debug("Valid tile selection, ending turn");
 			eventContext.fire(Stricken.Event.END_OF_TURN);

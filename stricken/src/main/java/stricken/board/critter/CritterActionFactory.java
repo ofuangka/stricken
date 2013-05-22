@@ -8,8 +8,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.springframework.core.io.Resource;
 
-import stricken.board.ITileEffect;
-import stricken.board.StatDrivenAttackTileEffect;
+import stricken.board.AbstractCritterTileInteraction;
+import stricken.board.AbstractTargetStatChangeInteraction;
 import stricken.board.Tile;
 import stricken.collector.AbstractDecayingTileCollector;
 import stricken.collector.IPredicate;
@@ -45,40 +45,39 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		// get the main element representing the ID provided
 		String elXpath = "/critterActions/critterAction[@id='" + id + "']";
 		log.debug("Requesting critter using XPath: '" + elXpath + "'...");
-		Element el = (Element) getDocument().selectSingleNode(elXpath);
+		return parseCritterAction(
+				(Element) getDocument().selectSingleNode(elXpath), critter);
+	}
 
-		// get the metadata inside the element
-		Element targetableMetadata = (Element) el
-				.selectSingleNode("collector[@type='targetable']");
-		Element aoeMetadata = (Element) el
-				.selectSingleNode("collector[@type='aoe']");
-		Element attackMetadata = (Element) el.selectSingleNode("attack");
+	protected CritterAction parseCritterAction(Element el, Critter critter) {
 
-		// create the critterAction
-		String statName = attackMetadata.valueOf("@stat");
-		ITileCollector targetableRange = getAbstractDecayingTileCollector(
-				Integer.valueOf(targetableMetadata.valueOf("@costThreshold")),
-				Integer.valueOf(targetableMetadata.valueOf("@tileCost")),
-				StringUtils.isNotBlank(targetableMetadata
-						.valueOf("@isInclusive")));
+		ITileCollector targetingRange = parseTileCollector((Element) el
+				.selectSingleNode("tileCollector[@type='TARGETING_RANGE']"));
 
-		ITileCollector aoe = getAbstractDecayingTileCollector(
-				Integer.valueOf(aoeMetadata.valueOf("@costThreshold")),
-				Integer.valueOf(aoeMetadata.valueOf("@tileCost")),
-				StringUtils.isNotBlank(aoeMetadata.valueOf("@isInclusive")));
+		ITileCollector aoe = parseTileCollector((Element) el
+				.selectSingleNode("tileCollector[@type='AOE']"));
 
-		int lookupDamageRange = critter.getStat(Critter.Stat.DAMAGE_RANGE);
-		int lookupModifier = critter.getStat(Critter.Stat.DAMAGE_MODIFIER);
+		AbstractCritterTileInteraction effect = parseInteraction(
+				(Element) el.selectSingleNode("interaction"), critter);
 
-		ITileEffect effect = new StatDrivenAttackTileEffect(
-				Critter.Stat.valueOf(statName.toUpperCase()),
-				lookupDamageRange, lookupModifier, eventContext);
+		IPredicate<Tile> predicate = parsePredicate((Element) el
+				.selectSingleNode("predicate"));
 
-		IPredicate<Tile> predicate = getPredicate(targetableMetadata
-				.valueOf("@predicateType"));
-
-		return new CritterAction(el.valueOf("@name"), targetableRange,
+		return new CritterAction(el.valueOf("@name"), targetingRange,
 				predicate, aoe, effect);
+	}
+
+	protected ITileCollector parseTileCollector(Element el) {
+		return getAbstractDecayingTileCollector(
+				Integer.valueOf(el.valueOf("@costThreshold")),
+				Integer.valueOf(el.valueOf("@tileCost")),
+				StringUtils.isNotBlank(el.valueOf("@isInclusive")));
+	}
+
+	protected AbstractCritterTileInteraction parseInteraction(Element el,
+			Critter critter) {
+		AbstractCritterTileInteraction ret = null;
+		return ret;
 	}
 
 	protected AbstractDecayingTileCollector getAbstractDecayingTileCollector(
@@ -115,7 +114,7 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 	 * @param predicateType
 	 * @return
 	 */
-	protected IPredicate<Tile> getPredicate(String predicateTypeName) {
+	protected IPredicate<Tile> parsePredicate(Element el) {
 		IPredicate<Tile> ret = new IPredicate<Tile>() {
 
 			@Override

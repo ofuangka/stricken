@@ -2,6 +2,8 @@ package stricken.board;
 
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import stricken.Stricken;
 import stricken.board.critter.Critter;
 import stricken.board.critter.Critter.Stat;
@@ -14,10 +16,14 @@ import stricken.event.IEventContext;
  * @author ofuangka
  * 
  */
-public class StatDrivenAttackTileEffect implements ITileEffect {
+public abstract class AbstractTargetStatChangeInteraction extends
+		AbstractCritterTileInteraction {
 
-	private final Stat driver;
-	private final int damageRange;
+	private static final Logger log = Logger
+			.getLogger(AbstractTargetStatChangeInteraction.class);
+
+	private final Stat affectedStat;
+	private final int effectRange;
 	private final int modifier;
 	private IEventContext eventContext;
 
@@ -26,16 +32,18 @@ public class StatDrivenAttackTileEffect implements ITileEffect {
 	 * damageRange) + modifier
 	 * 
 	 * @param driver
-	 * @param damageRange
+	 * @param affects
+	 *            - The target stat to affect
+	 * @param effectRange
 	 *            - An int representing the range of possible damage values
 	 * @param modifier
 	 *            - An int that is always added to the resulting calculation
 	 * @param eventContext
 	 */
-	public StatDrivenAttackTileEffect(Stat driver, int damageRange,
+	public AbstractTargetStatChangeInteraction(Stat affects, int effectRange,
 			int modifier, IEventContext eventContext) {
-		this.driver = driver;
-		this.damageRange = damageRange;
+		this.affectedStat = affects;
+		this.effectRange = effectRange;
 		this.modifier = modifier;
 		this.eventContext = eventContext;
 	}
@@ -46,7 +54,7 @@ public class StatDrivenAttackTileEffect implements ITileEffect {
 	 * HP. If the target has died, it fires a CRITTER_DEATH event
 	 */
 	@Override
-	public void execute(Critter source, Tile targetTile) {
+	public void interact(Tile targetTile) {
 
 		if (targetTile.isOccupied()) {
 
@@ -58,17 +66,37 @@ public class StatDrivenAttackTileEffect implements ITileEffect {
 
 				Random random = eventContext.getRandom();
 
-				int netDamage = source.getStat(driver) + modifier
-						+ random.nextInt(damageRange);
+				int netEffect = getStartingValue(targetTile) + modifier
+						+ random.nextInt(effectRange);
 
-				target.setStat(Stat.HP, target.getStat(Stat.HP) - netDamage);
+				int newValue = target.getStat(affectedStat) + netEffect;
 
-				if (target.getStat(Stat.HP) <= 0) {
-					eventContext.fire(Stricken.Event.CRITTER_DEATH, target);
+				int maxValue = -1;
+
+				if (Critter.Stat.HP.equals(affectedStat)) {
+					maxValue = target.getStat(Critter.Stat.MAXHP);
 				}
 
+				if (maxValue != -1 && maxValue < newValue) {
+					newValue = maxValue;
+				}
+
+				log.debug("Target '" + target + "'." + affectedStat + " = "
+						+ newValue);
+
+				target.setStat(affectedStat, newValue);
+
+				if (target.getStat(Critter.Stat.HP) <= 0) {
+					eventContext.fire(Stricken.Event.CRITTER_DEATH, target);
+				}
+			} else {
+				log.debug("Occupant is not a Critter");
 			}
+		} else {
+			log.debug("No occupant in Tile " + targetTile);
 		}
 	}
+
+	public abstract int getStartingValue(Tile targetTile);
 
 }
