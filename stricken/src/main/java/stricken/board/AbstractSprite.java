@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  */
 public abstract class AbstractSprite {
 
-	protected final Dimension spriteSize;
+	private final Dimension spriteSize;
 
 	public AbstractSprite(Dimension spriteSize) {
 		this.spriteSize = spriteSize;

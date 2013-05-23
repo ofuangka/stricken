@@ -1,21 +1,21 @@
 package stricken.ui;
 
 public interface IKeySink {
-	public void backspace();
+	void backspace();
 
-	public void down();
+	void down();
 
-	public void enter();
+	void enter();
 
-	public void esc();
+	void esc();
 
-	public void left();
+	void left();
 
-	public void right();
+	void right();
 
-	public void space();
+	void space();
 
-	public void up();
+	void up();
 
-	public void x();
+	void x();
 }

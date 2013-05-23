@@ -1,7 +1,7 @@
 package stricken.board.mode;
 
-import stricken.Stricken;
 import stricken.board.Board;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 import stricken.ui.IKeySink;
 
@@ -14,8 +14,8 @@ import stricken.ui.IKeySink;
  */
 public abstract class AbstractBoardControlMode implements IKeySink {
 
-	protected Board board;
-	protected IEventContext eventContext;
+	private Board board;
+	private IEventContext eventContext;
 
 	public AbstractBoardControlMode(Board board, IEventContext eventContext) {
 		this.board = board;
@@ -36,7 +36,7 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 
 	@Override
 	public void esc() {
-		eventContext.fire(Stricken.Event.SHOW_SYSTEM_MENU);
+		eventContext.fire(Event.SHOW_SYSTEM_MENU);
 	}
 
 	/**
@@ -61,6 +61,15 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	@Override
 	public void x() {
 
+	}
+	
+	public Board getBoard() {
+		return board;
+		
+	}
+	
+	public IEventContext getEventContext() {
+		return eventContext;
 	}
 
 }

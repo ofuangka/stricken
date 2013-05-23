@@ -11,8 +11,8 @@ public class AdventureMode extends AbstractBoardControlMode {
 	}
 
 	public void configureTileState() {
-		board.clearDisabledTiles();
-		board.clearCrosshair();
+		getBoard().clearDisabledTiles();
+		getBoard().clearCrosshair();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class AdventureMode extends AbstractBoardControlMode {
 	}
 
 	public void space() {
-		board.nextTurn();
+		getBoard().nextTurn();
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class AdventureMode extends AbstractBoardControlMode {
 	 * @param dir
 	 */
 	private void tryMove(Direction dir) {
-		if (board.tryMove(dir)) {
-			board.nextTurn();
+		if (getBoard().tryMove(dir)) {
+			getBoard().nextTurn();
 		}
 	}
 

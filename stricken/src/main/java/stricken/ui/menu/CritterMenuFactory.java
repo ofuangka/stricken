@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 
-import stricken.Stricken;
 import stricken.board.critter.Critter;
 import stricken.board.critter.CritterAction;
 import stricken.board.critter.CritterActionFactory;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 
 public class CritterMenuFactory {
@@ -22,7 +22,7 @@ public class CritterMenuFactory {
 
 		@Override
 		public void execute() {
-			eventContext.fire(Stricken.Event.POP_IN_GAME_MENU);
+			eventContext.fire(Event.POP_IN_GAME_MENU);
 		}
 	}
 
@@ -47,7 +47,7 @@ public class CritterMenuFactory {
 		CritterAction attack = critterActionFactory.get(critter.getAttack(),
 				critter);
 		AbstractMenuItem attackMenuItem = new EventMenuItem(eventContext,
-				ATTACK_LABEL, Stricken.Event.CRITTER_ACTION, attack);
+				ATTACK_LABEL, Event.CRITTER_ACTION, attack);
 
 		AbstractSubMenuItem talentSubMenuItem = new AbstractSubMenuItem(
 				eventContext, TALENT_LABEL) {
@@ -79,7 +79,7 @@ public class CritterMenuFactory {
 
 			@Override
 			public void execute() {
-				eventContext.fire(Stricken.Event.END_OF_TURN);
+				eventContext.fire(Event.END_OF_TURN);
 			}
 
 		});
@@ -100,7 +100,7 @@ public class CritterMenuFactory {
 				CritterAction critterAction = critterActionFactory.get(item,
 						critter);
 				menuItems.add(new EventMenuItem(eventContext, critterAction
-						.getName(), Stricken.Event.CRITTER_ACTION,
+						.getName(), Event.CRITTER_ACTION,
 						critterAction));
 			}
 		}
@@ -122,7 +122,7 @@ public class CritterMenuFactory {
 				CritterAction critterAction = critterActionFactory.get(talent,
 						critter);
 				menuItems.add(new EventMenuItem(eventContext, critterAction
-						.getName(), Stricken.Event.CRITTER_ACTION,
+						.getName(), Event.CRITTER_ACTION,
 						critterAction));
 			}
 		}

@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import stricken.Stricken;
-import stricken.board.AbstractCritterTileInteraction;
+import stricken.board.AbstractEffect;
 import stricken.board.Board;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
 import stricken.board.critter.CritterAction;
 import stricken.collector.ITileCollector;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 
 public class TargetingMode extends AbstractBoardControlMode {
@@ -20,7 +20,6 @@ public class TargetingMode extends AbstractBoardControlMode {
 	private static final Logger log = Logger.getLogger(TargetingMode.class);
 
 	private List<Tile> actualRange;
-	private Tile targetTile;
 	private int currentIndex;
 	private final CritterAction action;
 
@@ -37,13 +36,13 @@ public class TargetingMode extends AbstractBoardControlMode {
 		currentIndex = NO_SELECTABLE_TILE_INDEX;
 
 		// get the different range collectors
-		Critter controllingCritter = board.getControllingCritter();
-		targetTile = board.getTile(controllingCritter.getX(),
+		Critter controllingCritter = getBoard().getControllingCritter();
+		Tile targetTile = getBoard().getTile(controllingCritter.getX(),
 				controllingCritter.getY());
 		List<Tile> targetingRange = action.getTargetingRange().collect(
 				targetTile);
 		if (!targetingRange.isEmpty()) {
-			board.setTargetingRange(targetingRange);
+			getBoard().setTargetingRange(targetingRange);
 		}
 		actualRange = action.getActualRange().collect(targetTile);
 
@@ -51,11 +50,11 @@ public class TargetingMode extends AbstractBoardControlMode {
 		// potential target
 		if (!actualRange.isEmpty()) {
 			currentIndex = 0;
-			board.setEnabledTiles(actualRange);
+			getBoard().setEnabledTiles(actualRange);
 			renderCrosshair();
 
 		} else { // otherwise disable all tiles
-			board.disableAllTiles();
+			getBoard().disableAllTiles();
 
 			// error handling
 			log.warn("No selectable tiles");
@@ -76,7 +75,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 			// get the tile collector and tile interaction
 
 			ITileCollector aoe = action.getAreaOfEffect();
-			AbstractCritterTileInteraction tileEffect = action.getTileEffect();
+			AbstractEffect tileEffect = action.getTileEffect();
 
 			List<Tile> affectedTiles = aoe.collect(actualRange
 					.get(currentIndex));
@@ -84,7 +83,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 				tileEffect.interact(tile);
 			}
 			log.debug("Valid tile selection, ending turn");
-			eventContext.fire(Stricken.Event.END_OF_TURN);
+			getEventContext().fire(Event.END_OF_TURN);
 		} else {
 			log.warn("Invalid tile selection, please try again");
 		}
@@ -92,17 +91,17 @@ public class TargetingMode extends AbstractBoardControlMode {
 
 	@Override
 	public void esc() {
-		board.clearDisabledTiles();
-		board.clearTargetingRange();
-		board.clearCrosshair();
-		board.popMode();
-		eventContext.fire(Stricken.Event.POP_IN_GAME_MENU);
+		getBoard().clearDisabledTiles();
+		getBoard().clearTargetingRange();
+		getBoard().clearCrosshair();
+		getBoard().popMode();
+		getEventContext().fire(Event.POP_IN_GAME_MENU);
 	}
 
 	@Override
 	public void left() {
 		if (currentIndex != NO_SELECTABLE_TILE_INDEX) {
-			board.clearCrosshair();
+			getBoard().clearCrosshair();
 			actualRange.get(currentIndex).setTargeted(false);
 			currentIndex = (currentIndex == 0) ? actualRange.size() - 1
 					: currentIndex - 1;
@@ -113,14 +112,14 @@ public class TargetingMode extends AbstractBoardControlMode {
 	protected void renderCrosshair() {
 		ITileCollector aoe = action.getAreaOfEffect();
 		List<Tile> crosshairTiles = aoe.collect(actualRange.get(currentIndex));
-		board.renderCrosshair(crosshairTiles);
+		getBoard().renderCrosshair(crosshairTiles);
 
 	}
 
 	@Override
 	public void right() {
 		if (currentIndex != NO_SELECTABLE_TILE_INDEX) {
-			board.clearCrosshair();
+			getBoard().clearCrosshair();
 			actualRange.get(currentIndex).setTargeted(false);
 			currentIndex = (currentIndex == actualRange.size() - 1) ? 0
 					: currentIndex + 1;

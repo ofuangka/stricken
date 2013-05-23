@@ -38,7 +38,7 @@ public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 			for (int i = 0; i < layers.size(); i++) {
 				ILayer layer = layers.get(i);
 				if (JComponent.class.isAssignableFrom(layer.getClass())) {
-					add((JComponent) layer, new Integer(i + 1));
+					add((JComponent) layer, Integer.valueOf(i + 1));
 				} else {
 					throw new IllegalArgumentException(
 							"Expected ILayer to be assignable to JComponent");
@@ -48,7 +48,7 @@ public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 			this.layers = layers;
 
 		} else {
-			throw new NullPointerException(
+			throw new IllegalArgumentException(
 					"Required constructor arg cannot be null");
 		}
 	}

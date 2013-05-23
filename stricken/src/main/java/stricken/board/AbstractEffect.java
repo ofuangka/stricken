@@ -2,7 +2,7 @@ package stricken.board;
 
 import stricken.board.critter.Critter;
 
-public abstract class AbstractCritterTileInteraction {
+public abstract class AbstractEffect {
 
 	private Critter source;
 

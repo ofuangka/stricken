@@ -3,9 +3,8 @@ package stricken.ui.menu;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
-import stricken.Stricken;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 
 public abstract class AbstractSubMenuItem extends AbstractMenuItem {
@@ -18,7 +17,7 @@ public abstract class AbstractSubMenuItem extends AbstractMenuItem {
 
 	@Override
 	public void execute() {
-		eventContext.fire(Stricken.Event.PUSH_IN_GAME_SUBMENU, getSubMenu());
+		getEventContext().fire(Event.PUSH_IN_GAME_SUBMENU, getSubMenu());
 	}
 
 	public abstract Menu getSubMenu();

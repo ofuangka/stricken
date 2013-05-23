@@ -4,9 +4,9 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import stricken.Stricken;
 import stricken.board.critter.Critter;
 import stricken.board.critter.Critter.Stat;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 
 /**
@@ -16,11 +16,11 @@ import stricken.event.IEventContext;
  * @author ofuangka
  * 
  */
-public abstract class AbstractTargetStatChangeInteraction extends
-		AbstractCritterTileInteraction {
+public abstract class AbstractStatEffect extends
+		AbstractEffect {
 
 	private static final Logger log = Logger
-			.getLogger(AbstractTargetStatChangeInteraction.class);
+			.getLogger(AbstractStatEffect.class);
 
 	private final Stat affectedStat;
 	private final int effectRange;
@@ -33,7 +33,7 @@ public abstract class AbstractTargetStatChangeInteraction extends
 	 * damageRange) + modifier
 	 * 
 	 * @param driver
-	 * @param affects
+	 * @param affectedStat
 	 *            - The target stat to affect
 	 * @param effectRange
 	 *            - An int representing the range of possible damage values
@@ -41,9 +41,9 @@ public abstract class AbstractTargetStatChangeInteraction extends
 	 *            - An int that is always added to the resulting calculation
 	 * @param eventContext
 	 */
-	public AbstractTargetStatChangeInteraction(Stat affects, int effectRange,
+	public AbstractStatEffect(Stat affectedStat, int effectRange,
 			int modifier, boolean positive, IEventContext eventContext) {
-		this.affectedStat = affects;
+		this.affectedStat = affectedStat;
 		this.effectRange = effectRange;
 		this.modifier = modifier;
 		this.positive = positive;
@@ -93,7 +93,7 @@ public abstract class AbstractTargetStatChangeInteraction extends
 				target.setStat(affectedStat, newValue);
 
 				if (target.getStat(Critter.Stat.HP) <= 0) {
-					eventContext.fire(Stricken.Event.CRITTER_DEATH, target);
+					eventContext.fire(Event.CRITTER_DEATH, target);
 				}
 			} else {
 				log.debug("Occupant is not a Critter");

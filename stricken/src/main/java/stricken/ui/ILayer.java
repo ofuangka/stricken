@@ -3,11 +3,11 @@ package stricken.ui;
 import java.awt.Dimension;
 
 public interface ILayer extends IKeySink {
-	public boolean isEmpty();
+	boolean isEmpty();
 
-	public boolean isVisible();
+	boolean isVisible();
 
-	public void setBounds(int x1, int y1, int x2, int y2);
+	void setBounds(int x1, int y1, int x2, int y2);
 	
-	public void setPreferredSize(Dimension preferredSize);
+	void setPreferredSize(Dimension preferredSize);
 }

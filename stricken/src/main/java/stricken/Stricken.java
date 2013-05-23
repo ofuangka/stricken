@@ -26,6 +26,7 @@ import stricken.board.critter.CritterAction;
 import stricken.board.mode.TargetingMode;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
+import stricken.event.Event;
 import stricken.event.IEvent;
 import stricken.event.IEventHandler;
 import stricken.ui.GameScreen;
@@ -35,10 +36,6 @@ import stricken.ui.menu.CritterMenuFactory;
 import stricken.ui.menu.Menu;
 
 public class Stricken extends AbstractEventContext implements IEventHandler {
-
-	public enum Event implements IEvent {
-		END_OF_TURN, SHOW_COMBAT_ACTION_MENU, POP_IN_GAME_MENU, CRITTER_ACTION, PUSH_IN_GAME_SUBMENU, SHOW_MAIN_MENU, RETURN_TO_GAME, SHOW_SYSTEM_MENU, CRITTER_DEATH, START_GAME, EXIT, LOSE_CONDITION
-	}
 
 	/* constants */
 	private static final String APP_CTX_FILE_LOCATION = "spring-context.xml";

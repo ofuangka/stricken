@@ -3,15 +3,15 @@ package stricken.board;
 import stricken.board.critter.Critter.Stat;
 import stricken.event.IEventContext;
 
-public class ConstantDrivenTargetStatChangeInteraction extends
-		AbstractTargetStatChangeInteraction {
+public class ConstantStatEffect extends
+		AbstractStatEffect {
 
 	private final int drivingValue;
 
-	public ConstantDrivenTargetStatChangeInteraction(int drivingValue,
-			Stat affects, int effectRange, int modifier, boolean positive,
+	public ConstantStatEffect(int drivingValue,
+			Stat affectedStat, int effectRange, int modifier, boolean positive,
 			IEventContext eventContext) {
-		super(affects, effectRange, modifier, positive, eventContext);
+		super(affectedStat, effectRange, modifier, positive, eventContext);
 		this.drivingValue = drivingValue;
 	}
 

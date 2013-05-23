@@ -1,6 +1,6 @@
 package stricken.board.critter;
 
-import stricken.board.AbstractCritterTileInteraction;
+import stricken.board.AbstractEffect;
 import stricken.collector.ITileCollector;
 
 /**
@@ -15,11 +15,11 @@ public class CritterAction {
 	private final ITileCollector targetingRange;
 	private final ITileCollector actualRange;
 	private final ITileCollector areaOfEffect;
-	private final AbstractCritterTileInteraction tileEffect;
+	private final AbstractEffect tileEffect;
 
 	public CritterAction(String name, ITileCollector targetingRange,
 			ITileCollector actualRange, ITileCollector areaOfEffect,
-			AbstractCritterTileInteraction tileEffect) {
+			AbstractEffect tileEffect) {
 		this.name = name;
 		this.targetingRange = targetingRange;
 		this.actualRange = actualRange;
@@ -43,7 +43,7 @@ public class CritterAction {
 		return actualRange;
 	}
 
-	public AbstractCritterTileInteraction getTileEffect() {
+	public AbstractEffect getTileEffect() {
 		return tileEffect;
 	}
 }

@@ -1,6 +1,6 @@
 package stricken.common;
 
-public class StrickenConstants {
+public final class StrickenConstants {
 	public static final String UP = "UP";
 	public static final String RIGHT = "RIGHT";
 	public static final String DOWN = "DOWN";
@@ -10,5 +10,7 @@ public class StrickenConstants {
 	public static final String SPACE = "SPACE";
 	public static final String BACKSPACE = "BACK_SPACE";
 	public static final String X = "X";
+	
+	private StrickenConstants() {}
 
 }

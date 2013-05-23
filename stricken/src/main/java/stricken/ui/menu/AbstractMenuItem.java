@@ -17,7 +17,7 @@ public abstract class AbstractMenuItem extends JLabel {
 	public static final int PADDING_VERTICAL = 5;
 	public static final int PADDING_HORIZONTAL = 10;
 
-	protected IEventContext eventContext;
+	private IEventContext eventContext;
 
 	public AbstractMenuItem(IEventContext eventContext, String label) {
 		super(label);
@@ -37,6 +37,10 @@ public abstract class AbstractMenuItem extends JLabel {
 
 	public void uiSelect() {
 		setBackground(SELECTED);
+	}
+	
+	public IEventContext getEventContext() {
+		return eventContext;
 	}
 
 }

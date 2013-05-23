@@ -13,5 +13,5 @@ import stricken.board.Tile;
  * 
  */
 public interface ITileCollector {
-	public List<Tile> collect(Tile targetTile);
+	List<Tile> collect(Tile targetTile);
 }

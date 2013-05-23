@@ -37,14 +37,14 @@
 					<constructor-arg ref="stricken" />
 					<constructor-arg value="Start game" />
 					<constructor-arg>
-						<util:constant static-field="stricken.Stricken.Event.START_GAME" />
+						<util:constant static-field="stricken.event.Event.START_GAME" />
 					</constructor-arg>
 				</bean>
 				<bean class="stricken.ui.menu.EventMenuItem">
 					<constructor-arg ref="stricken" />
 					<constructor-arg value="Exit" />
 					<constructor-arg>
-						<util:constant static-field="stricken.Stricken.Event.EXIT" />
+						<util:constant static-field="stricken.event.Event.EXIT" />
 					</constructor-arg>
 				</bean>
 			</list>
@@ -59,14 +59,14 @@
 					<constructor-arg ref="stricken" />
 					<constructor-arg value="Return to game" />
 					<constructor-arg>
-						<util:constant static-field="stricken.Stricken.Event.RETURN_TO_GAME" />
+						<util:constant static-field="stricken.event.Event.RETURN_TO_GAME" />
 					</constructor-arg>
 				</bean>
 				<bean class="stricken.ui.menu.EventMenuItem">
 					<constructor-arg ref="stricken" />
 					<constructor-arg value="Main menu" />
 					<constructor-arg>
-						<util:constant static-field="stricken.Stricken.Event.SHOW_MAIN_MENU" />
+						<util:constant static-field="stricken.event.Event.SHOW_MAIN_MENU" />
 					</constructor-arg>
 				</bean>
 			</list>
@@ -81,7 +81,7 @@
 					<constructor-arg ref="stricken" />
 					<constructor-arg value="You died" />
 					<constructor-arg>
-						<util:constant static-field="stricken.Stricken.Event.SHOW_MAIN_MENU" />
+						<util:constant static-field="stricken.event.Event.SHOW_MAIN_MENU" />
 					</constructor-arg>
 				</bean>
 			</list>

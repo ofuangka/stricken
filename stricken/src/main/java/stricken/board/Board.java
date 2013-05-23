@@ -13,12 +13,12 @@ import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
-import stricken.Stricken;
 import stricken.board.critter.Critter;
 import stricken.board.mode.AbstractBoardControlMode;
 import stricken.board.mode.AdventureMode;
 import stricken.board.mode.CombatMovementMode;
 import stricken.common.Direction;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 import stricken.ui.IDelegatingKeySink;
 import stricken.ui.IKeySink;
@@ -303,7 +303,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 
 		// check end conditions
 		if (!isHumanOnBoard()) {
-			eventContext.fire(Stricken.Event.LOSE_CONDITION);
+			eventContext.fire(Event.LOSE_CONDITION);
 		} else {
 
 			if (sequence.isEmpty()) {
@@ -473,7 +473,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	 * @param y
 	 */
 	private void throwNullTileException(int x, int y) {
-		throw new NullPointerException("Tile was null at coordinates (" + x
+		throw new IllegalArgumentException("Tile was null at coordinates (" + x
 				+ ", " + y + ")!");
 	}
 

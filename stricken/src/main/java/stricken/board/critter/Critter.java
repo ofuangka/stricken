@@ -18,7 +18,7 @@ public class Critter extends AbstractBoardPiece {
 		HP, MAXHP, SPEED, STRENGTH, WILL, DAMAGE_RANGE, DAMAGE_MODIFIER
 	}
 
-	private static int DEFAULT_STAT_VALUE = 0;
+	private static final int DEFAULT_STAT_VALUE = 0;
 
 	private static final String HTH_ATTACK = "HTH_ATTACK";
 
@@ -53,6 +53,7 @@ public class Critter extends AbstractBoardPiece {
 
 	@Override
 	public BufferedImage getImage() {
+		Dimension spriteSize = getSpriteSize();
 		BufferedImage ret = new BufferedImage(spriteSize.width,
 				spriteSize.height, BufferedImage.TYPE_INT_ARGB);
 
@@ -116,7 +117,7 @@ public class Critter extends AbstractBoardPiece {
 		this.selected = selected;
 	}
 
-	public void setStat(Stat key, Integer value) {
+	public final void setStat(Stat key, Integer value) {
 		stats.put(key, value);
 	}
 

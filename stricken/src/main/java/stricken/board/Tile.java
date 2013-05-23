@@ -100,6 +100,8 @@ public class Tile extends AbstractPositionedSprite {
 
 	@Override
 	public BufferedImage getImage() {
+		Dimension spriteSize = getSpriteSize();
+		
 		BufferedImage ret = new BufferedImage(spriteSize.width,
 				spriteSize.height, BufferedImage.TYPE_INT_ARGB);
 

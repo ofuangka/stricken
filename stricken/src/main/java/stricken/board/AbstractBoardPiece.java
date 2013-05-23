@@ -10,7 +10,7 @@ import java.awt.Dimension;
  */
 public abstract class AbstractBoardPiece extends AbstractPositionedSprite {
 
-	protected boolean takingUpSpace;
+	private boolean takingUpSpace;
 
 	public AbstractBoardPiece(Dimension spriteSize) {
 		super(spriteSize);

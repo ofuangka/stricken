@@ -8,9 +8,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.springframework.core.io.Resource;
 
-import stricken.board.AbstractCritterTileInteraction;
-import stricken.board.ConstantDrivenTargetStatChangeInteraction;
-import stricken.board.SourceStatDrivenTargetStatChangeInteraction;
+import stricken.board.AbstractEffect;
+import stricken.board.ConstantStatEffect;
+import stricken.board.StatDrivenStatEffect;
 import stricken.board.Tile;
 import stricken.board.critter.Critter.Stat;
 import stricken.collector.AbstractDecayingTileCollector;
@@ -67,7 +67,7 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		ITileCollector aoe = parseRange((Element) el
 				.selectSingleNode("range[@type='AOE']"));
 
-		AbstractCritterTileInteraction effect = parseEffect(
+		AbstractEffect effect = parseEffect(
 				(Element) el.selectSingleNode("effect"), critter);
 
 		return new CritterAction(el.valueOf("@name"), targetingRange,
@@ -82,9 +82,9 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 				StringUtils.isNotBlank(el.valueOf("@isInclusive")));
 	}
 
-	protected AbstractCritterTileInteraction parseEffect(Element el,
+	protected AbstractEffect parseEffect(Element el,
 			Critter critter) {
-		AbstractCritterTileInteraction ret = null;
+		AbstractEffect ret = null;
 
 		TileEffectType effectType = TileEffectType.valueOf(el.valueOf("@type"));
 
@@ -96,12 +96,12 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		switch (effectType) {
 		case CONSTANT_DRIVEN_TARGET_STAT_CHANGE: {
 			int drivingValue = Integer.valueOf("@drivingValue");
-			ret = new ConstantDrivenTargetStatChangeInteraction(drivingValue,
+			ret = new ConstantStatEffect(drivingValue,
 					affectedStat, effectRange, modifier, positive, eventContext);
 		}
 		default: {
 			Stat drivingStat = Critter.Stat.valueOf(el.valueOf("@drivingStat"));
-			ret = new SourceStatDrivenTargetStatChangeInteraction(drivingStat,
+			ret = new StatDrivenStatEffect(drivingStat,
 					affectedStat, effectRange, modifier, positive, eventContext);
 			break;
 		}

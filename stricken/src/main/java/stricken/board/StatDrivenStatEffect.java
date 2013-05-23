@@ -4,15 +4,15 @@ import stricken.board.critter.Critter;
 import stricken.board.critter.Critter.Stat;
 import stricken.event.IEventContext;
 
-public class SourceStatDrivenTargetStatChangeInteraction extends
-		AbstractTargetStatChangeInteraction {
+public class StatDrivenStatEffect extends
+		AbstractStatEffect {
 
 	private final Critter.Stat drivingStat;
 
-	public SourceStatDrivenTargetStatChangeInteraction(Stat drivingStat,
-			Stat affects, int effectRange, int modifier, boolean positive,
+	public StatDrivenStatEffect(Stat drivingStat,
+			Stat affectedStat, int effectRange, int modifier, boolean positive,
 			IEventContext eventContext) {
-		super(affects, effectRange, modifier, positive, eventContext);
+		super(affectedStat, effectRange, modifier, positive, eventContext);
 		this.drivingStat = drivingStat;
 
 	}

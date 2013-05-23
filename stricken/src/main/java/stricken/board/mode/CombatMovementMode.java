@@ -2,13 +2,13 @@ package stricken.board.mode;
 
 import java.util.List;
 
-import stricken.Stricken;
 import stricken.board.Board;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
 import stricken.collector.AbstractFilteredTileCollector;
 import stricken.collector.CombatMovementTileCollector;
 import stricken.common.Direction;
+import stricken.event.Event;
 import stricken.event.IEventContext;
 
 public class CombatMovementMode extends AbstractBoardControlMode {
@@ -23,20 +23,20 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	@Override
 	public void configureTileState() {
 
-		Critter me = board.getControllingCritter();
+		Critter me = getBoard().getControllingCritter();
 
 		// figure out which tiles to enable and enable them
-		board.setEnabledTiles(getMovementRange(me));
+		getBoard().setEnabledTiles(getMovementRange(me));
 	}
 
 	@Override
 	public void down() {
-		board.tryMove(Direction.DOWN);
+		getBoard().tryMove(Direction.DOWN);
 	}
 
 	@Override
 	public void enter() {
-		eventContext.fire(Stricken.Event.SHOW_COMBAT_ACTION_MENU);
+		getEventContext().fire(Event.SHOW_COMBAT_ACTION_MENU);
 	}
 
 	@Override
@@ -47,17 +47,17 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	private List<Tile> getMovementRange(Critter critter) {
 		CombatMovementTileCollector tileCollector = new CombatMovementTileCollector(
 				AbstractFilteredTileCollector.NO_FILTER, critter);
-		return tileCollector.collect(board.getTile(origX, origY));
+		return tileCollector.collect(getBoard().getTile(origX, origY));
 	}
 
 	@Override
 	public void left() {
-		board.tryMove(Direction.LEFT);
+		getBoard().tryMove(Direction.LEFT);
 	}
 
 	@Override
 	public void readAndStoreState() {
-		Critter me = board.getControllingCritter();
+		Critter me = getBoard().getControllingCritter();
 
 		// save the initial information
 		origX = me.getX();
@@ -68,19 +68,19 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	@Override
 	public void resetToOriginalState() {
 
-		Critter me = board.getControllingCritter();
+		Critter me = getBoard().getControllingCritter();
 
-		board.placePiece(me, origX, origY);
+		getBoard().placePiece(me, origX, origY);
 	}
 
 	@Override
 	public void right() {
-		board.tryMove(Direction.RIGHT);
+		getBoard().tryMove(Direction.RIGHT);
 	}
 
 	@Override
 	public void up() {
-		board.tryMove(Direction.UP);
+		getBoard().tryMove(Direction.UP);
 	}
 
 }
