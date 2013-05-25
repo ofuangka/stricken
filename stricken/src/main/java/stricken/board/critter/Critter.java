@@ -23,7 +23,8 @@ public class Critter extends AbstractBoardPiece {
 	private static final String HTH_ATTACK = "HTH_ATTACK";
 
 	private static final Color DEFAULT_COLOR = Color.magenta;
-	private static final Color SELECTED_OUTLINE_COLOR = Color.red;
+	private static final Color SELECTED_HOSTILE_OUTLINE_COLOR = Color.red;
+	private static final Color SELECTED_FRIENDLY_OUTLINE_COLOR = Color.blue;
 
 	private String attack = HTH_ATTACK;
 	private List<String> talents = new ArrayList<String>();
@@ -65,7 +66,12 @@ public class Critter extends AbstractBoardPiece {
 				spriteSize.width / 2 - 1, spriteSize.height / 2 - 1, 0, 360);
 
 		if (isSelected()) {
-			g2d.setColor(SELECTED_OUTLINE_COLOR);
+			if (isHostile()) {
+				g2d.setColor(SELECTED_HOSTILE_OUTLINE_COLOR);
+			}
+			else {
+				g2d.setColor(SELECTED_FRIENDLY_OUTLINE_COLOR);
+			}
 			g2d.drawArc(spriteSize.width / 4, spriteSize.height / 4,
 					spriteSize.width / 2 - 1, spriteSize.height / 2 - 1, 0, 360);
 		}

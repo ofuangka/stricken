@@ -45,6 +45,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	protected Tile[][] tiles;
 
 	private Dimension spriteSize;
+	private Critter mainCharacter;
 	private Critter controllingCritter;
 
 	private List<Critter> critters = new ArrayList<Critter>();
@@ -261,8 +262,8 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		}
 
 		Random random = eventContext.getRandom();
-		int numPieces = random.nextInt(11) + 1;
-		for (int i = 0; i < numPieces; i++) {
+		int numCritters = random.nextInt(11) + 1;
+		for (int i = 0; i < numCritters; i++) {
 			Critter critter = new Critter(spriteSize, new Color(
 					random.nextInt(255), random.nextInt(255),
 					random.nextInt(255)));
@@ -271,7 +272,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 					critter.getStat(Critter.Stat.MAXHP));
 			critter.setStat(Critter.Stat.STRENGTH, random.nextInt(3) + 1);
 			critter.setStat(Critter.Stat.SPEED, random.nextInt(3) + 1);
-			critter.setHostile(true);
+			critter.setHostile(random.nextBoolean());
 			critter.setHuman(random.nextBoolean());
 
 			List<String> talents = new ArrayList<String>();
@@ -290,6 +291,10 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 				placePiece(critter, x, y);
 			}
 		}
+		mainCharacter = critters.get(0);
+		mainCharacter.setHuman(true);
+		mainCharacter.setHostile(false);
+
 	}
 
 	public void nextTurn() {
@@ -302,23 +307,41 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		modeHistory.clear();
 
 		// check end conditions
-		if (!isHumanOnBoard()) {
+		if (!isMainCharacterOnBoard()) {
 			eventContext.fire(Event.LOSE_CONDITION);
 		} else {
-
-			if (sequence.isEmpty()) {
-				log.debug("Critter sequence empty, starting new round...");
-				createCritterSequence();
-			}
-
-			// figure out who the next controlling piece is
-			assignControl(sequence.remove(0));
-
-			// detect and set up the first control mode
 			AbstractBoardControlMode firstMode;
 			if (isInCombat()) {
+
+				if (sequence.isEmpty()) {
+					log.debug("Critter sequence empty, starting new round...");
+					createCritterSequence();
+				}
+
+				// figure out who the next controlling piece is
+				assignControl(sequence.remove(0));
+
+				// detect and set up the first control mode
 				firstMode = new CombatMovementMode(this, eventContext);
 			} else {
+
+				// move all of the non main character critters
+				Direction[] possibleDirs = new Direction[] { Direction.UP,
+						Direction.RIGHT, Direction.DOWN, Direction.LEFT };
+				for (int i = 0; i < critters.size(); i++) {
+					Critter critter = critters.get(i);
+					if (critter != mainCharacter) {
+						int nextDir = eventContext.getRandom()
+								.nextInt(5);
+						if (nextDir < possibleDirs.length) {
+							tryMove(critter, possibleDirs[nextDir]);
+						}
+					}
+				}
+
+				// give the main character control
+				assignControl(mainCharacter);
+
 				firstMode = new AdventureMode(this, eventContext);
 			}
 
@@ -458,6 +481,10 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		} else {
 			log.warn("setTargetable called with null Tile List");
 		}
+	}
+
+	public boolean isMainCharacterOnBoard() {
+		return critters.contains(mainCharacter);
 	}
 
 	@Override

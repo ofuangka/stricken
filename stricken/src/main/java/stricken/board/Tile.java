@@ -58,9 +58,9 @@ public class Tile extends AbstractPositionedSprite {
 
 	private int movementCost = DEFAULT_MOVEMENT_COST;
 
-	private boolean enabled;
-	private boolean targeted;
-	private boolean inTargetingRange;
+	private boolean enabled = true;
+	private boolean targeted = false;
+	private boolean inTargetingRange = false;
 
 	public Tile(Dimension spriteSize, int x, int y) {
 		super(spriteSize);
