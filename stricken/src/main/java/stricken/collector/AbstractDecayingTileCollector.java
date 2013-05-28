@@ -26,24 +26,25 @@ public abstract class AbstractDecayingTileCollector extends
 	}
 
 	@Override
-	public List<Tile> _collect(Tile targetTile) {
+	public List<Tile> doCollect(Tile targetTile) {
 		Set<TileCostTracker> open = new HashSet<TileCostTracker>();
 		Set<Tile> validTiles = new HashSet<Tile>();
 		int costThreshold = getCostThreshold();
-		open.add(new TileCostTracker(targetTile, 0)); // include the target tile
-														// at no cost
+
+		// include the target tile at no cost
+		open.add(new TileCostTracker(targetTile, 0));
 
 		TileCostTracker current;
 		while (!open.isEmpty()) {
 			current = open.iterator().next();
 
-			if (current.cost <= costThreshold) {
-				validTiles.add(current.tile);
-				Tile[] adjacentTiles = current.tile.getAdjacentTiles();
+			if (current.getCost() <= costThreshold) {
+				validTiles.add(current.getTile());
+				Tile[] adjacentTiles = current.getTile().getAdjacentTiles();
 				for (Tile tile : adjacentTiles) {
 					if (isTileValid(tile)) {
 						open.add(new TileCostTracker(tile, getTileCost(tile)
-								+ current.cost));
+								+ current.getCost()));
 					}
 				}
 			}

@@ -37,6 +37,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 
 	public static final int INVALID_X = -1;
 	public static final int INVALID_Y = -1;
+	
 
 	private static final Logger log = Logger.getLogger(Board.class);
 
@@ -157,7 +158,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	public Tile[] getAdjacentTiles(int x, int y) {
-		Tile[] ret = new Tile[4];
+		Tile[] ret = new Tile[Tile.NUM_TILE_EDGES];
 		if (isInBounds(x, y)) {
 			ret = getTile(x, y).getAdjacentTiles();
 		}
@@ -316,7 +317,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 						Direction.RIGHT, Direction.DOWN, Direction.LEFT };
 				for (int i = 0; i < critters.size(); i++) {
 					Critter critter = critters.get(i);
-					if (critter != mainCharacter) {
+					if (!critter.equals(mainCharacter)) {
 						int nextDir = eventContext.getRandom()
 								.nextInt(5);
 						if (nextDir < possibleDirs.length) {

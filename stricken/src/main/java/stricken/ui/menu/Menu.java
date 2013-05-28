@@ -33,7 +33,7 @@ public class Menu extends JPanel implements IKeySink {
 		setItems(items);
 	}
 
-	public void addItem(AbstractMenuItem item) {
+	public final void addItem(AbstractMenuItem item) {
 		items.add(item);
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;
@@ -47,7 +47,7 @@ public class Menu extends JPanel implements IKeySink {
 
 	}
 
-	public void clearItems() {
+	public final void clearItems() {
 		if (items != null) {
 			while (!items.isEmpty()) {
 				remove(items.remove(0));
@@ -95,7 +95,7 @@ public class Menu extends JPanel implements IKeySink {
 
 	}
 
-	public void reset() {
+	public final void reset() {
 		currentIndex = 0;
 		if (items != null) {
 			items.get(0).uiSelect();
@@ -114,7 +114,7 @@ public class Menu extends JPanel implements IKeySink {
 		}
 	}
 
-	public void setItems(List<AbstractMenuItem> items) {
+	public final void setItems(List<AbstractMenuItem> items) {
 		if (items != null && !items.isEmpty()) {
 			clearItems();
 			for (AbstractMenuItem item : items) {

@@ -22,11 +22,10 @@ public class AbstractEventContext implements IEventContext {
 		}
 
 		public void fire(Object arg) {
+			
+			// show any non-null arguments in parentheses
 			log.debug("Firing Event " + this
-					+ ((arg != null) ? "(" + arg + ")" : "")); // show any
-																// non-null
-																// arguments in
-																// parentheses
+					+ ((arg != null) ? "(" + arg + ")" : ""));
 			for (IEventHandler handler : handlers) {
 				handler.handleEvent(event, arg);
 			}
@@ -48,7 +47,7 @@ public class AbstractEventContext implements IEventContext {
 	private Logger log = Logger.getLogger(getClass());
 
 	private Map<IEvent, EventTracker> events = new HashMap<IEvent, EventTracker>();
-	
+
 	private static Random random = new Random(System.currentTimeMillis());
 
 	protected void createEvent(IEvent event) {
@@ -71,7 +70,7 @@ public class AbstractEventContext implements IEventContext {
 	public Random getRandom() {
 		return random;
 	}
-	
+
 	public void subscribe(IEvent event, IEventHandler handler) {
 		if (events.containsKey(event)) {
 			events.get(event).subscribe(handler);

@@ -24,7 +24,7 @@ public abstract class AbstractFilteredTileCollector implements ITileCollector {
 	@Override
 	public List<Tile> collect(Tile targetTile) {
 		List<Tile> ret = new ArrayList<Tile>();
-		List<Tile> unfiltered = _collect(targetTile);
+		List<Tile> unfiltered = doCollect(targetTile);
 		if (unfiltered != null) {
 			for (Tile tile : unfiltered) {
 				if (filter.apply(tile)) {
@@ -35,6 +35,6 @@ public abstract class AbstractFilteredTileCollector implements ITileCollector {
 		return ret;
 	}
 
-	protected abstract List<Tile> _collect(Tile targetTile);
+	protected abstract List<Tile> doCollect(Tile targetTile);
 
 }

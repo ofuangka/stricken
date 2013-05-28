@@ -44,6 +44,12 @@ public class Tile extends AbstractPositionedSprite {
 			return ret;
 		}
 	};
+	
+	public static final int NUM_TILE_EDGES = 4;
+	public static final int TOP_EDGE = 0;
+	public static final int RIGHT_EDGE = 1;
+	public static final int BOTTOM_EDGE = 2;
+	public static final int LEFT_EDGE = 3;
 
 	private static final int DEFAULT_MOVEMENT_COST = 1;
 
@@ -51,7 +57,7 @@ public class Tile extends AbstractPositionedSprite {
 	private static final Color IN_TARGETING_RANGE_COLOR = new Color(255, 255, 255, 50);
 	private static final Color TARGETED_COLOR = new Color(255, 0, 0, 255);
 
-	private Tile[] adjacents = new Tile[4];
+	private Tile[] adjacents = new Tile[NUM_TILE_EDGES];
 
 	private List<AbstractBoardPiece> pieces = new ArrayList<AbstractBoardPiece>();
 	private AbstractBoardPiece occupant;
@@ -107,10 +113,6 @@ public class Tile extends AbstractPositionedSprite {
 
 		// TODO: implement
 		Graphics2D g2d = (Graphics2D) ret.getGraphics();
-		/*
-		 * g2d.setColor(Color.red); g2d.drawRect(0, 0, spriteSize.width - 1,
-		 * spriteSize.height - 1);
-		 */
 
 		if (!isEnabled()) {
 			g2d.setColor(DISABLED_COLOR);
@@ -132,18 +134,18 @@ public class Tile extends AbstractPositionedSprite {
 			g2d.setColor(TARGETED_COLOR);
 
 			// draw a border if the adjacent tile is not targetted
-			if (adjacents[0] == null || !adjacents[0].isTargeted()) {
+			if (adjacents[TOP_EDGE] == null || !adjacents[TOP_EDGE].isTargeted()) {
 				g2d.drawLine(1, 0, spriteSize.width - 2, 0);
 			}
-			if (adjacents[1] == null || !adjacents[1].isTargeted()) {
+			if (adjacents[RIGHT_EDGE] == null || !adjacents[RIGHT_EDGE].isTargeted()) {
 				g2d.drawLine(spriteSize.width - 1, 1, spriteSize.width - 1,
 						spriteSize.height - 2);
 			}
-			if (adjacents[2] == null || !adjacents[2].isTargeted()) {
+			if (adjacents[BOTTOM_EDGE] == null || !adjacents[BOTTOM_EDGE].isTargeted()) {
 				g2d.drawLine(1, spriteSize.height - 1, spriteSize.width - 2,
 						spriteSize.height - 1);
 			}
-			if (adjacents[3] == null || !adjacents[3].isTargeted()) {
+			if (adjacents[LEFT_EDGE] == null || !adjacents[LEFT_EDGE].isTargeted()) {
 				g2d.drawLine(0, 1, 0, spriteSize.height - 2);
 			}
 		}
@@ -190,7 +192,7 @@ public class Tile extends AbstractPositionedSprite {
 	}
 
 	public void setBottom(Tile bottom) {
-		adjacents[2] = bottom;
+		adjacents[BOTTOM_EDGE] = bottom;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -202,7 +204,7 @@ public class Tile extends AbstractPositionedSprite {
 	}
 
 	public void setLeft(Tile left) {
-		adjacents[3] = left;
+		adjacents[LEFT_EDGE] = left;
 	}
 
 	public void setMovementCost(int movementCost) {
@@ -210,7 +212,7 @@ public class Tile extends AbstractPositionedSprite {
 	}
 
 	public void setRight(Tile right) {
-		adjacents[1] = right;
+		adjacents[RIGHT_EDGE] = right;
 	}
 
 	public void setTargeted(boolean targeted) {
@@ -218,6 +220,6 @@ public class Tile extends AbstractPositionedSprite {
 	}
 
 	public void setTop(Tile top) {
-		adjacents[0] = top;
+		adjacents[TOP_EDGE] = top;
 	}
 }

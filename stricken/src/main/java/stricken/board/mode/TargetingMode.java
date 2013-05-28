@@ -53,7 +53,8 @@ public class TargetingMode extends AbstractBoardControlMode {
 			getBoard().setEnabledTiles(actualRange);
 			renderCrosshair();
 
-		} else { // otherwise disable all tiles
+		} else {
+			// otherwise disable all tiles
 			getBoard().disableAllTiles();
 
 			// error handling
