@@ -199,21 +199,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	}
 
 	/**
-	 * Checks all game over conditions
-	 * 
-	 * @return
-	 */
-	private boolean isHumanOnBoard() {
-		boolean ret = false;
-		for (Critter critter : critters) {
-			if (critter.isHuman()) {
-				return true;
-			}
-		}
-		return ret;
-	}
-
-	/**
 	 * Checks if the given coordinates are within the bounds of the board
 	 * 
 	 * @param x
@@ -290,6 +275,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 			if (!getTile(x, y).isOccupied()) {
 				placePiece(critter, x, y);
 			}
+			critters.add(critter);
 		}
 		mainCharacter = critters.get(0);
 		mainCharacter.setHuman(true);
@@ -375,10 +361,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 		} else {
 			tiles[x][y].add(piece);
 			piece.setXY(x, y);
-
-			if (Critter.class.isAssignableFrom(piece.getClass())) {
-				critters.add((Critter) piece);
-			}
 			repaint();
 		}
 
@@ -418,9 +400,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 				piece.setXY(INVALID_X, INVALID_Y);
 			}
 
-			if (Critter.class.isAssignableFrom(piece.getClass())) {
-				critters.remove((Critter) piece);
-			}
 			repaint();
 		}
 		// else do nothing (removing a piece that's not on the board)
@@ -513,6 +492,7 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	 * @param dir
 	 */
 	public boolean tryMove(AbstractBoardPiece piece, Direction dir) {
+		log.debug("Attempting to move piece " + piece + " " + dir);
 		int nextX = piece.getX();
 		int nextY = piece.getY();
 		switch (dir) {
