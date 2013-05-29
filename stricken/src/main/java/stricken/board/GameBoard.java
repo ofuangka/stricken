@@ -1,12 +1,18 @@
 package stricken.board;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
+import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
+import org.springframework.core.io.Resource;
+
+import stricken.board.critter.CircleCritter;
 import stricken.board.critter.Critter;
 import stricken.board.mode.AbstractGameBoardControlMode;
 import stricken.board.mode.AdventureMode;
@@ -46,6 +52,19 @@ public class GameBoard extends AbstractViewportBoard {
 	private List<Tile> targetedTiles = new ArrayList<Tile>();
 
 	private List<AbstractGameBoardControlMode> modeHistory = new ArrayList<AbstractGameBoardControlMode>();
+
+	private BufferedImage terrainSpriteSheet;
+
+	public GameBoard(IEventContext eventContext,
+			Resource terrainSpriteSheetResource) {
+		super(eventContext);
+		try {
+			terrainSpriteSheet = ImageIO.read(terrainSpriteSheetResource
+					.getFile());
+		} catch (IOException e) {
+			log.error("Could not read spritesheet file", e);
+		}
+	}
 
 	/**
 	 * Sets the controlling Critter and calls repaint()
@@ -150,7 +169,8 @@ public class GameBoard extends AbstractViewportBoard {
 		tiles = new Tile[11][11];
 		for (int x = 0; x < tiles.length; x++) {
 			for (int y = 0; y < tiles[x].length; y++) {
-				tiles[x][y] = new Tile(getSpriteSize(), x, y);
+				tiles[x][y] = new Tile(getSpriteSize(), terrainSpriteSheet, 128,
+						0, x, y);
 				if (isInBounds(x - 1, y)) {
 					tiles[x - 1][y].setRight(tiles[x][y]);
 					tiles[x][y].setLeft(tiles[x - 1][y]);
@@ -165,7 +185,7 @@ public class GameBoard extends AbstractViewportBoard {
 		Random random = getEventContext().getRandom();
 		int numCritters = random.nextInt(11) + 1;
 		for (int i = 0; i < numCritters; i++) {
-			Critter critter = new Critter(getSpriteSize(), new Color(
+			Critter critter = new CircleCritter(getSpriteSize(), new Color(
 					random.nextInt(255), random.nextInt(255),
 					random.nextInt(255)));
 			critter.setStat(Critter.Stat.MAXHP, random.nextInt(3) + 1);

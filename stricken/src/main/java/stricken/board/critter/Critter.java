@@ -1,9 +1,6 @@
 package stricken.board.critter;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,61 +19,25 @@ public class Critter extends AbstractBoardPiece {
 
 	private static final String HTH_ATTACK = "HTH_ATTACK";
 
-	private static final Color DEFAULT_COLOR = Color.magenta;
-	private static final Color SELECTED_HOSTILE_OUTLINE_COLOR = Color.red;
-	private static final Color SELECTED_FRIENDLY_OUTLINE_COLOR = Color.blue;
-
 	private String attack = HTH_ATTACK;
 	private List<String> talents = new ArrayList<String>();
 	private List<String> items = new ArrayList<String>();
 
-	private Color color;
 	private boolean selected;
 	private boolean hostile;
 	private boolean human;
 
 	private Map<Stat, Integer> stats = new HashMap<Stat, Integer>();
 
-	public Critter(Dimension spriteSize) {
-		this(spriteSize, DEFAULT_COLOR);
-	}
-
-	public Critter(Dimension spriteSize, Color color) {
-		super(spriteSize);
-		this.color = color;
+	public Critter(Dimension spriteSize, BufferedImage spriteSheet,
+			int spriteSheetX, int spriteSheetY) {
+		super(spriteSize, spriteSheet, spriteSheetX, spriteSheetY);
 		setTakingUpSpace(true);
 		setStat(Stat.DAMAGE_RANGE, 1);
 	}
 
 	public String getAttack() {
 		return attack;
-	}
-
-	@Override
-	public BufferedImage getImage() {
-		Dimension spriteSize = getSpriteSize();
-		BufferedImage ret = new BufferedImage(spriteSize.width,
-				spriteSize.height, BufferedImage.TYPE_INT_ARGB);
-
-		Graphics2D g2d = (Graphics2D) ret.getGraphics();
-		g2d.setColor(color);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.fillArc(spriteSize.width / 4, spriteSize.height / 4,
-				spriteSize.width / 2 - 1, spriteSize.height / 2 - 1, 0, 360);
-
-		if (isSelected()) {
-			if (isHostile()) {
-				g2d.setColor(SELECTED_HOSTILE_OUTLINE_COLOR);
-			}
-			else {
-				g2d.setColor(SELECTED_FRIENDLY_OUTLINE_COLOR);
-			}
-			g2d.drawArc(spriteSize.width / 4, spriteSize.height / 4,
-					spriteSize.width / 2 - 1, spriteSize.height / 2 - 1, 0, 360);
-		}
-
-		return ret;
 	}
 
 	public List<String> getItems() {

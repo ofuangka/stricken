@@ -59,7 +59,7 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 		getCurrentKeySink().esc();
 	}
 
-	public Tile[] getAdjacentTiles(AbstractPositionedSprite piece) {
+	public Tile[] getAdjacentTiles(PositionedSpriteSheetSprite piece) {
 		return getAdjacentTiles(piece.getX(), piece.getY());
 	}
 

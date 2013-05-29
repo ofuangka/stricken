@@ -101,6 +101,7 @@
 
 	<bean id="board" class="stricken.board.GameBoard">
 		<constructor-arg ref="stricken" />
+		<constructor-arg value="classpath:/terrain.png" />
 		<property name="spriteSize" ref="spriteSize" />
 		<property name="windowSize" ref="windowSize" />
 	</bean>

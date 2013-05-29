@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  * @author ofuangka
  * 
  */
-public class Tile extends AbstractPositionedSprite {
+public class Tile extends PositionedSpriteSheetSprite {
 
 	private static final Logger log = Logger.getLogger(Tile.class);
 
@@ -44,7 +44,7 @@ public class Tile extends AbstractPositionedSprite {
 			return ret;
 		}
 	};
-	
+
 	public static final int NUM_TILE_EDGES = 4;
 	public static final int TOP_EDGE = 0;
 	public static final int RIGHT_EDGE = 1;
@@ -54,7 +54,8 @@ public class Tile extends AbstractPositionedSprite {
 	private static final int DEFAULT_MOVEMENT_COST = 1;
 
 	private static final Color DISABLED_COLOR = new Color(0, 0, 0, 50);
-	private static final Color IN_TARGETING_RANGE_COLOR = new Color(255, 255, 255, 50);
+	private static final Color IN_TARGETING_RANGE_COLOR = new Color(255, 255,
+			255, 50);
 	private static final Color TARGETED_COLOR = new Color(255, 0, 0, 255);
 
 	private Tile[] adjacents = new Tile[NUM_TILE_EDGES];
@@ -68,8 +69,9 @@ public class Tile extends AbstractPositionedSprite {
 	private boolean targeted = false;
 	private boolean inTargetingRange = false;
 
-	public Tile(Dimension spriteSize, int x, int y) {
-		super(spriteSize);
+	public Tile(Dimension spriteSize, BufferedImage spriteSheet,
+			int spriteSheetX, int spriteSheetY, int x, int y) {
+		super(spriteSize, spriteSheet, spriteSheetX, spriteSheetY);
 		setXY(x, y);
 	}
 
@@ -107,19 +109,23 @@ public class Tile extends AbstractPositionedSprite {
 	@Override
 	public BufferedImage getImage() {
 		Dimension spriteSize = getSpriteSize();
-		
+
 		BufferedImage ret = new BufferedImage(spriteSize.width,
 				spriteSize.height, BufferedImage.TYPE_INT_ARGB);
 
 		// TODO: implement
 		Graphics2D g2d = (Graphics2D) ret.getGraphics();
 
+		g2d.drawImage(super.getImage(), 0, 0, spriteSize.width,
+				spriteSize.height, 0, 0, spriteSize.width, spriteSize.height,
+				null);
+
 		if (!isEnabled()) {
 			g2d.setColor(DISABLED_COLOR);
 			g2d.fillRect(0, 0, spriteSize.width, spriteSize.height);
 		}
 
-		for (AbstractPositionedSprite piece : pieces) {
+		for (PositionedSpriteSheetSprite piece : pieces) {
 			g2d.drawImage(piece.getImage(), 0, 0, spriteSize.width,
 					spriteSize.height, 0, 0, spriteSize.width,
 					spriteSize.height, null);
@@ -134,18 +140,22 @@ public class Tile extends AbstractPositionedSprite {
 			g2d.setColor(TARGETED_COLOR);
 
 			// draw a border if the adjacent tile is not targetted
-			if (adjacents[TOP_EDGE] == null || !adjacents[TOP_EDGE].isTargeted()) {
+			if (adjacents[TOP_EDGE] == null
+					|| !adjacents[TOP_EDGE].isTargeted()) {
 				g2d.drawLine(1, 0, spriteSize.width - 2, 0);
 			}
-			if (adjacents[RIGHT_EDGE] == null || !adjacents[RIGHT_EDGE].isTargeted()) {
+			if (adjacents[RIGHT_EDGE] == null
+					|| !adjacents[RIGHT_EDGE].isTargeted()) {
 				g2d.drawLine(spriteSize.width - 1, 1, spriteSize.width - 1,
 						spriteSize.height - 2);
 			}
-			if (adjacents[BOTTOM_EDGE] == null || !adjacents[BOTTOM_EDGE].isTargeted()) {
+			if (adjacents[BOTTOM_EDGE] == null
+					|| !adjacents[BOTTOM_EDGE].isTargeted()) {
 				g2d.drawLine(1, spriteSize.height - 1, spriteSize.width - 2,
 						spriteSize.height - 1);
 			}
-			if (adjacents[LEFT_EDGE] == null || !adjacents[LEFT_EDGE].isTargeted()) {
+			if (adjacents[LEFT_EDGE] == null
+					|| !adjacents[LEFT_EDGE].isTargeted()) {
 				g2d.drawLine(0, 1, 0, spriteSize.height - 2);
 			}
 		}

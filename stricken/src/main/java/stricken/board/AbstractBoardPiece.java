@@ -1,6 +1,7 @@
 package stricken.board;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 
 /**
  * Adds the capability to be able to take up space
@@ -8,12 +9,13 @@ import java.awt.Dimension;
  * @author ofuangka
  * 
  */
-public abstract class AbstractBoardPiece extends AbstractPositionedSprite {
+public abstract class AbstractBoardPiece extends PositionedSpriteSheetSprite {
 
 	private boolean takingUpSpace;
 
-	public AbstractBoardPiece(Dimension spriteSize) {
-		super(spriteSize);
+	public AbstractBoardPiece(Dimension spriteSize, BufferedImage spriteSheet,
+			int spriteSheetX, int spriteSheetY) {
+		super(spriteSize, spriteSheet, spriteSheetX, spriteSheetY);
 	}
 
 	public boolean isTakingUpSpace() {
