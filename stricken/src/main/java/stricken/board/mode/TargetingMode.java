@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import stricken.board.AbstractEffect;
-import stricken.board.Board;
+import stricken.board.GameBoard;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
 import stricken.board.critter.CritterAction;
@@ -13,7 +13,7 @@ import stricken.collector.ITileCollector;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 
-public class TargetingMode extends AbstractBoardControlMode {
+public class TargetingMode extends AbstractGameBoardControlMode {
 
 	public static final int NO_SELECTABLE_TILE_INDEX = -1;
 
@@ -23,7 +23,7 @@ public class TargetingMode extends AbstractBoardControlMode {
 	private int currentIndex;
 	private final CritterAction action;
 
-	public TargetingMode(Board board, IEventContext eventContext,
+	public TargetingMode(GameBoard board, IEventContext eventContext,
 			CritterAction action) {
 		super(board, eventContext);
 		this.action = action;
@@ -36,13 +36,13 @@ public class TargetingMode extends AbstractBoardControlMode {
 		currentIndex = NO_SELECTABLE_TILE_INDEX;
 
 		// get the different range collectors
-		Critter controllingCritter = getBoard().getControllingCritter();
-		Tile targetTile = getBoard().getTile(controllingCritter.getX(),
+		Critter controllingCritter = getGameBoard().getControllingCritter();
+		Tile targetTile = getGameBoard().getTile(controllingCritter.getX(),
 				controllingCritter.getY());
 		List<Tile> targetingRange = action.getTargetingRange().collect(
 				targetTile);
 		if (!targetingRange.isEmpty()) {
-			getBoard().setTargetingRange(targetingRange);
+			getGameBoard().setTargetingRange(targetingRange);
 		}
 		actualRange = action.getActualRange().collect(targetTile);
 
@@ -50,12 +50,12 @@ public class TargetingMode extends AbstractBoardControlMode {
 		// potential target
 		if (!actualRange.isEmpty()) {
 			currentIndex = 0;
-			getBoard().setEnabledTiles(actualRange);
+			getGameBoard().setEnabledTiles(actualRange);
 			renderCrosshair();
 
 		} else {
 			// otherwise disable all tiles
-			getBoard().disableAllTiles();
+			getGameBoard().disableAllTiles();
 
 			// error handling
 			log.warn("No selectable tiles");
@@ -92,17 +92,17 @@ public class TargetingMode extends AbstractBoardControlMode {
 
 	@Override
 	public void esc() {
-		getBoard().clearDisabledTiles();
-		getBoard().clearTargetingRange();
-		getBoard().clearCrosshair();
-		getBoard().popMode();
+		getGameBoard().clearDisabledTiles();
+		getGameBoard().clearTargetingRange();
+		getGameBoard().clearCrosshair();
+		getGameBoard().popMode();
 		getEventContext().fire(Event.POP_IN_GAME_MENU);
 	}
 
 	@Override
 	public void left() {
 		if (currentIndex != NO_SELECTABLE_TILE_INDEX) {
-			getBoard().clearCrosshair();
+			getGameBoard().clearCrosshair();
 			actualRange.get(currentIndex).setTargeted(false);
 			currentIndex = (currentIndex == 0) ? actualRange.size() - 1
 					: currentIndex - 1;
@@ -112,15 +112,18 @@ public class TargetingMode extends AbstractBoardControlMode {
 
 	protected void renderCrosshair() {
 		ITileCollector aoe = action.getAreaOfEffect();
-		List<Tile> crosshairTiles = aoe.collect(actualRange.get(currentIndex));
-		getBoard().renderCrosshair(crosshairTiles);
+		Tile targetTile = actualRange.get(currentIndex);
+		List<Tile> crosshairTiles = aoe.collect(targetTile);
+		GameBoard board = getGameBoard();
+		board.renderCrosshair(crosshairTiles);
+		board.alignViewport(targetTile.getX(), targetTile.getY());
 
 	}
 
 	@Override
 	public void right() {
 		if (currentIndex != NO_SELECTABLE_TILE_INDEX) {
-			getBoard().clearCrosshair();
+			getGameBoard().clearCrosshair();
 			actualRange.get(currentIndex).setTargeted(false);
 			currentIndex = (currentIndex == actualRange.size() - 1) ? 0
 					: currentIndex + 1;

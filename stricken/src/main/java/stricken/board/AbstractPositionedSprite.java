@@ -10,8 +10,8 @@ import java.awt.Dimension;
  */
 public abstract class AbstractPositionedSprite extends AbstractSprite {
 
-	public static final int DEFAULT_X = Board.INVALID_X;
-	public static final int DEFAULT_Y = Board.INVALID_Y;
+	public static final int DEFAULT_X = AbstractBoard.INVALID_X;
+	public static final int DEFAULT_Y = AbstractBoard.INVALID_Y;
 	public static final int DEFAULT_Z = 0;
 
 	private int x = DEFAULT_X;

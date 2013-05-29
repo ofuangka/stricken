@@ -1,18 +1,18 @@
 package stricken.board.mode;
 
-import stricken.board.Board;
+import stricken.board.GameBoard;
 import stricken.common.Direction;
 import stricken.event.IEventContext;
 
-public class AdventureMode extends AbstractBoardControlMode {
+public class AdventureMode extends AbstractGameBoardControlMode {
 
-	public AdventureMode(Board board, IEventContext eventContext) {
+	public AdventureMode(GameBoard board, IEventContext eventContext) {
 		super(board, eventContext);
 	}
 
 	public void configureTileState() {
-		getBoard().clearDisabledTiles();
-		getBoard().clearCrosshair();
+		getGameBoard().clearDisabledTiles();
+		getGameBoard().clearCrosshair();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class AdventureMode extends AbstractBoardControlMode {
 	}
 
 	public void space() {
-		getBoard().nextTurn();
+		getGameBoard().nextTurn();
 	}
 
 	/**
@@ -46,8 +46,9 @@ public class AdventureMode extends AbstractBoardControlMode {
 	 * @param dir
 	 */
 	private void tryMove(Direction dir) {
-		Board board = getBoard();
+		GameBoard board = getGameBoard();
 		if (board.tryMove(dir)) {
+			board.alignViewport();
 			board.moveNpcs();
 			board.nextTurn();
 		}

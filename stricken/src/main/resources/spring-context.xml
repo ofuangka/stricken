@@ -14,15 +14,15 @@
 		<property name="mainMenu" ref="mainMenu" />
 		<property name="systemMenu" ref="systemMenu" />
 		<property name="youDiedScreen" ref="youDiedScreen" />
-		<property name="board" ref="board" />
+		<property name="gameBoard" ref="board" />
 		<property name="gameScreen" ref="gameScreen" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
 		<property name="critterMenuFactory" ref="critterMenuFactory" />
 	</bean>
 
 	<bean id="windowSize" class="java.awt.Dimension">
-		<constructor-arg value="352" />
-		<constructor-arg value="352" />
+		<constructor-arg value="320" />
+		<constructor-arg value="320" />
 	</bean>
 	<bean id="spriteSize" class="java.awt.Dimension">
 		<constructor-arg value="32" />
@@ -99,9 +99,10 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="board" class="stricken.board.Board">
+	<bean id="board" class="stricken.board.GameBoard">
 		<constructor-arg ref="stricken" />
 		<property name="spriteSize" ref="spriteSize" />
+		<property name="windowSize" ref="windowSize" />
 	</bean>
 
 	<bean id="infoLayer" class="stricken.ui.InfoLayer" />

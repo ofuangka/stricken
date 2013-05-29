@@ -10,7 +10,7 @@ import org.junit.Test;
 import stricken.board.critter.Critter;
 import stricken.event.IEventContext;
 
-public class BoardTest {
+public class GameBoardTest {
 
 	static final String DUMMY_ID = "boardId";
 
@@ -18,7 +18,7 @@ public class BoardTest {
 	AbstractBoardPiece piece = new Critter(spriteSize);
 	IEventContext mockEventContext = EasyMock.createMock(IEventContext.class);
 
-	Board testObj = new Board(mockEventContext) {
+	GameBoard testObj = new GameBoard(mockEventContext) {
 		private static final long serialVersionUID = 6542740741021689448L;
 
 		@Override
@@ -87,8 +87,8 @@ public class BoardTest {
 		int origX = piece.getX();
 		int origY = piece.getY();
 		testObj.removePiece(piece);
-		Assert.assertEquals(piece.getX(), Board.INVALID_X);
-		Assert.assertEquals(piece.getY(), Board.INVALID_Y);
+		Assert.assertEquals(piece.getX(), AbstractBoard.INVALID_X);
+		Assert.assertEquals(piece.getY(), AbstractBoard.INVALID_Y);
 		Assert.assertTrue(testObj.getTile(origX, origY).getPieces().isEmpty());
 	}
 

@@ -2,7 +2,7 @@ package stricken.board.mode;
 
 import java.util.List;
 
-import stricken.board.Board;
+import stricken.board.GameBoard;
 import stricken.board.Tile;
 import stricken.board.critter.Critter;
 import stricken.collector.AbstractFilteredTileCollector;
@@ -11,27 +11,31 @@ import stricken.common.Direction;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 
-public class CombatMovementMode extends AbstractBoardControlMode {
+public class CombatMovementMode extends AbstractGameBoardControlMode {
 
 	private int origX;
 	private int origY;
 
-	public CombatMovementMode(Board board, IEventContext eventContext) {
+	public CombatMovementMode(GameBoard board, IEventContext eventContext) {
 		super(board, eventContext);
 	}
 
 	@Override
 	public void configureTileState() {
 
-		Critter me = getBoard().getControllingCritter();
+		GameBoard board = getGameBoard();
+		
+		Critter me = board.getControllingCritter();
 
 		// figure out which tiles to enable and enable them
-		getBoard().setEnabledTiles(getMovementRange(me));
+		board.setEnabledTiles(getMovementRange(me));
+		
+		board.alignViewport();
 	}
 
 	@Override
 	public void down() {
-		getBoard().tryMove(Direction.DOWN);
+		tryMove(Direction.DOWN);
 	}
 
 	@Override
@@ -47,17 +51,17 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	private List<Tile> getMovementRange(Critter critter) {
 		CombatMovementTileCollector tileCollector = new CombatMovementTileCollector(
 				AbstractFilteredTileCollector.NO_FILTER, critter);
-		return tileCollector.collect(getBoard().getTile(origX, origY));
+		return tileCollector.collect(getGameBoard().getTile(origX, origY));
 	}
 
 	@Override
 	public void left() {
-		getBoard().tryMove(Direction.LEFT);
+		getGameBoard().tryMove(Direction.LEFT);
 	}
 
 	@Override
 	public void readAndStoreState() {
-		Critter me = getBoard().getControllingCritter();
+		Critter me = getGameBoard().getControllingCritter();
 
 		// save the initial information
 		origX = me.getX();
@@ -68,19 +72,31 @@ public class CombatMovementMode extends AbstractBoardControlMode {
 	@Override
 	public void resetToOriginalState() {
 
-		Critter me = getBoard().getControllingCritter();
+		GameBoard board = getGameBoard();
 
-		getBoard().placePiece(me, origX, origY);
+		Critter me = board.getControllingCritter();
+
+		board.placePiece(me, origX, origY);
+
+		board.alignViewport();
 	}
 
 	@Override
 	public void right() {
-		getBoard().tryMove(Direction.RIGHT);
+		tryMove(Direction.RIGHT);
 	}
 
 	@Override
 	public void up() {
-		getBoard().tryMove(Direction.UP);
+		tryMove(Direction.UP);
+	}
+
+	protected void tryMove(Direction dir) {
+		GameBoard board = getGameBoard();
+
+		if (board.tryMove(dir)) {
+			board.alignViewport();
+		}
 	}
 
 }

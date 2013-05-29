@@ -1,6 +1,6 @@
 package stricken.board.mode;
 
-import stricken.board.Board;
+import stricken.board.GameBoard;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 import stricken.ui.IKeySink;
@@ -12,12 +12,13 @@ import stricken.ui.IKeySink;
  * @author ofuangka
  * 
  */
-public abstract class AbstractBoardControlMode implements IKeySink {
+public abstract class AbstractGameBoardControlMode implements IKeySink {
 
-	private Board board;
+	private GameBoard board;
 	private IEventContext eventContext;
 
-	public AbstractBoardControlMode(Board board, IEventContext eventContext) {
+	public AbstractGameBoardControlMode(GameBoard board,
+			IEventContext eventContext) {
 		this.board = board;
 		this.eventContext = eventContext;
 	}
@@ -43,14 +44,14 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	 * This method should store the mode's state
 	 */
 	public void readAndStoreState() {
-		
+
 	}
 
 	/**
 	 * This method resets the mode without recreating its state
 	 */
 	public void resetToOriginalState() {
-		
+
 	}
 
 	@Override
@@ -62,12 +63,12 @@ public abstract class AbstractBoardControlMode implements IKeySink {
 	public void x() {
 
 	}
-	
-	public Board getBoard() {
+
+	public GameBoard getGameBoard() {
 		return board;
-		
+
 	}
-	
+
 	public IEventContext getEventContext() {
 		return eventContext;
 	}

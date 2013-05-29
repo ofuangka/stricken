@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import stricken.board.Board;
+import stricken.board.GameBoard;
 import stricken.board.critter.Critter;
 import stricken.board.critter.CritterAction;
 import stricken.board.mode.TargetingMode;
@@ -72,7 +72,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private IKeySink currentKeySink;
 
 	private GameScreen gameScreen;
-	private Board board;
+	private GameBoard board;
 	private InGameMenuLayer inGameMenuLayer;
 
 	private CritterMenuFactory critterMenuFactory;
@@ -368,7 +368,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	@Required
-	public void setBoard(Board board) {
+	public void setGameBoard(GameBoard board) {
 		this.board = board;
 	}
 
