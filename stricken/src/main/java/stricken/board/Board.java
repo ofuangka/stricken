@@ -38,6 +38,8 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 	public static final int INVALID_X = -1;
 	public static final int INVALID_Y = -1;
 	
+	public static final int INVERSE_CHANCE_TO_MOVE = 8;
+	
 
 	private static final Logger log = Logger.getLogger(Board.class);
 
@@ -275,13 +277,30 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 			int y = random.nextInt(11);
 			if (!getTile(x, y).isOccupied()) {
 				placePiece(critter, x, y);
+				critters.add(critter);
 			}
-			critters.add(critter);
 		}
 		mainCharacter = critters.get(0);
 		mainCharacter.setHuman(true);
 		mainCharacter.setHostile(false);
 
+	}
+	
+	public void moveNpcs() {
+		
+		// move all of the non main character critters
+		Direction[] possibleDirs = new Direction[] { Direction.UP,
+				Direction.RIGHT, Direction.DOWN, Direction.LEFT };
+		for (int i = 0; i < critters.size(); i++) {
+			Critter critter = critters.get(i);
+			if (!critter.equals(mainCharacter)) {
+				int nextDir = eventContext.getRandom()
+						.nextInt(INVERSE_CHANCE_TO_MOVE);
+				if (nextDir < possibleDirs.length) {
+					tryMove(critter, possibleDirs[nextDir]);
+				}
+			}
+		}
 	}
 
 	public void nextTurn() {
@@ -311,20 +330,6 @@ public class Board extends JComponent implements ILayer, IDelegatingKeySink {
 				// detect and set up the first control mode
 				firstMode = new CombatMovementMode(this, eventContext);
 			} else {
-
-				// move all of the non main character critters
-				Direction[] possibleDirs = new Direction[] { Direction.UP,
-						Direction.RIGHT, Direction.DOWN, Direction.LEFT };
-				for (int i = 0; i < critters.size(); i++) {
-					Critter critter = critters.get(i);
-					if (!critter.equals(mainCharacter)) {
-						int nextDir = eventContext.getRandom()
-								.nextInt(5);
-						if (nextDir < possibleDirs.length) {
-							tryMove(critter, possibleDirs[nextDir]);
-						}
-					}
-				}
 
 				// give the main character control
 				assignControl(mainCharacter);

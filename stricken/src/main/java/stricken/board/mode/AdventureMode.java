@@ -46,8 +46,10 @@ public class AdventureMode extends AbstractBoardControlMode {
 	 * @param dir
 	 */
 	private void tryMove(Direction dir) {
-		if (getBoard().tryMove(dir)) {
-			getBoard().nextTurn();
+		Board board = getBoard();
+		if (board.tryMove(dir)) {
+			board.moveNpcs();
+			board.nextTurn();
 		}
 	}
 
