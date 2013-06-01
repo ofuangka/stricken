@@ -1,22 +1,27 @@
 package stricken.board;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 
-import stricken.board.critter.CircleCritter;
-import stricken.board.critter.Critter;
+import stricken.board.loader.BoardDefinition;
+import stricken.board.loader.BoardDefinitionFactory;
+import stricken.board.loader.TileDefinition;
 import stricken.board.mode.AbstractGameBoardControlMode;
 import stricken.board.mode.AdventureMode;
 import stricken.board.mode.CombatMovementMode;
+import stricken.board.piece.Tile;
+import stricken.board.piece.TileFactory;
+import stricken.board.piece.critter.CircleCritter;
+import stricken.board.piece.critter.Critter;
 import stricken.common.Direction;
 import stricken.event.Event;
 import stricken.event.IEventContext;
@@ -41,6 +46,8 @@ public class GameBoard extends AbstractViewportBoard {
 
 	public static final int INVERSE_CHANCE_TO_MOVE = 8;
 
+	private BoardDefinitionFactory boardDefinitionFactory;
+
 	private Critter mainCharacter;
 	private Critter controllingCritter;
 
@@ -53,17 +60,11 @@ public class GameBoard extends AbstractViewportBoard {
 
 	private List<AbstractGameBoardControlMode> modeHistory = new ArrayList<AbstractGameBoardControlMode>();
 
-	private BufferedImage terrainSpriteSheet;
+	private TileFactory tileFactory;
 
 	public GameBoard(IEventContext eventContext,
 			Resource terrainSpriteSheetResource) {
 		super(eventContext);
-		try {
-			terrainSpriteSheet = ImageIO.read(terrainSpriteSheetResource
-					.getFile());
-		} catch (IOException e) {
-			log.error("Could not read spritesheet file", e);
-		}
 	}
 
 	/**
@@ -162,15 +163,19 @@ public class GameBoard extends AbstractViewportBoard {
 		return ret;
 	}
 
-	public void load(String id) {
+	public void load(String id) throws JsonParseException,
+			JsonMappingException, IOException {
 		log.info("Loading board '" + id + "'...");
 
-		// TODO: implement
-		tiles = new Tile[11][11];
+		// load the cells into tiles
+		BoardDefinition def = boardDefinitionFactory.get(id);
+		TileDefinition[][] cells = def.getCells();
+
+		tiles = new Tile[cells.length][];
 		for (int x = 0; x < tiles.length; x++) {
+			tiles[x] = new Tile[cells[x].length];
 			for (int y = 0; y < tiles[x].length; y++) {
-				tiles[x][y] = new Tile(getSpriteSize(), terrainSpriteSheet, 128,
-						0, x, y);
+				tiles[x][y] = tileFactory.get(cells[x][y], x, y);
 				if (isInBounds(x - 1, y)) {
 					tiles[x - 1][y].setRight(tiles[x][y]);
 					tiles[x][y].setLeft(tiles[x - 1][y]);
@@ -182,6 +187,9 @@ public class GameBoard extends AbstractViewportBoard {
 			}
 		}
 
+		// load any non-critter pieces
+
+		// load any critters
 		Random random = getEventContext().getRandom();
 		int numCritters = random.nextInt(11) + 1;
 		for (int i = 0; i < numCritters; i++) {
@@ -208,7 +216,7 @@ public class GameBoard extends AbstractViewportBoard {
 
 			int x = random.nextInt(11);
 			int y = random.nextInt(11);
-			if (!getTile(x, y).isOccupied()) {
+			if (!getTile(x, y).isOccupied() && getTile(x, y).isWalkable()) {
 				placePiece(critter, x, y);
 				critters.add(critter);
 			}
@@ -355,6 +363,17 @@ public class GameBoard extends AbstractViewportBoard {
 
 	public void alignViewport() {
 		alignViewport(controllingCritter.getX(), controllingCritter.getY());
+	}
+
+	@Required
+	public void setBoardDefinitionFactory(
+			BoardDefinitionFactory boardDefinitionFactory) {
+		this.boardDefinitionFactory = boardDefinitionFactory;
+	}
+
+	@Required
+	public void setTileFactory(TileFactory tileFactory) {
+		this.tileFactory = tileFactory;
 	}
 
 }

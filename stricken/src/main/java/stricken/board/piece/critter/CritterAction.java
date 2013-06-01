@@ -1,7 +1,7 @@
-package stricken.board.critter;
+package stricken.board.piece.critter;
 
-import stricken.board.AbstractEffect;
-import stricken.collector.ITileCollector;
+import stricken.board.collector.ITileCollector;
+import stricken.board.effect.AbstractEffect;
 
 /**
  * CritterActions are all made up of a targeting range, and area of effect, and

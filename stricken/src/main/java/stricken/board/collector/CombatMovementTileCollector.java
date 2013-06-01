@@ -1,8 +1,8 @@
-package stricken.collector;
+package stricken.board.collector;
 
-import stricken.board.critter.Critter;
-import stricken.board.critter.Critter.Stat;
-import stricken.board.Tile;
+import stricken.board.piece.Tile;
+import stricken.board.piece.critter.Critter;
+import stricken.board.piece.critter.Critter.Stat;
 
 public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 

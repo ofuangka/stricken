@@ -1,7 +1,8 @@
-package stricken.board;
+package stricken.board.piece;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+
 
 /**
  * Adds the capability to be able to take up space
@@ -10,6 +11,10 @@ import java.awt.image.BufferedImage;
  * 
  */
 public abstract class AbstractBoardPiece extends PositionedSpriteSheetSprite {
+	
+	public enum PieceType {
+		CRITTER, TERRAIN, CONTAINER, FURNISHING
+	}
 
 	private boolean takingUpSpace;
 

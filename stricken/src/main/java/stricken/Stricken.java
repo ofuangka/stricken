@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import stricken.board.GameBoard;
-import stricken.board.critter.Critter;
-import stricken.board.critter.CritterAction;
 import stricken.board.mode.TargetingMode;
+import stricken.board.piece.critter.Critter;
+import stricken.board.piece.critter.CritterAction;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
 import stricken.event.Event;
@@ -76,6 +78,8 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private InGameMenuLayer inGameMenuLayer;
 
 	private CritterMenuFactory critterMenuFactory;
+
+	private String startGameBoardId;
 
 	/* configuration variables */
 	private Dimension windowSize;
@@ -362,7 +366,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public void handleStartGame() {
 		board.clear();
-		board.load(null);
+		try {
+			board.load(startGameBoardId);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		showScreen(gameScreen);
 		board.nextTurn();
 	}
@@ -452,5 +460,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		contentPane.add(screen, new GridBagConstraints());
 		contentPane.revalidate();
 		contentPane.repaint();
+	}
+
+	@Required
+	public void setStartGameBoardId(
+			@Qualifier("startGameBoardId") String startGameBoardId) {
+		this.startGameBoardId = startGameBoardId;
 	}
 }

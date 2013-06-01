@@ -3,10 +3,10 @@ package stricken.board.mode;
 import java.util.List;
 
 import stricken.board.GameBoard;
-import stricken.board.Tile;
-import stricken.board.critter.Critter;
-import stricken.collector.AbstractFilteredTileCollector;
-import stricken.collector.CombatMovementTileCollector;
+import stricken.board.collector.AbstractFilteredTileCollector;
+import stricken.board.collector.CombatMovementTileCollector;
+import stricken.board.piece.Tile;
+import stricken.board.piece.critter.Critter;
 import stricken.common.Direction;
 import stricken.event.Event;
 import stricken.event.IEventContext;

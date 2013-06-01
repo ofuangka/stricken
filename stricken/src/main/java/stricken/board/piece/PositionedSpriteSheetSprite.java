@@ -1,7 +1,9 @@
-package stricken.board;
+package stricken.board.piece;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+
+import stricken.board.AbstractBoard;
 
 /**
  * This object has an xyz position

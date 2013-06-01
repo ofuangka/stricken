@@ -18,6 +18,7 @@
 		<property name="gameScreen" ref="gameScreen" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
 		<property name="critterMenuFactory" ref="critterMenuFactory" />
+		<property name="startGameBoardId" value="goStraight" />
 	</bean>
 
 	<bean id="windowSize" class="java.awt.Dimension">
@@ -101,9 +102,23 @@
 
 	<bean id="board" class="stricken.board.GameBoard">
 		<constructor-arg ref="stricken" />
-		<constructor-arg value="classpath:/terrain.png" />
 		<property name="spriteSize" ref="spriteSize" />
 		<property name="windowSize" ref="windowSize" />
+		<property name="boardDefinitionFactory" ref="boardDefinitionFactory" />
+		<property name="tileFactory" ref="tileFactory" />
+	</bean>
+
+	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+
+	<bean id="tileFactory" class="stricken.board.piece.TileFactory">
+		<constructor-arg value="classpath:/terrain.png" />
+		<constructor-arg value="classpath:/pieces/terrain.json" />
+		<constructor-arg ref="objectMapper" />
+		<constructor-arg ref="spriteSize" />
+	</bean>
+
+	<bean id="boardDefinitionFactory" class="stricken.board.loader.BoardDefinitionFactory">
+		<property name="objectMapper" ref="objectMapper" />
 	</bean>
 
 	<bean id="infoLayer" class="stricken.ui.InfoLayer" />
@@ -115,7 +130,7 @@
 		<property name="critterActionFactory" ref="critterActionFactory" />
 	</bean>
 
-	<bean id="critterActionFactory" class="stricken.board.critter.CritterActionFactory">
+	<bean id="critterActionFactory" class="stricken.board.piece.critter.CritterActionFactory">
 		<constructor-arg ref="stricken" />
 		<constructor-arg value="classpath:actions.xml" />
 	</bean>

@@ -1,8 +1,14 @@
-package stricken.board;
+package stricken.board.piece;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+/**
+ * This sprite is drawn from a spritesheet
+ * 
+ * @author ofuangka
+ * 
+ */
 public class SpriteSheetSprite extends AbstractSprite {
 
 	private final BufferedImage spriteSheet;
@@ -20,8 +26,9 @@ public class SpriteSheetSprite extends AbstractSprite {
 	@Override
 	public BufferedImage getImage() {
 		Dimension spriteSize = getSpriteSize();
-		return spriteSheet.getSubimage(spriteSheetX, spritesheetY,
-				spriteSize.width, spriteSize.height);
+		return spriteSheet.getSubimage(spriteSheetX * spriteSize.width,
+				spritesheetY * spriteSize.height, spriteSize.width,
+				spriteSize.height);
 	}
 
 }

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import stricken.board.AbstractEffect;
 import stricken.board.GameBoard;
-import stricken.board.Tile;
-import stricken.board.critter.Critter;
-import stricken.board.critter.CritterAction;
-import stricken.collector.ITileCollector;
+import stricken.board.collector.ITileCollector;
+import stricken.board.effect.AbstractEffect;
+import stricken.board.piece.Tile;
+import stricken.board.piece.critter.Critter;
+import stricken.board.piece.critter.CritterAction;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 

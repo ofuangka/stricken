@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import org.springframework.beans.factory.annotation.Required;
 
+import stricken.board.piece.Tile;
 import stricken.event.IEventContext;
 
 public abstract class AbstractViewportBoard extends AbstractBoard {

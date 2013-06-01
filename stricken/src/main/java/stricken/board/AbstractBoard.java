@@ -7,6 +7,9 @@ import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
+import stricken.board.piece.AbstractBoardPiece;
+import stricken.board.piece.PositionedSpriteSheetSprite;
+import stricken.board.piece.Tile;
 import stricken.common.Direction;
 import stricken.event.IEventContext;
 import stricken.ui.IDelegatingKeySink;
@@ -215,10 +218,13 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 			break;
 		}
 		}
-		if (isInBounds(nextX, nextY) && getTile(nextX, nextY).isEnabled()
-				&& !getTile(nextX, nextY).isOccupied()) {
-			placePiece(piece, nextX, nextY);
-			return true;
+		if (isInBounds(nextX, nextY)) {
+			Tile nextTile = getTile(nextX, nextY);
+			if (nextTile.isWalkable() && nextTile.isEnabled()
+					&& !nextTile.isOccupied()) {
+				placePiece(piece, nextX, nextY);
+				return true;
+			}
 		}
 		return false;
 	}

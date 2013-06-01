@@ -1,4 +1,4 @@
-package stricken.board.critter;
+package stricken.board.piece.critter;
 
 import java.io.IOException;
 
@@ -8,15 +8,15 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.springframework.core.io.Resource;
 
-import stricken.board.AbstractEffect;
-import stricken.board.ConstantStatEffect;
-import stricken.board.StatDrivenStatEffect;
-import stricken.board.Tile;
-import stricken.board.critter.Critter.Stat;
-import stricken.collector.AbstractDecayingTileCollector;
-import stricken.collector.AbstractFilteredTileCollector;
-import stricken.collector.ITileCollector;
-import stricken.collector.ITileFilter;
+import stricken.board.collector.AbstractDecayingTileCollector;
+import stricken.board.collector.AbstractFilteredTileCollector;
+import stricken.board.collector.ITileCollector;
+import stricken.board.collector.ITileFilter;
+import stricken.board.effect.AbstractEffect;
+import stricken.board.effect.ConstantStatEffect;
+import stricken.board.effect.StatDrivenStatEffect;
+import stricken.board.piece.Tile;
+import stricken.board.piece.critter.Critter.Stat;
 import stricken.event.IEventContext;
 import stricken.util.AbstractXmlConsumer;
 

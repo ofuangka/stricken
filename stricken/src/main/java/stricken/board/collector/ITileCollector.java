@@ -1,8 +1,8 @@
-package stricken.collector;
+package stricken.board.collector;
 
 import java.util.List;
 
-import stricken.board.Tile;
+import stricken.board.piece.Tile;
 
 /**
  * A TileCollector is an object that abstracts collecting tiles given a target

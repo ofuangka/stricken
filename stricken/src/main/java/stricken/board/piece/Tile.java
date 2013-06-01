@@ -1,4 +1,4 @@
-package stricken.board;
+package stricken.board.piece;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -68,6 +68,7 @@ public class Tile extends PositionedSpriteSheetSprite {
 	private boolean enabled = true;
 	private boolean targeted = false;
 	private boolean inTargetingRange = false;
+	private boolean walkable = true;
 
 	public Tile(Dimension spriteSize, BufferedImage spriteSheet,
 			int spriteSheetX, int spriteSheetY, int x, int y) {
@@ -231,5 +232,13 @@ public class Tile extends PositionedSpriteSheetSprite {
 
 	public void setTop(Tile top) {
 		adjacents[TOP_EDGE] = top;
+	}
+
+	public void setWalkable(boolean walkable) {
+		this.walkable = walkable;
+	}
+
+	public boolean isWalkable() {
+		return walkable;
 	}
 }

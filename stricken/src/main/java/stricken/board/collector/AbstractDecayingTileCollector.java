@@ -1,4 +1,4 @@
-package stricken.collector;
+package stricken.board.collector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import stricken.board.Tile;
+import stricken.board.piece.Tile;
 
 /**
  * Uses TileCostTracker objects to implement an algorithm that takes Tile cost

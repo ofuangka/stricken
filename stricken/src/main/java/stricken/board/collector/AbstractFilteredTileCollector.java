@@ -1,9 +1,9 @@
-package stricken.collector;
+package stricken.board.collector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import stricken.board.Tile;
+import stricken.board.piece.Tile;
 
 public abstract class AbstractFilteredTileCollector implements ITileCollector {
 

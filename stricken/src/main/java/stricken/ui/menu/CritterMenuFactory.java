@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 
-import stricken.board.critter.Critter;
-import stricken.board.critter.CritterAction;
-import stricken.board.critter.CritterActionFactory;
+import stricken.board.piece.critter.Critter;
+import stricken.board.piece.critter.CritterAction;
+import stricken.board.piece.critter.CritterActionFactory;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 
