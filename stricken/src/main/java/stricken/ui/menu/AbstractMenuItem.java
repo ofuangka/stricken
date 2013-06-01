@@ -31,16 +31,16 @@ public abstract class AbstractMenuItem extends JLabel {
 
 	public abstract void execute();
 
+	public IEventContext getEventContext() {
+		return eventContext;
+	}
+
 	public void uiDeselect() {
 		setBackground(DESELECTED);
 	}
-
+	
 	public void uiSelect() {
 		setBackground(SELECTED);
-	}
-	
-	public IEventContext getEventContext() {
-		return eventContext;
 	}
 
 }

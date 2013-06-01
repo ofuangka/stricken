@@ -22,6 +22,11 @@ public class BoardDefinitionFactory {
 				+ suffix)).getFile(), BoardDefinition.class);
 	}
 
+	@Required
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
+
 	public void setPrefix(String prefix) {
 		if (prefix.charAt(prefix.length() - 1) == '/') {
 			this.prefix = prefix;
@@ -36,10 +41,5 @@ public class BoardDefinitionFactory {
 		} else {
 			this.suffix = '.' + suffix;
 		}
-	}
-
-	@Required
-	public void setObjectMapper(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
 	}
 }

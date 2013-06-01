@@ -39,12 +39,12 @@ public abstract class AbstractBoardPieceFactory {
 		return spriteSheet;
 	}
 
-	public Map<String, Integer[]> getTypes() {
-		return types;
-	}
-
 	public Dimension getSpriteSize() {
 		return spriteSize;
+	}
+
+	public Map<String, Integer[]> getTypes() {
+		return types;
 	}
 
 }

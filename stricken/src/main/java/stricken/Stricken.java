@@ -376,13 +376,13 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	@Required
-	public void setGameBoard(GameBoard board) {
-		this.board = board;
+	public void setCritterMenuFactory(CritterMenuFactory critterMenuFactory) {
+		this.critterMenuFactory = critterMenuFactory;
 	}
 
 	@Required
-	public void setCritterMenuFactory(CritterMenuFactory critterMenuFactory) {
-		this.critterMenuFactory = critterMenuFactory;
+	public void setGameBoard(GameBoard board) {
+		this.board = board;
 	}
 
 	@Required
@@ -398,6 +398,12 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	@Required
 	public void setMainMenu(Menu mainMenu) {
 		this.mainMenu = mainMenu;
+	}
+
+	@Required
+	public void setStartGameBoardId(
+			@Qualifier("startGameBoardId") String startGameBoardId) {
+		this.startGameBoardId = startGameBoardId;
 	}
 
 	@Required
@@ -460,11 +466,5 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		contentPane.add(screen, new GridBagConstraints());
 		contentPane.revalidate();
 		contentPane.repaint();
-	}
-
-	@Required
-	public void setStartGameBoardId(
-			@Qualifier("startGameBoardId") String startGameBoardId) {
-		this.startGameBoardId = startGameBoardId;
 	}
 }

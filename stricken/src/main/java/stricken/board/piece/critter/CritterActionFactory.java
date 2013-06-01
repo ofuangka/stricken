@@ -28,12 +28,12 @@ import stricken.util.AbstractXmlConsumer;
  */
 public class CritterActionFactory extends AbstractXmlConsumer {
 
-	public enum TileFilterType {
-		OCCUPIED_BY_CRITTER, NO_FILTER
-	}
-
 	public enum TileEffectType {
 		SOURCE_STAT_DRIVEN_TARGET_STAT_CHANGE, CONSTANT_DRIVEN_TARGET_STAT_CHANGE
+	}
+
+	public enum TileFilterType {
+		OCCUPIED_BY_CRITTER, NO_FILTER
 	}
 
 	private static final Logger log = Logger
@@ -56,6 +56,34 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 				critter);
 	}
 
+	protected AbstractDecayingTileCollector getAbstractDecayingTileCollector(
+			final ITileFilter filter, final int costThreshold,
+			final int tileCost, final boolean isInclusive) {
+		return new AbstractDecayingTileCollector(filter) {
+
+			@Override
+			protected int getCostThreshold() {
+				return costThreshold;
+			}
+
+			@Override
+			protected int getTileCost(Tile tile) {
+				return tileCost;
+			}
+
+			@Override
+			protected boolean isInclusive() {
+				return isInclusive;
+			}
+
+			@Override
+			protected boolean isTileValid(Tile tile) {
+				return tile != null;
+			}
+
+		};
+	}
+
 	protected CritterAction parseAction(Element el, Critter critter) {
 
 		ITileCollector targetingRange = parseRange((Element) el
@@ -72,14 +100,6 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 
 		return new CritterAction(el.valueOf("@name"), targetingRange,
 				actualRange, aoe, effect);
-	}
-
-	protected ITileCollector parseRange(Element el) {
-		return getAbstractDecayingTileCollector(
-				parseFilter((Element) el.selectSingleNode("filter")),
-				Integer.valueOf(el.valueOf("@costThreshold")),
-				Integer.valueOf(el.valueOf("@tileCost")),
-				StringUtils.isNotBlank(el.valueOf("@isInclusive")));
 	}
 
 	protected AbstractEffect parseEffect(Element el,
@@ -138,31 +158,11 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		return ret;
 	}
 
-	protected AbstractDecayingTileCollector getAbstractDecayingTileCollector(
-			final ITileFilter filter, final int costThreshold,
-			final int tileCost, final boolean isInclusive) {
-		return new AbstractDecayingTileCollector(filter) {
-
-			@Override
-			protected int getCostThreshold() {
-				return costThreshold;
-			}
-
-			@Override
-			protected int getTileCost(Tile tile) {
-				return tileCost;
-			}
-
-			@Override
-			protected boolean isInclusive() {
-				return isInclusive;
-			}
-
-			@Override
-			protected boolean isTileValid(Tile tile) {
-				return tile != null;
-			}
-
-		};
+	protected ITileCollector parseRange(Element el) {
+		return getAbstractDecayingTileCollector(
+				parseFilter((Element) el.selectSingleNode("filter")),
+				Integer.valueOf(el.valueOf("@costThreshold")),
+				Integer.valueOf(el.valueOf("@tileCost")),
+				StringUtils.isNotBlank(el.valueOf("@isInclusive")));
 	}
 }

@@ -192,6 +192,10 @@ public class Tile extends PositionedSpriteSheetSprite {
 		return targeted;
 	}
 
+	public boolean isWalkable() {
+		return walkable;
+	}
+
 	public void remove(AbstractBoardPiece piece) {
 		if (piece != null) {
 			pieces.remove(piece);
@@ -236,9 +240,5 @@ public class Tile extends PositionedSpriteSheetSprite {
 
 	public void setWalkable(boolean walkable) {
 		this.walkable = walkable;
-	}
-
-	public boolean isWalkable() {
-		return walkable;
 	}
 }

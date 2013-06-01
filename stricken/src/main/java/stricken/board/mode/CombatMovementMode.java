@@ -86,17 +86,17 @@ public class CombatMovementMode extends AbstractGameBoardControlMode {
 		tryMove(Direction.RIGHT);
 	}
 
-	@Override
-	public void up() {
-		tryMove(Direction.UP);
-	}
-
 	protected void tryMove(Direction dir) {
 		GameBoard board = getGameBoard();
 
 		if (board.tryMove(dir)) {
 			board.alignViewport();
 		}
+	}
+
+	@Override
+	public void up() {
+		tryMove(Direction.UP);
 	}
 
 }

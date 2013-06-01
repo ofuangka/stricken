@@ -7,13 +7,13 @@ public abstract class AbstractEffect {
 
 	private Critter source;
 
-	public void setSource(Critter source) {
-		this.source = source;
-	}
-
 	public Critter getSource() {
 		return source;
 	}
 
 	public abstract void interact(Tile targetTile);
+
+	public void setSource(Critter source) {
+		this.source = source;
+	}
 }

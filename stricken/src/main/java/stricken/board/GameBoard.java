@@ -38,10 +38,6 @@ public class GameBoard extends AbstractViewportBoard {
 
 	private static final long serialVersionUID = -1963940535869410879L;
 
-	public GameBoard(IEventContext eventContext) {
-		super(eventContext);
-	}
-
 	private static final Logger log = Logger.getLogger(GameBoard.class);
 
 	public static final int INVERSE_CHANCE_TO_MOVE = 8;
@@ -49,22 +45,30 @@ public class GameBoard extends AbstractViewportBoard {
 	private BoardDefinitionFactory boardDefinitionFactory;
 
 	private Critter mainCharacter;
+
 	private Critter controllingCritter;
-
 	private List<Critter> critters = new ArrayList<Critter>();
-	private List<Critter> sequence = new ArrayList<Critter>();
 
+	private List<Critter> sequence = new ArrayList<Critter>();
 	private List<Tile> disabledTiles = new ArrayList<Tile>();
+
 	private List<Tile> tilesInTargetingRange = new ArrayList<Tile>();
 	private List<Tile> targetedTiles = new ArrayList<Tile>();
-
 	private List<AbstractGameBoardControlMode> modeHistory = new ArrayList<AbstractGameBoardControlMode>();
 
 	private TileFactory tileFactory;
 
+	public GameBoard(IEventContext eventContext) {
+		super(eventContext);
+	}
+
 	public GameBoard(IEventContext eventContext,
 			Resource terrainSpriteSheetResource) {
 		super(eventContext);
+	}
+
+	public void alignViewport() {
+		alignViewport(controllingCritter.getX(), controllingCritter.getY());
 	}
 
 	/**
@@ -163,6 +167,10 @@ public class GameBoard extends AbstractViewportBoard {
 		return ret;
 	}
 
+	public boolean isMainCharacterOnBoard() {
+		return critters.contains(mainCharacter);
+	}
+
 	public void load(String id) throws JsonParseException,
 			JsonMappingException, IOException {
 		log.info("Loading board '" + id + "'...");
@@ -225,6 +233,23 @@ public class GameBoard extends AbstractViewportBoard {
 		mainCharacter.setHuman(true);
 		mainCharacter.setHostile(false);
 
+	}
+
+	public void moveNpcs() {
+
+		// move all of the non main character critters
+		Direction[] possibleDirs = new Direction[] { Direction.UP,
+				Direction.RIGHT, Direction.DOWN, Direction.LEFT };
+		for (int i = 0; i < critters.size(); i++) {
+			Critter critter = critters.get(i);
+			if (!critter.equals(mainCharacter)) {
+				int nextDir = getEventContext().getRandom().nextInt(
+						INVERSE_CHANCE_TO_MOVE);
+				if (nextDir < possibleDirs.length) {
+					tryMove(critter, possibleDirs[nextDir]);
+				}
+			}
+		}
 	}
 
 	public void nextTurn() {
@@ -302,6 +327,12 @@ public class GameBoard extends AbstractViewportBoard {
 		}
 	}
 
+	@Required
+	public void setBoardDefinitionFactory(
+			BoardDefinitionFactory boardDefinitionFactory) {
+		this.boardDefinitionFactory = boardDefinitionFactory;
+	}
+
 	/**
 	 * This allows movement to the provided Tile List and only to that List
 	 * 
@@ -336,44 +367,13 @@ public class GameBoard extends AbstractViewportBoard {
 		}
 	}
 
-	public boolean isMainCharacterOnBoard() {
-		return critters.contains(mainCharacter);
+	@Required
+	public void setTileFactory(TileFactory tileFactory) {
+		this.tileFactory = tileFactory;
 	}
 
 	public boolean tryMove(Direction dir) {
 		return tryMove(controllingCritter, dir);
-	}
-
-	public void moveNpcs() {
-
-		// move all of the non main character critters
-		Direction[] possibleDirs = new Direction[] { Direction.UP,
-				Direction.RIGHT, Direction.DOWN, Direction.LEFT };
-		for (int i = 0; i < critters.size(); i++) {
-			Critter critter = critters.get(i);
-			if (!critter.equals(mainCharacter)) {
-				int nextDir = getEventContext().getRandom().nextInt(
-						INVERSE_CHANCE_TO_MOVE);
-				if (nextDir < possibleDirs.length) {
-					tryMove(critter, possibleDirs[nextDir]);
-				}
-			}
-		}
-	}
-
-	public void alignViewport() {
-		alignViewport(controllingCritter.getX(), controllingCritter.getY());
-	}
-
-	@Required
-	public void setBoardDefinitionFactory(
-			BoardDefinitionFactory boardDefinitionFactory) {
-		this.boardDefinitionFactory = boardDefinitionFactory;
-	}
-
-	@Required
-	public void setTileFactory(TileFactory tileFactory) {
-		this.tileFactory = tileFactory;
 	}
 
 }

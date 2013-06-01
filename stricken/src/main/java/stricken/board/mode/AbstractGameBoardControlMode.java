@@ -40,6 +40,15 @@ public abstract class AbstractGameBoardControlMode implements IKeySink {
 		eventContext.fire(Event.SHOW_SYSTEM_MENU);
 	}
 
+	public IEventContext getEventContext() {
+		return eventContext;
+	}
+
+	public GameBoard getGameBoard() {
+		return board;
+
+	}
+
 	/**
 	 * This method should store the mode's state
 	 */
@@ -62,15 +71,6 @@ public abstract class AbstractGameBoardControlMode implements IKeySink {
 	@Override
 	public void x() {
 
-	}
-
-	public GameBoard getGameBoard() {
-		return board;
-
-	}
-
-	public IEventContext getEventContext() {
-		return eventContext;
 	}
 
 }

@@ -80,6 +80,24 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 		}
 	}
 
+	protected int getViewportHeight() {
+		return windowSize.height / getSpriteSize().height;
+	}
+
+	protected int getViewportWidth() {
+		return windowSize.width / getSpriteSize().width;
+	}
+
+	public boolean isInViewport(int x, int y) {
+
+		int viewportWidth = getViewportWidth();
+		int viewportHeight = getViewportHeight();
+
+		return isInBounds(x, y, viewportX + viewportPaddingX, viewportY
+				+ viewportPaddingY, viewportWidth - viewportPaddingX - 2,
+				viewportHeight - viewportPaddingY - 2);
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -102,16 +120,6 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 		}
 	}
 
-	public boolean isInViewport(int x, int y) {
-
-		int viewportWidth = getViewportWidth();
-		int viewportHeight = getViewportHeight();
-
-		return isInBounds(x, y, viewportX + viewportPaddingX, viewportY
-				+ viewportPaddingY, viewportWidth - viewportPaddingX - 2,
-				viewportHeight - viewportPaddingY - 2);
-	}
-
 	public void setViewportPaddingX(int viewportPaddingX) {
 		this.viewportPaddingX = viewportPaddingX;
 	}
@@ -128,14 +136,6 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 	@Required
 	public void setWindowSize(Dimension windowSize) {
 		this.windowSize = windowSize;
-	}
-
-	protected int getViewportWidth() {
-		return windowSize.width / getSpriteSize().width;
-	}
-
-	protected int getViewportHeight() {
-		return windowSize.height / getSpriteSize().height;
 	}
 
 }

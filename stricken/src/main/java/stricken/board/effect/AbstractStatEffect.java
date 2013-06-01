@@ -52,6 +52,8 @@ public abstract class AbstractStatEffect extends
 		this.eventContext = eventContext;
 	}
 
+	public abstract int getStartingValue(Tile targetTile);
+
 	/**
 	 * This method checks that a Critter is occupying the target tile. If so, it
 	 * calculates the damage done by the attack and subtracts from the target's
@@ -104,7 +106,5 @@ public abstract class AbstractStatEffect extends
 			log.debug("No occupant in Tile " + targetTile);
 		}
 	}
-
-	public abstract int getStartingValue(Tile targetTile);
 
 }

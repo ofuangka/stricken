@@ -11,11 +11,11 @@ public class TileCostTracker {
 		this.cost = cost;
 	}
 	
-	public Tile getTile() {
-		return tile;
-	}
-	
 	public int getCost() {
 		return cost;
+	}
+	
+	public Tile getTile() {
+		return tile;
 	}
 }

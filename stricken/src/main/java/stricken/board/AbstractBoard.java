@@ -62,10 +62,6 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 		getCurrentKeySink().esc();
 	}
 
-	public Tile[] getAdjacentTiles(PositionedSpriteSheetSprite piece) {
-		return getAdjacentTiles(piece.getX(), piece.getY());
-	}
-
 	public Tile[] getAdjacentTiles(int x, int y) {
 		Tile[] ret = new Tile[Tile.NUM_TILE_EDGES];
 		if (isInBounds(x, y)) {
@@ -74,8 +70,20 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 		return ret;
 	}
 
+	public Tile[] getAdjacentTiles(PositionedSpriteSheetSprite piece) {
+		return getAdjacentTiles(piece.getX(), piece.getY());
+	}
+
 	public Tile[] getAdjacentTiles(Tile tile) {
 		return tile.getAdjacentTiles();
+	}
+
+	public IEventContext getEventContext() {
+		return eventContext;
+	}
+
+	public Dimension getSpriteSize() {
+		return spriteSize;
 	}
 
 	public Tile getTile(int x, int y) {
@@ -237,13 +245,5 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 	@Override
 	public void x() {
 		getCurrentKeySink().x();
-	}
-
-	public Dimension getSpriteSize() {
-		return spriteSize;
-	}
-
-	public IEventContext getEventContext() {
-		return eventContext;
 	}
 }

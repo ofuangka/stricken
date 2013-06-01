@@ -6,20 +6,24 @@ public class PieceDefinition {
 	private int seedX;
 	private int seedY;
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getId() {
 		return id;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public int getSeedX() {
+		return seedX;
+	}
+
+	public int getSeedY() {
+		return seedY;
 	}
 
 	public String getType() {
 		return type;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setSeedX(int seedX) {
@@ -30,11 +34,7 @@ public class PieceDefinition {
 		this.seedY = seedY;
 	}
 
-	public int getSeedX() {
-		return seedX;
-	}
-
-	public int getSeedY() {
-		return seedY;
+	public void setType(String type) {
+		this.type = type;
 	}
 }
