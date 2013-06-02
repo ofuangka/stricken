@@ -3,7 +3,9 @@ package stricken.board;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -14,14 +16,17 @@ import org.springframework.core.io.Resource;
 
 import stricken.board.loader.BoardDefinition;
 import stricken.board.loader.BoardDefinitionFactory;
+import stricken.board.loader.EntranceDefinition;
 import stricken.board.loader.TileDefinition;
 import stricken.board.mode.AbstractGameBoardControlMode;
 import stricken.board.mode.AdventureMode;
 import stricken.board.mode.CombatMovementMode;
+import stricken.board.piece.AbstractBoardPiece;
+import stricken.board.piece.CircleCritter;
+import stricken.board.piece.Critter;
+import stricken.board.piece.DecorationFactory;
 import stricken.board.piece.Tile;
 import stricken.board.piece.TileFactory;
-import stricken.board.piece.critter.CircleCritter;
-import stricken.board.piece.critter.Critter;
 import stricken.common.Direction;
 import stricken.event.Event;
 import stricken.event.IEventContext;
@@ -29,7 +34,7 @@ import stricken.ui.IKeySink;
 
 /**
  * The GameBoard keeps a registry of Critters, enabled and targeted Tiles. It
- * also manages control modes
+ * also manages control modes and tracks the main character
  * 
  * @author ofuangka
  * 
@@ -43,7 +48,10 @@ public class GameBoard extends AbstractViewportBoard {
 	public static final int INVERSE_CHANCE_TO_MOVE = 8;
 
 	private BoardDefinitionFactory boardDefinitionFactory;
+	private TileFactory tileFactory;
+	private DecorationFactory decorationFactory;
 
+	// game state
 	private Critter mainCharacter;
 
 	private Critter controllingCritter;
@@ -56,7 +64,7 @@ public class GameBoard extends AbstractViewportBoard {
 	private List<Tile> targetedTiles = new ArrayList<Tile>();
 	private List<AbstractGameBoardControlMode> modeHistory = new ArrayList<AbstractGameBoardControlMode>();
 
-	private TileFactory tileFactory;
+	private Map<Tile, EntranceDefinition> entrances = new HashMap<Tile, EntranceDefinition>();
 
 	public GameBoard(IEventContext eventContext) {
 		super(eventContext);
@@ -83,15 +91,25 @@ public class GameBoard extends AbstractViewportBoard {
 		}
 		controllingCritter = newCritter;
 		controllingCritter.setSelected(true);
+
+		alignViewport();
 		repaint();
 	}
 
-	public void clear() {
+	/**
+	 * This clears all registries and sets the tiles to null
+	 */
+	public void clearBoardState() {
+		modeHistory.clear();
 		sequence.clear();
 		critters.clear();
 		disabledTiles.clear();
 		tilesInTargetingRange.clear();
 		targetedTiles.clear();
+		tiles = null;
+		mainCharacter = null;
+		controllingCritter = null;
+		entrances.clear();
 	}
 
 	/**
@@ -173,11 +191,16 @@ public class GameBoard extends AbstractViewportBoard {
 
 	public void load(String id) throws JsonParseException,
 			JsonMappingException, IOException {
+		load(id, 0);
+	}
+
+	public void load(String id, int index) throws JsonParseException,
+			JsonMappingException, IOException {
 		log.info("Loading board '" + id + "'...");
 
 		// load the cells into tiles
 		BoardDefinition def = boardDefinitionFactory.get(id);
-		TileDefinition[][] cells = def.getCells();
+		TileDefinition[][] cells = def.getTiles();
 
 		tiles = new Tile[cells.length][];
 		for (int x = 0; x < tiles.length; x++) {
@@ -193,6 +216,13 @@ public class GameBoard extends AbstractViewportBoard {
 					tiles[x][y].setTop(tiles[x][y - 1]);
 				}
 			}
+		}
+
+		// load entrances
+		EntranceDefinition[] entranceDefinitions = def.getEntrances();
+		for (EntranceDefinition entranceDef : entranceDefinitions) {
+			entrances.put(getTile(entranceDef.getX(), entranceDef.getY()),
+					entranceDef);
 		}
 
 		// load any non-critter pieces
@@ -229,12 +259,19 @@ public class GameBoard extends AbstractViewportBoard {
 				critters.add(critter);
 			}
 		}
+		if (critters.isEmpty()) {
+			throw new RuntimeException(
+					"Randomness failed when placing Critters");
+		}
 		mainCharacter = critters.get(0);
 		mainCharacter.setHuman(true);
 		mainCharacter.setHostile(false);
 
 	}
 
+	/**
+	 * This moves npcs randomly one tile
+	 */
 	public void moveNpcs() {
 
 		// move all of the non main character critters
@@ -374,6 +411,29 @@ public class GameBoard extends AbstractViewportBoard {
 
 	public boolean tryMove(Direction dir) {
 		return tryMove(controllingCritter, dir);
+	}
+
+	@Required
+	public void setDecorationFactory(DecorationFactory decorationFactory) {
+		this.decorationFactory = decorationFactory;
+	}
+
+	@Override
+	protected boolean doBeforeMoveExecution(AbstractBoardPiece piece,
+			Tile nextTile, Direction dir) {
+		EntranceDefinition entranceDef = entrances.get(nextTile);
+		if (entranceDef != null && piece.equals(mainCharacter)
+				&& dir.equals(entranceDef.getDir())) {
+
+			try {
+				load(entranceDef.getId(), entranceDef.getIndex());
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+		}
+
+		return true;
 	}
 
 }

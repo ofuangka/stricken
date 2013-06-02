@@ -1,7 +1,7 @@
 package stricken.board.effect;
 
 import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter.Stat;
+import stricken.board.piece.Critter.Stat;
 import stricken.event.IEventContext;
 
 public class ConstantStatEffect extends

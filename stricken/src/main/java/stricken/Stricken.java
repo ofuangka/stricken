@@ -24,8 +24,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import stricken.board.GameBoard;
 import stricken.board.mode.TargetingMode;
-import stricken.board.piece.critter.Critter;
-import stricken.board.piece.critter.CritterAction;
+import stricken.board.piece.Critter;
+import stricken.board.piece.CritterAction;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
 import stricken.event.Event;
@@ -365,7 +365,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	public void handleStartGame() {
-		board.clear();
+		board.clearBoardState();
 		try {
 			board.load(startGameBoardId);
 		} catch (IOException e) {

@@ -5,9 +5,9 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 
 import stricken.board.piece.AbstractBoardPiece;
+import stricken.board.piece.Critter;
 import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter;
-import stricken.board.piece.critter.Critter.Stat;
+import stricken.board.piece.Critter.Stat;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 

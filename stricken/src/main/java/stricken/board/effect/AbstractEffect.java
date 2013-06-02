@@ -1,7 +1,7 @@
 package stricken.board.effect;
 
+import stricken.board.piece.Critter;
 import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter;
 
 public abstract class AbstractEffect {
 

@@ -1,8 +1,7 @@
 package stricken.board.loader;
 
-public class PieceDefinition {
+public class CritterDefinition {
 	private String id;
-	private String type;
 	private int seedX;
 	private int seedY;
 
@@ -18,10 +17,6 @@ public class PieceDefinition {
 		return seedY;
 	}
 
-	public String getType() {
-		return type;
-	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -32,9 +27,5 @@ public class PieceDefinition {
 
 	public void setSeedY(int seedY) {
 		this.seedY = seedY;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 }

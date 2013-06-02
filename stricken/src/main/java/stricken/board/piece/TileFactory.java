@@ -15,9 +15,10 @@ public class TileFactory extends AbstractBoardPieceFactory {
 	}
 
 	public Tile get(TileDefinition def, int x, int y) {
-		Integer[] spriteSheetXY = getTypes().get(def.getTerrain());
+		Integer[] spriteSheetXY = getTypes().get(def.getId());
 		Tile ret = new Tile(getSpriteSize(), getSpriteSheet(),
 				spriteSheetXY[0], spriteSheetXY[1], x, y);
+		ret.setWalkable(def.is_());
 		return ret;
 	}
 }

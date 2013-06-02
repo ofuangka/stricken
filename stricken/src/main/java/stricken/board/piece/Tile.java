@@ -77,7 +77,7 @@ public class Tile extends PositionedSpriteSheetSprite {
 	}
 
 	/**
-	 * Adds a piece to the list of pieces as long as it can fit
+	 * Adds a piece to the list of pieces in increasing z-order
 	 * 
 	 * @param piece
 	 */
@@ -85,7 +85,16 @@ public class Tile extends PositionedSpriteSheetSprite {
 		if (piece != null) {
 			if (!piece.isTakingUpSpace()
 					|| (piece.isTakingUpSpace() && !isOccupied())) {
-				pieces.add(piece);
+				if (pieces.isEmpty()) {
+					pieces.add(piece);
+				} else {
+					int i = 0;
+					while (i < pieces.size()
+							&& piece.getZ() < pieces.get(i).getZ()) {
+						i++;
+					}
+					pieces.add(i, piece);
+				}
 				if (piece.isTakingUpSpace()) {
 					occupant = piece;
 				}

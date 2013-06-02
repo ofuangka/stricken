@@ -1,8 +1,8 @@
 package stricken.board.collector;
 
+import stricken.board.piece.Critter;
 import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter;
-import stricken.board.piece.critter.Critter.Stat;
+import stricken.board.piece.Critter.Stat;
 
 public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 
@@ -30,7 +30,7 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 	@Override
 	protected boolean isTileValid(Tile tile) {
 		return tile != null
-				&& (!tile.isOccupied() || tile.getOccupant() == critter);
+				&& tile.isWalkable() && (!tile.isOccupied() || tile.getOccupant() == critter);
 	}
 
 }

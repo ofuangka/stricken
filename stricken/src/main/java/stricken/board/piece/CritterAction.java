@@ -1,4 +1,4 @@
-package stricken.board.piece.critter;
+package stricken.board.piece;
 
 import stricken.board.collector.ITileCollector;
 import stricken.board.effect.AbstractEffect;

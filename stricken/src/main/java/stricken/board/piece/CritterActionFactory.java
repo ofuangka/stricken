@@ -1,4 +1,4 @@
-package stricken.board.piece.critter;
+package stricken.board.piece;
 
 import java.io.IOException;
 
@@ -15,8 +15,7 @@ import stricken.board.collector.ITileFilter;
 import stricken.board.effect.AbstractEffect;
 import stricken.board.effect.ConstantStatEffect;
 import stricken.board.effect.StatDrivenStatEffect;
-import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter.Stat;
+import stricken.board.piece.Critter.Stat;
 import stricken.event.IEventContext;
 import stricken.util.AbstractXmlConsumer;
 

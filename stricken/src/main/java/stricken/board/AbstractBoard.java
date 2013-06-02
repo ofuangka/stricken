@@ -230,11 +230,25 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 			Tile nextTile = getTile(nextX, nextY);
 			if (nextTile.isWalkable() && nextTile.isEnabled()
 					&& !nextTile.isOccupied()) {
-				placePiece(piece, nextX, nextY);
-				return true;
+				if (doBeforeMoveExecution(piece, nextTile, dir)) {
+					placePiece(piece, nextX, nextY);
+					return true;
+				}
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * A hook to perform any additional checks before executing a move
+	 * 
+	 * @param piece
+	 * @param nextTile
+	 * @return
+	 */
+	protected boolean doBeforeMoveExecution(AbstractBoardPiece piece,
+			Tile nextTile, Direction dir) {
+		return true;
 	}
 
 	@Override

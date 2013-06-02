@@ -7,9 +7,9 @@ import org.apache.log4j.Logger;
 import stricken.board.GameBoard;
 import stricken.board.collector.ITileCollector;
 import stricken.board.effect.AbstractEffect;
+import stricken.board.piece.Critter;
+import stricken.board.piece.CritterAction;
 import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter;
-import stricken.board.piece.critter.CritterAction;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 

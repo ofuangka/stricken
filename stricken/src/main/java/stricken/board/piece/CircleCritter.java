@@ -1,4 +1,4 @@
-package stricken.board.piece.critter;
+package stricken.board.piece;
 
 import java.awt.Color;
 import java.awt.Dimension;

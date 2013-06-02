@@ -1,4 +1,4 @@
-package stricken.board.piece.critter;
+package stricken.board.piece;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import stricken.board.piece.AbstractBoardPiece;
 
 public class Critter extends AbstractBoardPiece {
 

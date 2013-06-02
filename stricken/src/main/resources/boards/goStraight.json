@@ -1,26 +1,870 @@
 {
-	"cells" : [
-		[{"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "cobbl"}, {"terrain" : "stone"}],
-		[{"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}, {"terrain" : "stone"}]
-	],
-	"pieces" : [{"id" : "", "type" : "", "seedX" : 0, "seedY" : 0}],
-	"entrances" : []
+	"critters" : [ {
+		"id" : "",
+		"seedX" : 0,
+		"seedY" : 0
+	} ],
+	"decorations" : [],
+	"entrances" : [ {
+		"id" : "",
+		"dir" : "right",
+		"x" : 0,
+		"y" : 0
+	} ],
+	"tiles" : [ [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ], [ {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : true,
+		"id" : "cobbl"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stone"
+	}, {
+		"_" : false,
+		"id" : "stonb"
+	} ] ]
 }

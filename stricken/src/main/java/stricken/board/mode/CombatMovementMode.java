@@ -5,8 +5,8 @@ import java.util.List;
 import stricken.board.GameBoard;
 import stricken.board.collector.AbstractFilteredTileCollector;
 import stricken.board.collector.CombatMovementTileCollector;
+import stricken.board.piece.Critter;
 import stricken.board.piece.Tile;
-import stricken.board.piece.critter.Critter;
 import stricken.common.Direction;
 import stricken.event.Event;
 import stricken.event.IEventContext;
@@ -29,8 +29,6 @@ public class CombatMovementMode extends AbstractGameBoardControlMode {
 
 		// figure out which tiles to enable and enable them
 		board.setEnabledTiles(getMovementRange(me));
-		
-		board.alignViewport();
 	}
 
 	@Override

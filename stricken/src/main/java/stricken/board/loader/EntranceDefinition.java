@@ -5,6 +5,7 @@ public class EntranceDefinition {
 	private String dir;
 	private int x;
 	private int y;
+	private int index;
 
 	public String getDir() {
 		return dir;
@@ -36,5 +37,13 @@ public class EntranceDefinition {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }

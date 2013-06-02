@@ -106,13 +106,21 @@
 		<property name="windowSize" ref="windowSize" />
 		<property name="boardDefinitionFactory" ref="boardDefinitionFactory" />
 		<property name="tileFactory" ref="tileFactory" />
+		<property name="decorationFactory" ref="decorationFactory" />
 	</bean>
 
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
 
 	<bean id="tileFactory" class="stricken.board.piece.TileFactory">
-		<constructor-arg value="classpath:/terrain.png" />
-		<constructor-arg value="classpath:/pieces/terrain.json" />
+		<constructor-arg value="classpath:/spritesheets/tile.png" />
+		<constructor-arg value="classpath:/pieces/tile.json" />
+		<constructor-arg ref="objectMapper" />
+		<constructor-arg ref="spriteSize" />
+	</bean>
+
+	<bean id="decorationFactory" class="stricken.board.piece.DecorationFactory">
+		<constructor-arg value="classpath:/spritesheets/decoration.png" />
+		<constructor-arg value="classpath:/pieces/decoration.json" />
 		<constructor-arg ref="objectMapper" />
 		<constructor-arg ref="spriteSize" />
 	</bean>
@@ -130,7 +138,7 @@
 		<property name="critterActionFactory" ref="critterActionFactory" />
 	</bean>
 
-	<bean id="critterActionFactory" class="stricken.board.piece.critter.CritterActionFactory">
+	<bean id="critterActionFactory" class="stricken.board.piece.CritterActionFactory">
 		<constructor-arg ref="stricken" />
 		<constructor-arg value="classpath:actions.xml" />
 	</bean>
