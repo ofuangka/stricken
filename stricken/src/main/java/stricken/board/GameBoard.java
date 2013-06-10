@@ -19,7 +19,6 @@ import stricken.board.loader.BoardDefinitionFactory;
 import stricken.board.loader.EntranceDefinition;
 import stricken.board.loader.TileDefinition;
 import stricken.board.mode.AbstractGameBoardControlMode;
-import stricken.board.mode.AdventureMode;
 import stricken.board.mode.CombatMovementMode;
 import stricken.board.piece.AbstractBoardPiece;
 import stricken.board.piece.CircleCritter;
@@ -75,6 +74,10 @@ public class GameBoard extends AbstractViewportBoard {
 		super(eventContext);
 	}
 
+	/**
+	 * Convenience method that just aligns the viewport to whichever critter is
+	 * in control
+	 */
 	public void alignViewport() {
 		alignViewport(controllingCritter.getX(), controllingCritter.getY());
 	}
@@ -229,7 +232,7 @@ public class GameBoard extends AbstractViewportBoard {
 
 		// load any critters
 		Random random = getEventContext().getRandom();
-		int numCritters = random.nextInt(11) + 1;
+		int numCritters = random.nextInt(11) + 3;
 		for (int i = 0; i < numCritters; i++) {
 			Critter critter = new CircleCritter(getSpriteSize(), new Color(
 					random.nextInt(255), random.nextInt(255),
@@ -250,13 +253,20 @@ public class GameBoard extends AbstractViewportBoard {
 			if (random.nextBoolean()) {
 				talents.add("LIGHTNING_STRIKE");
 			}
+			if (random.nextBoolean()) {
+				talents.add("THROW_ROCK");
+			}
+			if (random.nextBoolean()) {
+				talents.add("METEOR_RAIN");
+			}
 			critter.setTalents(talents);
 
-			int x = random.nextInt(11);
-			int y = random.nextInt(11);
+			int x = random.nextInt(tiles.length);
+			int y = random.nextInt(tiles[0].length);
 			if (!getTile(x, y).isOccupied() && getTile(x, y).isWalkable()) {
 				placePiece(critter, x, y);
 				critters.add(critter);
+				getEventContext().fire(Event.CRITTER_SPAWN, critter);
 			}
 		}
 		if (critters.isEmpty()) {
@@ -302,7 +312,6 @@ public class GameBoard extends AbstractViewportBoard {
 		if (!isMainCharacterOnBoard()) {
 			getEventContext().fire(Event.LOSE_CONDITION);
 		} else {
-			AbstractGameBoardControlMode firstMode;
 			if (isInCombat()) {
 
 				if (sequence.isEmpty()) {
@@ -314,18 +323,22 @@ public class GameBoard extends AbstractViewportBoard {
 				assignControl(sequence.remove(0));
 
 				// detect and set up the first control mode
-				firstMode = new CombatMovementMode(this, getEventContext());
+
+				AbstractGameBoardControlMode firstMode = new CombatMovementMode(
+						this, getEventContext());
+
+				pushMode(firstMode);
+
+				// wait for user input
 			} else {
-
-				// give the main character control
-				assignControl(mainCharacter);
-
-				firstMode = new AdventureMode(this, getEventContext());
+				getEventContext().fire(Event.WIN_CONDITION);
+				/*
+				 * // give the main character control
+				 * assignControl(mainCharacter);
+				 * 
+				 * firstMode = new AdventureMode(this, getEventContext());
+				 */
 			}
-
-			pushMode(firstMode);
-
-			// wait for user input
 		}
 	}
 

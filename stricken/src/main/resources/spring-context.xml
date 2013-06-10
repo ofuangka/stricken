@@ -14,15 +14,17 @@
 		<property name="mainMenu" ref="mainMenu" />
 		<property name="systemMenu" ref="systemMenu" />
 		<property name="youDiedScreen" ref="youDiedScreen" />
+		<property name="youWinScreen" ref="youWinScreen" />
 		<property name="gameBoard" ref="board" />
-		<property name="gameScreen" ref="gameScreen" />
+		<property name="gameInterface" ref="gameInterface" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
 		<property name="critterMenuFactory" ref="critterMenuFactory" />
 		<property name="startGameBoardId" value="goStraight" />
+		<property name="critterListPane" ref="critterListPane" />
 	</bean>
 
 	<bean id="windowSize" class="java.awt.Dimension">
-		<constructor-arg value="320" />
+		<constructor-arg value="384" />
 		<constructor-arg value="320" />
 	</bean>
 	<bean id="spriteSize" class="java.awt.Dimension">
@@ -89,6 +91,30 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="youWinScreen" class="stricken.ui.menu.Menu">
+		<constructor-arg ref="stricken" />
+		<constructor-arg>
+			<list>
+				<bean class="stricken.ui.menu.EventMenuItem">
+					<constructor-arg ref="stricken" />
+					<constructor-arg value="You win!" />
+					<constructor-arg>
+						<util:constant static-field="stricken.event.Event.SHOW_MAIN_MENU" />
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="gameInterface" class="stricken.ui.GameInterface">
+		<constructor-arg ref="gameScreen" />
+		<constructor-arg ref="critterListPane" />
+		<constructor-arg ref="spriteSize" />
+		<constructor-arg value="0.9" />
+	</bean>
+	
+	<bean id="critterListPane" class="stricken.ui.CritterListPane" />
+
 	<bean id="gameScreen" class="stricken.ui.GameScreen">
 		<constructor-arg>
 			<list>
@@ -103,7 +129,6 @@
 	<bean id="board" class="stricken.board.GameBoard">
 		<constructor-arg ref="stricken" />
 		<property name="spriteSize" ref="spriteSize" />
-		<property name="windowSize" ref="windowSize" />
 		<property name="boardDefinitionFactory" ref="boardDefinitionFactory" />
 		<property name="tileFactory" ref="tileFactory" />
 		<property name="decorationFactory" ref="decorationFactory" />

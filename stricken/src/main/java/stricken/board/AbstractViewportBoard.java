@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import stricken.board.piece.Tile;
 import stricken.event.IEventContext;
 
@@ -21,8 +19,6 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 
 	private int viewportX;
 	private int viewportY;
-
-	private Dimension windowSize;
 
 	public AbstractViewportBoard(IEventContext eventContext) {
 		super(eventContext);
@@ -81,11 +77,11 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 	}
 
 	protected int getViewportHeight() {
-		return windowSize.height / getSpriteSize().height;
+		return getPreferredSize().height / getSpriteSize().height;
 	}
 
 	protected int getViewportWidth() {
-		return windowSize.width / getSpriteSize().width;
+		return getPreferredSize().width / getSpriteSize().width;
 	}
 
 	public boolean isInViewport(int x, int y) {
@@ -131,11 +127,6 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 	public void setViewportXY(int viewportX, int viewportY) {
 		this.viewportX = viewportX;
 		this.viewportY = viewportY;
-	}
-
-	@Required
-	public void setWindowSize(Dimension windowSize) {
-		this.windowSize = windowSize;
 	}
 
 }

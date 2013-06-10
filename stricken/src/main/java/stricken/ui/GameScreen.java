@@ -99,6 +99,8 @@ public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 	@Override
 	public void setPreferredSize(Dimension preferredSize) {
 		super.setPreferredSize(preferredSize);
+		super.setMinimumSize(preferredSize);
+		super.setMaximumSize(preferredSize);
 
 		// set all the layers' bounds
 		for (ILayer layer : layers) {

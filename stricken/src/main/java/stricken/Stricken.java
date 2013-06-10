@@ -31,7 +31,8 @@ import stricken.event.AbstractEventContext;
 import stricken.event.Event;
 import stricken.event.IEvent;
 import stricken.event.IEventHandler;
-import stricken.ui.GameScreen;
+import stricken.ui.CritterListItem;
+import stricken.ui.CritterListPane;
 import stricken.ui.IKeySink;
 import stricken.ui.InGameMenuLayer;
 import stricken.ui.menu.CritterMenuFactory;
@@ -69,11 +70,13 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private Menu mainMenu;
 	private Menu systemMenu;
 	private Menu youDiedScreen;
+	private Menu youWinScreen;
 	private JPanel contentPane;
 	private JPanel glassPane;
 	private IKeySink currentKeySink;
 
-	private GameScreen gameScreen;
+	private JComponent gameInterface;
+	private CritterListPane critterListPane;
 	private GameBoard board;
 	private InGameMenuLayer inGameMenuLayer;
 
@@ -261,6 +264,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public void handleCritterDeath(Critter deceased) {
 		board.removeCritter(deceased);
+		critterListPane.removeCritter(deceased);
+	}
+	
+	public void handleCritterSpawn(Critter spawn) {
+		critterListPane.addCritter(spawn);
 	}
 
 	/**
@@ -272,6 +280,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		inGameMenuLayer.clearMenus();
 		inGameMenuLayer.setVisible(true);
 		board.nextTurn();
+		critterListPane.repaint();
 	}
 
 	/**
@@ -286,6 +295,10 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		}
 		case CRITTER_ACTION: {
 			handleCritterAction((CritterAction) arg);
+			break;
+		}
+		case CRITTER_SPAWN: {
+			handleCritterSpawn((Critter) arg);
 			break;
 		}
 		case SHOW_COMBAT_ACTION_MENU: {
@@ -317,7 +330,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			break;
 		}
 		case RETURN_TO_GAME: {
-			showScreen(gameScreen);
+			showScreen(gameInterface);
 			break;
 		}
 		case SHOW_MAIN_MENU: {
@@ -326,6 +339,10 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		}
 		case LOSE_CONDITION: {
 			showScreen(youDiedScreen);
+			break;
+		}
+		case WIN_CONDITION: {
+			showScreen(youWinScreen);
 			break;
 		}
 		default: {
@@ -366,12 +383,13 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public void handleStartGame() {
 		board.clearBoardState();
+		critterListPane.clearCritters();
 		try {
 			board.load(startGameBoardId);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		showScreen(gameScreen);
+		showScreen(gameInterface);
 		board.nextTurn();
 	}
 
@@ -386,8 +404,8 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	@Required
-	public void setGameScreen(GameScreen gameScreen) {
-		this.gameScreen = gameScreen;
+	public void setGameInterface(JComponent gameInterface) {
+		this.gameInterface = gameInterface;
 	}
 
 	@Required
@@ -424,6 +442,16 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	@Required
 	public void setYouDiedScreen(Menu youDiedScreen) {
 		this.youDiedScreen = youDiedScreen;
+	}
+
+	@Required
+	public void setYouWinScreen(Menu youWinScreen) {
+		this.youWinScreen = youWinScreen;
+	}
+
+	@Required
+	public void setCritterListPane(CritterListPane critterListPane) {
+		this.critterListPane = critterListPane;
 	}
 
 	/**
