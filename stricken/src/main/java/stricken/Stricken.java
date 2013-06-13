@@ -31,7 +31,6 @@ import stricken.event.AbstractEventContext;
 import stricken.event.Event;
 import stricken.event.IEvent;
 import stricken.event.IEventHandler;
-import stricken.ui.CritterListItem;
 import stricken.ui.CritterListPane;
 import stricken.ui.IKeySink;
 import stricken.ui.InGameMenuLayer;
@@ -46,7 +45,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private static final String STRICKEN_BEAN_ID = "stricken";
 
 	/* static variables */
-	private static final Logger log = Logger.getLogger(Stricken.class);
+	private static final Logger LOG = Logger.getLogger(Stricken.class);
 
 	public static void main(String[] args) {
 
@@ -98,7 +97,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	public void bootstrap() {
-		log.info("Bootstrapping...");
+		LOG.info("Bootstrapping...");
 		createWindow();
 		createContentPane();
 		createGlassPane();
@@ -111,7 +110,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * to the current keysink
 	 */
 	private void createContentPane() {
-		log.debug("Initializing content pane...");
+		LOG.debug("Initializing content pane...");
 		contentPane = new JPanel(new GridBagLayout());
 		InputMap inputMap = new InputMap();
 		ActionMap actionMap = new ActionMap();
@@ -232,7 +231,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	private void createGlassPane() {
-		log.debug("Initializing glass pane...");
+		LOG.debug("Initializing glass pane...");
 		glassPane = new JPanel(new GridBagLayout());
 		window.setGlassPane(glassPane);
 	}
@@ -241,7 +240,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * Creates and configures the window
 	 */
 	private void createWindow() {
-		log.debug("Initializing window...");
+		LOG.debug("Initializing window...");
 		window = new JFrame(windowTitle);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -346,7 +345,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			break;
 		}
 		default: {
-			log.warn("No handler defined for event '" + event + "'");
+			LOG.warn("No handler defined for event '" + event + "'");
 			break;
 		}
 		}
@@ -458,7 +457,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * Places the window in the center of the screen and sets it visible
 	 */
 	private void showAndCenterWindow() {
-		log.debug("Showing and centering window...");
+		LOG.debug("Showing and centering window...");
 		window.setVisible(true);
 		window.pack();
 		window.setLocationRelativeTo(null);
@@ -475,7 +474,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * @param screen
 	 */
 	private void showScreen(JComponent screen) {
-		log.info("Showing screen " + screen + "...");
+		LOG.info("Showing screen " + screen + "...");
 
 		// check if the screen has already been added once
 		if (!shownScreens.contains(screen)) {

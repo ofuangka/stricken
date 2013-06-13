@@ -18,7 +18,7 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 
 	private static final long serialVersionUID = -194016976519008438L;
 
-	private static final Logger log = Logger.getLogger(InGameMenuLayer.class);
+	private static final Logger LOG = Logger.getLogger(InGameMenuLayer.class);
 
 	public static final int MARGIN_VERTICAL = 1;
 	public static final int MARGIN_HORIZONTAL = 1;
@@ -36,7 +36,7 @@ public class InGameMenuLayer extends JPanel implements ILayer,
 
 	public void addMenu(Menu menu) {
 
-		log.debug("Adding Menu " + menu);
+		LOG.debug("Adding Menu " + menu);
 
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = menus.size();

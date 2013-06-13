@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 
@@ -42,7 +40,7 @@ public class GameBoard extends AbstractViewportBoard {
 
 	private static final long serialVersionUID = -1963940535869410879L;
 
-	private static final Logger log = Logger.getLogger(GameBoard.class);
+	private static final Logger LOG = Logger.getLogger(GameBoard.class);
 
 	public static final int INVERSE_CHANCE_TO_MOVE = 8;
 
@@ -88,7 +86,7 @@ public class GameBoard extends AbstractViewportBoard {
 	 * @param newCritter
 	 */
 	public void assignControl(Critter newCritter) {
-		log.debug("Assigning control to Critter " + newCritter + "...");
+		LOG.debug("Assigning control to Critter " + newCritter + "...");
 		if (controllingCritter != null) {
 			controllingCritter.setSelected(false);
 		}
@@ -119,7 +117,7 @@ public class GameBoard extends AbstractViewportBoard {
 	 * Clears all targeted Tiles
 	 */
 	public void clearCrosshair() {
-		log.debug("Clearing targeted Tile objects...");
+		LOG.debug("Clearing targeted Tile objects...");
 		while (!targetedTiles.isEmpty()) {
 			targetedTiles.remove(0).setTargeted(false);
 		}
@@ -130,7 +128,7 @@ public class GameBoard extends AbstractViewportBoard {
 	 * Enables all tiles
 	 */
 	public void clearDisabledTiles() {
-		log.debug("Removing all out of range tiles...");
+		LOG.debug("Removing all out of range tiles...");
 		while (!disabledTiles.isEmpty()) {
 			disabledTiles.remove(0).setEnabled(true);
 		}
@@ -141,14 +139,14 @@ public class GameBoard extends AbstractViewportBoard {
 	 * Puts all tiles out of targeting range
 	 */
 	public void clearTargetingRange() {
-		log.debug("Clearing targetable Tile objects...");
+		LOG.debug("Clearing targetable Tile objects...");
 		while (!tilesInTargetingRange.isEmpty()) {
 			tilesInTargetingRange.remove(0).setInTargetingRange(false);
 		}
 	}
 
 	private void createCritterSequence() {
-		log.debug("Creating Critter sequence...");
+		LOG.debug("Creating Critter sequence...");
 		// TODO: implement
 		sequence.addAll(critters);
 	}
@@ -192,14 +190,12 @@ public class GameBoard extends AbstractViewportBoard {
 		return critters.contains(mainCharacter);
 	}
 
-	public void load(String id) throws JsonParseException,
-			JsonMappingException, IOException {
+	public void load(String id) throws IOException {
 		load(id, 0);
 	}
 
-	public void load(String id, int index) throws JsonParseException,
-			JsonMappingException, IOException {
-		log.info("Loading board '" + id + "'...");
+	public void load(String id, int index) throws IOException {
+		LOG.info("Loading board '" + id + "'...");
 
 		// load the cells into tiles
 		BoardDefinition def = boardDefinitionFactory.get(id);
@@ -240,6 +236,9 @@ public class GameBoard extends AbstractViewportBoard {
 			critter.setStat(Critter.Stat.MAXHP, random.nextInt(3) + 1);
 			critter.setStat(Critter.Stat.HP,
 					critter.getStat(Critter.Stat.MAXHP));
+			critter.setStat(Critter.Stat.MAXMP, random.nextInt(3) + 1);
+			critter.setStat(Critter.Stat.MP,
+					critter.getStat(Critter.Stat.MAXMP));
 			critter.setStat(Critter.Stat.STRENGTH, random.nextInt(3) + 1);
 			critter.setStat(Critter.Stat.SPEED, random.nextInt(3) + 1);
 			critter.setHostile(random.nextBoolean());
@@ -300,7 +299,7 @@ public class GameBoard extends AbstractViewportBoard {
 	}
 
 	public void nextTurn() {
-		log.debug("Starting new turn...");
+		LOG.debug("Starting new turn...");
 
 		clearDisabledTiles();
 		clearTargetingRange();
@@ -315,7 +314,7 @@ public class GameBoard extends AbstractViewportBoard {
 			if (isInCombat()) {
 
 				if (sequence.isEmpty()) {
-					log.debug("Critter sequence empty, starting new round...");
+					LOG.debug("Critter sequence empty, starting new round...");
 					createCritterSequence();
 				}
 
@@ -373,7 +372,7 @@ public class GameBoard extends AbstractViewportBoard {
 			}
 			repaint();
 		} else {
-			log.warn("targetTiles called with null Tile List");
+			LOG.warn("targetTiles called with null Tile List");
 		}
 	}
 
@@ -413,7 +412,7 @@ public class GameBoard extends AbstractViewportBoard {
 			}
 			repaint();
 		} else {
-			log.warn("setTargetable called with null Tile List");
+			LOG.warn("setTargetable called with null Tile List");
 		}
 	}
 

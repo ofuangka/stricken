@@ -44,7 +44,7 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 
 			// depending on where the point is in relation to the viewport, move
 			// the viewport
-			if (x < viewportX + viewportPaddingX) { //
+			if (x < viewportX + viewportPaddingX) {
 				newViewportX = x - viewportPaddingX;
 			} else if (x > viewportX + viewportWidth - viewportPaddingX - 1) {
 				newViewportX = x + viewportPaddingX - viewportWidth + 1;
@@ -71,8 +71,6 @@ public abstract class AbstractViewportBoard extends AbstractBoard {
 			}
 
 			setViewportXY(newViewportX, newViewportY);
-		} else { // do nothing to the viewport (x and y are still within it)
-
 		}
 	}
 

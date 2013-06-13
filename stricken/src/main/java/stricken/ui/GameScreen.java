@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 	private static final long serialVersionUID = -205137708801737354L;
 
-	private static final Logger log = Logger.getLogger(GameScreen.class);
+	private static final Logger LOG = Logger.getLogger(GameScreen.class);
 
 	private List<ILayer> layers;
 
@@ -32,7 +32,7 @@ public class GameScreen extends JLayeredPane implements IDelegatingKeySink {
 	 * @param layers
 	 */
 	public GameScreen(List<ILayer> layers) {
-		log.debug("Initializing GameScreen layers...");
+		LOG.debug("Initializing GameScreen layers...");
 		if (layers != null) {
 
 			for (int i = 0; i < layers.size(); i++) {

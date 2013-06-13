@@ -2,8 +2,6 @@ package stricken.board.loader;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.ClassPathResource;
@@ -16,10 +14,9 @@ public class BoardDefinitionFactory {
 	private String suffix = DEFAULT_SUFFIX;
 	private ObjectMapper objectMapper;
 
-	public BoardDefinition get(String id) throws JsonParseException,
-			JsonMappingException, IOException {
+	public BoardDefinition get(String id) throws IOException {
 		return objectMapper.readValue((new ClassPathResource(prefix + id
-				+ suffix)).getFile(), BoardDefinition.class);
+				+ suffix)).getURI().toURL(), BoardDefinition.class);
 	}
 
 	@Required

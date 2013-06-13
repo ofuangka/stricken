@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  */
 public class Tile extends PositionedSpriteSheetSprite {
 
-	private static final Logger log = Logger.getLogger(Tile.class);
+	private static final Logger LOG = Logger.getLogger(Tile.class);
 
 	public static final Comparator<Tile> TOP_BOTTOM_LEFT_RIGHT = new Comparator<Tile>() {
 
@@ -99,7 +99,7 @@ public class Tile extends PositionedSpriteSheetSprite {
 					occupant = piece;
 				}
 			} else {
-				log.warn("Trying to add a space taking piece when Tile is already occupied.");
+				LOG.warn("Trying to add a space taking piece when Tile is already occupied.");
 			}
 		}
 

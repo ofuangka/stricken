@@ -17,7 +17,7 @@ public class TargetingMode extends AbstractGameBoardControlMode {
 
 	public static final int NO_SELECTABLE_TILE_INDEX = -1;
 
-	private static final Logger log = Logger.getLogger(TargetingMode.class);
+	private static final Logger LOG = Logger.getLogger(TargetingMode.class);
 
 	private List<Tile> actualRange;
 	private int currentIndex;
@@ -58,7 +58,7 @@ public class TargetingMode extends AbstractGameBoardControlMode {
 			getGameBoard().disableAllTiles();
 
 			// error handling
-			log.warn("No selectable tiles");
+			LOG.warn("No selectable tiles");
 		}
 
 	}
@@ -83,10 +83,10 @@ public class TargetingMode extends AbstractGameBoardControlMode {
 			for (Tile tile : affectedTiles) {
 				tileEffect.interact(tile);
 			}
-			log.debug("Valid tile selection, ending turn");
+			LOG.debug("Valid tile selection, ending turn");
 			getEventContext().fire(Event.END_OF_TURN);
 		} else {
-			log.warn("Invalid tile selection, please try again");
+			LOG.warn("Invalid tile selection, please try again");
 		}
 	}
 

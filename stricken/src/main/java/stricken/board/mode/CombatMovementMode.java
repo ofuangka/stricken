@@ -54,7 +54,7 @@ public class CombatMovementMode extends AbstractGameBoardControlMode {
 
 	@Override
 	public void left() {
-		getGameBoard().tryMove(Direction.LEFT);
+		tryMove(Direction.LEFT);
 	}
 
 	@Override

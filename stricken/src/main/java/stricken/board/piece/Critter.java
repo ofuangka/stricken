@@ -11,7 +11,7 @@ import java.util.Map;
 public class Critter extends AbstractBoardPiece {
 
 	public enum Stat {
-		HP, MAXHP, SPEED, STRENGTH, WILL, DAMAGE_RANGE, DAMAGE_MODIFIER
+		HP, MAXHP, MP, MAXMP, SPEED, STRENGTH, WILL, DAMAGE_RANGE, DAMAGE_MODIFIER
 	}
 
 	private static final int DEFAULT_STAT_VALUE = 0;

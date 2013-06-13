@@ -14,7 +14,7 @@ import org.springframework.core.io.Resource;
 
 public abstract class AbstractBoardPieceFactory {
 
-	private static final Logger log = Logger
+	private static final Logger LOG = Logger
 			.getLogger(AbstractBoardPieceFactory.class);
 
 	private BufferedImage spriteSheet;
@@ -25,12 +25,12 @@ public abstract class AbstractBoardPieceFactory {
 			Resource typeResource, ObjectMapper objectMapper,
 			Dimension spriteSize) {
 		try {
-			spriteSheet = ImageIO.read(spriteSheetResource.getFile());
-			types = objectMapper.readValue(typeResource.getFile(),
+			spriteSheet = ImageIO.read(spriteSheetResource.getURI().toURL());
+			types = objectMapper.readValue(typeResource.getURI().toURL(),
 					new TypeReference<Map<String, Integer[]>>() {
 					});
 		} catch (IOException e) {
-			log.error("Could not read spritesheet file", e);
+			LOG.error("Could not read spritesheet file", e);
 		}
 		this.spriteSize = spriteSize;
 	}

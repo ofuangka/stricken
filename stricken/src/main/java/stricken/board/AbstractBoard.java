@@ -30,7 +30,7 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 	public static final int INVALID_X = -1;
 	public static final int INVALID_Y = -1;
 
-	private static final Logger log = Logger.getLogger(AbstractBoard.class);
+	private static final Logger LOG = Logger.getLogger(AbstractBoard.class);
 
 	private IEventContext eventContext;
 
@@ -202,7 +202,7 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 	 * @param dir
 	 */
 	public boolean tryMove(AbstractBoardPiece piece, Direction dir) {
-		log.debug("Attempting to move piece " + piece + " " + dir);
+		LOG.debug("Attempting to move piece " + piece + " " + dir);
 		int nextX = piece.getX();
 		int nextY = piece.getY();
 		switch (dir) {
@@ -229,11 +229,11 @@ public abstract class AbstractBoard extends JComponent implements ILayer,
 		if (isInBounds(nextX, nextY)) {
 			Tile nextTile = getTile(nextX, nextY);
 			if (nextTile.isWalkable() && nextTile.isEnabled()
-					&& !nextTile.isOccupied()) {
-				if (doBeforeMoveExecution(piece, nextTile, dir)) {
-					placePiece(piece, nextX, nextY);
-					return true;
-				}
+					&& !nextTile.isOccupied()
+					&& doBeforeMoveExecution(piece, nextTile, dir)) {
+				placePiece(piece, nextX, nextY);
+				return true;
+
 			}
 		}
 		return false;

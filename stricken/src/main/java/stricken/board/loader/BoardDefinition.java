@@ -32,19 +32,19 @@ public class BoardDefinition {
 	}
 
 	public void setTiles(TileDefinition[][] tiles) {
-		this.tiles = tiles;
+		this.tiles = tiles.clone();
 	}
 
 	public void setEntrances(EntranceDefinition[] entrances) {
-		this.entrances = entrances;
+		this.entrances = entrances.clone();
 	}
 
 	public void setCritters(CritterDefinition[] pieces) {
-		this.critters = pieces;
+		this.critters = pieces.clone();
 	}
 
 	public void setDecorations(DecorationDefinition[] decorations) {
-		this.decorations = decorations;
+		this.decorations = decorations.clone();
 	}
 
 }

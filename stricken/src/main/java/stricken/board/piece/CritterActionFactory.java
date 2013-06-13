@@ -35,7 +35,7 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		OCCUPIED_BY_CRITTER, NO_FILTER
 	}
 
-	private static final Logger log = Logger
+	private static final Logger LOG = Logger
 			.getLogger(CritterActionFactory.class);
 
 	private IEventContext eventContext;
@@ -50,7 +50,7 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 
 		// get the main element representing the ID provided
 		String elXpath = "/actions/action[@id='" + id + "']";
-		log.debug("Requesting critter using XPath: '" + elXpath + "'...");
+		LOG.debug("Requesting critter using XPath: '" + elXpath + "'...");
 		return parseAction((Element) getDocument().selectSingleNode(elXpath),
 				critter);
 	}

@@ -16,7 +16,9 @@ public class CritterListPane extends JScrollPane {
 
 	private static final long serialVersionUID = 4716145778679751281L;
 
-	Map<Critter, CritterListItem> items = new HashMap<Critter, CritterListItem>();
+	private Map<Critter, CritterListItem> items = new HashMap<Critter, CritterListItem>();
+	
+	private JLabel spacer = new JLabel();
 
 	public CritterListPane() {
 		super(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -30,19 +32,33 @@ public class CritterListPane extends JScrollPane {
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;
 		gc.gridy = items.size();
-		((JPanel) getViewport().getView()).add(critterItem, gc);
+		getView().add(critterItem, gc);
+		refreshSpacer();
 	}
 
 	public void removeCritter(Critter critter) {
-		((JPanel) getViewport().getView()).remove(items.remove(critter));
+		getView().remove(items.remove(critter));
 	}
 
 	public void clearCritters() {
 		Set<Critter> critters = items.keySet();
 		for (Critter critter : critters) {
-			((JPanel) getViewport().getView()).remove(items.get(critter));
+			getView().remove(items.get(critter));
 		}
 		items.clear();
+	}
+	
+	protected JPanel getView() {
+		return ((JPanel) getViewport().getView());
+	}
+	
+	protected void refreshSpacer() {
+		getView().remove(spacer);
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.gridx = 0;
+		gc.gridy = items.size() + 1;
+		gc.weighty = 1;
+		getView().add(spacer, gc);
 	}
 
 }

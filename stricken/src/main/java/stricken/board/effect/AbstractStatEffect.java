@@ -21,7 +21,7 @@ import stricken.event.IEventContext;
 public abstract class AbstractStatEffect extends
 		AbstractEffect {
 
-	private static final Logger log = Logger
+	private static final Logger LOG = Logger
 			.getLogger(AbstractStatEffect.class);
 
 	private final Stat affectedStat;
@@ -91,7 +91,7 @@ public abstract class AbstractStatEffect extends
 					newValue = maxValue;
 				}
 
-				log.debug("Target '" + target + "'." + affectedStat + " = "
+				LOG.debug("Target '" + target + "'." + affectedStat + " = "
 						+ newValue);
 
 				target.setStat(affectedStat, newValue);
@@ -100,10 +100,10 @@ public abstract class AbstractStatEffect extends
 					eventContext.fire(Event.CRITTER_DEATH, target);
 				}
 			} else {
-				log.debug("Occupant is not a Critter");
+				LOG.debug("Occupant is not a Critter");
 			}
 		} else {
-			log.debug("No occupant in Tile " + targetTile);
+			LOG.debug("No occupant in Tile " + targetTile);
 		}
 	}
 
