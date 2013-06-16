@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Required;
 
 import stricken.board.piece.Critter;
-import stricken.board.piece.CritterAction;
-import stricken.board.piece.CritterActionFactory;
+import stricken.board.piece.TargetedAction;
+import stricken.board.piece.TargetedActionFactory;
 import stricken.event.Event;
 import stricken.event.IEventContext;
 
@@ -34,7 +34,7 @@ public class CritterMenuFactory {
 	public static final String NO_TALENT_LABEL = "No talents";
 
 	private IEventContext eventContext;
-	private CritterActionFactory critterActionFactory;
+	private TargetedActionFactory targetedActionFactory;
 
 	public CritterMenuFactory(IEventContext eventContext) {
 		this.eventContext = eventContext;
@@ -44,7 +44,7 @@ public class CritterMenuFactory {
 
 		Menu ret = new Menu(eventContext);
 		List<AbstractMenuItem> menuItems = new ArrayList<AbstractMenuItem>();
-		CritterAction attack = critterActionFactory.get(critter.getAttack(),
+		TargetedAction attack = targetedActionFactory.get(critter.getAttack(),
 				critter);
 		AbstractMenuItem attackMenuItem = new EventMenuItem(eventContext,
 				ATTACK_LABEL, Event.CRITTER_ACTION, attack);
@@ -97,7 +97,7 @@ public class CritterMenuFactory {
 			menuItems.add(new NoopMenuItem(eventContext, NO_ITEM_LABEL));
 		} else {
 			for (String item : items) {
-				CritterAction critterAction = critterActionFactory.get(item,
+				TargetedAction critterAction = targetedActionFactory.get(item,
 						critter);
 				menuItems.add(new EventMenuItem(eventContext, critterAction
 						.getName(), Event.CRITTER_ACTION,
@@ -119,7 +119,7 @@ public class CritterMenuFactory {
 			menuItems.add(new NoopMenuItem(eventContext, NO_TALENT_LABEL));
 		} else {
 			for (String talent : talents) {
-				CritterAction critterAction = critterActionFactory.get(talent,
+				TargetedAction critterAction = targetedActionFactory.get(talent,
 						critter);
 				menuItems.add(new EventMenuItem(eventContext, critterAction
 						.getName(), Event.CRITTER_ACTION,
@@ -132,8 +132,8 @@ public class CritterMenuFactory {
 	}
 
 	@Required
-	public void setCritterActionFactory(
-			CritterActionFactory critterActionFactory) {
-		this.critterActionFactory = critterActionFactory;
+	public void setTargetedActionFactory(
+			TargetedActionFactory targetedActionFactory) {
+		this.targetedActionFactory = targetedActionFactory;
 	}
 }

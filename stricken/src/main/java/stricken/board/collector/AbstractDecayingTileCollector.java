@@ -21,7 +21,7 @@ import stricken.board.piece.Tile;
 public abstract class AbstractDecayingTileCollector extends
 		AbstractFilteredTileCollector {
 
-	public AbstractDecayingTileCollector(ITileFilter filter) {
+	public AbstractDecayingTileCollector(TileListFilter filter) {
 		super(filter);
 	}
 

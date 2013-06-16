@@ -16,7 +16,7 @@
 		<property name="youDiedScreen" ref="youDiedScreen" />
 		<property name="youWinScreen" ref="youWinScreen" />
 		<property name="gameBoard" ref="board" />
-		<property name="gameInterface" ref="gameInterface" />
+		<property name="gameScreen" ref="gameScreen" />
 		<property name="inGameMenuLayer" ref="inGameMenuLayer" />
 		<property name="critterMenuFactory" ref="critterMenuFactory" />
 		<property name="startGameBoardId" value="goStraight" />
@@ -106,16 +106,16 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="gameInterface" class="stricken.ui.GameInterface">
-		<constructor-arg ref="gameScreen" />
+	<bean id="gameScreen" class="stricken.ui.GameScreen">
+		<constructor-arg ref="gameLayeredPane" />
 		<constructor-arg ref="critterListPane" />
 		<constructor-arg ref="spriteSize" />
 		<constructor-arg value="0.9" />
 	</bean>
-	
+
 	<bean id="critterListPane" class="stricken.ui.CritterListPane" />
 
-	<bean id="gameScreen" class="stricken.ui.GameScreen">
+	<bean id="gameLayeredPane" class="stricken.ui.GameLayeredPane">
 		<constructor-arg>
 			<list>
 				<ref bean="board" />
@@ -160,10 +160,10 @@
 
 	<bean id="critterMenuFactory" class="stricken.ui.menu.CritterMenuFactory">
 		<constructor-arg ref="stricken" />
-		<property name="critterActionFactory" ref="critterActionFactory" />
+		<property name="targetedActionFactory" ref="targetedActionFactory" />
 	</bean>
 
-	<bean id="critterActionFactory" class="stricken.board.piece.CritterActionFactory">
+	<bean id="targetedActionFactory" class="stricken.board.piece.TargetedActionFactory">
 		<constructor-arg ref="stricken" />
 		<constructor-arg value="classpath:actions.xml" />
 	</bean>

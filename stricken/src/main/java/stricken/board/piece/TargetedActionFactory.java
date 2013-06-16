@@ -9,9 +9,8 @@ import org.dom4j.Element;
 import org.springframework.core.io.Resource;
 
 import stricken.board.collector.AbstractDecayingTileCollector;
-import stricken.board.collector.AbstractFilteredTileCollector;
 import stricken.board.collector.ITileCollector;
-import stricken.board.collector.ITileFilter;
+import stricken.board.collector.TileListFilter;
 import stricken.board.effect.AbstractEffect;
 import stricken.board.effect.ConstantStatEffect;
 import stricken.board.effect.StatDrivenStatEffect;
@@ -25,7 +24,7 @@ import stricken.util.AbstractXmlConsumer;
  * @author ofuangka
  * 
  */
-public class CritterActionFactory extends AbstractXmlConsumer {
+public class TargetedActionFactory extends AbstractXmlConsumer {
 
 	public enum TileEffectType {
 		SOURCE_STAT_DRIVEN_TARGET_STAT_CHANGE, CONSTANT_DRIVEN_TARGET_STAT_CHANGE
@@ -36,17 +35,17 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 	}
 
 	private static final Logger LOG = Logger
-			.getLogger(CritterActionFactory.class);
+			.getLogger(TargetedActionFactory.class);
 
 	private IEventContext eventContext;
 
-	public CritterActionFactory(IEventContext eventContext, Resource resource)
+	public TargetedActionFactory(IEventContext eventContext, Resource resource)
 			throws DocumentException, IOException {
 		super(resource);
 		this.eventContext = eventContext;
 	}
 
-	public CritterAction get(String id, Critter critter) {
+	public TargetedAction get(String id, Critter critter) {
 
 		// get the main element representing the ID provided
 		String elXpath = "/actions/action[@id='" + id + "']";
@@ -56,7 +55,7 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 	}
 
 	protected AbstractDecayingTileCollector getAbstractDecayingTileCollector(
-			final ITileFilter filter, final int costThreshold,
+			final TileListFilter filter, final int costThreshold,
 			final int tileCost, final boolean isInclusive) {
 		return new AbstractDecayingTileCollector(filter) {
 
@@ -83,7 +82,7 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		};
 	}
 
-	protected CritterAction parseAction(Element el, Critter critter) {
+	protected TargetedAction parseAction(Element el, Critter critter) {
 
 		ITileCollector targetingRange = parseRange((Element) el
 				.selectSingleNode("range[@type='TARGETING']"));
@@ -97,12 +96,11 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		AbstractEffect effect = parseEffect(
 				(Element) el.selectSingleNode("effect"), critter);
 
-		return new CritterAction(el.valueOf("@name"), targetingRange,
+		return new TargetedAction(el.valueOf("@name"), targetingRange,
 				actualRange, aoe, effect);
 	}
 
-	protected AbstractEffect parseEffect(Element el,
-			Critter critter) {
+	protected AbstractEffect parseEffect(Element el, Critter critter) {
 		AbstractEffect ret = null;
 
 		TileEffectType effectType = TileEffectType.valueOf(el.valueOf("@type"));
@@ -115,13 +113,13 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		switch (effectType) {
 		case CONSTANT_DRIVEN_TARGET_STAT_CHANGE: {
 			int drivingValue = Integer.valueOf("@drivingValue");
-			ret = new ConstantStatEffect(drivingValue,
-					affectedStat, effectRange, modifier, positive, eventContext);
+			ret = new ConstantStatEffect(drivingValue, affectedStat,
+					effectRange, modifier, positive, eventContext);
 		}
 		default: {
 			Stat drivingStat = Critter.Stat.valueOf(el.valueOf("@drivingStat"));
-			ret = new StatDrivenStatEffect(drivingStat,
-					affectedStat, effectRange, modifier, positive, eventContext);
+			ret = new StatDrivenStatEffect(drivingStat, affectedStat,
+					effectRange, modifier, positive, eventContext);
 			break;
 		}
 		}
@@ -129,27 +127,18 @@ public class CritterActionFactory extends AbstractXmlConsumer {
 		return ret;
 	}
 
-	protected ITileFilter parseFilter(Element el) {
-		ITileFilter ret = null;
+	protected TileListFilter parseFilter(Element el) {
+		TileListFilter ret = null;
 
 		TileFilterType filterType = TileFilterType.valueOf(el.valueOf("@type"));
 
 		switch (filterType) {
 		case OCCUPIED_BY_CRITTER: {
-			ret = new ITileFilter() {
-
-				@Override
-				public boolean apply(Tile t) {
-					return t != null
-							&& t.isOccupied()
-							&& Critter.class.isAssignableFrom(t.getOccupant()
-									.getClass());
-				}
-			};
+			ret = TileListFilter.OCCUPIED_BY_CRITTER_FILTER;
 			break;
 		}
 		default: {
-			ret = AbstractFilteredTileCollector.NO_FILTER;
+			ret = TileListFilter.NULL_TILE_FILTER;
 			break;
 		}
 		}

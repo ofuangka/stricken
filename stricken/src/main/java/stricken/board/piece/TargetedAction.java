@@ -10,14 +10,14 @@ import stricken.board.effect.AbstractEffect;
  * @author ofuangka
  * 
  */
-public class CritterAction {
+public class TargetedAction {
 	private final String name;
 	private final ITileCollector targetingRange;
 	private final ITileCollector actualRange;
 	private final ITileCollector areaOfEffect;
 	private final AbstractEffect tileEffect;
 
-	public CritterAction(String name, ITileCollector targetingRange,
+	public TargetedAction(String name, ITileCollector targetingRange,
 			ITileCollector actualRange, ITileCollector areaOfEffect,
 			AbstractEffect tileEffect) {
 		this.name = name;

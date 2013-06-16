@@ -8,7 +8,7 @@ import stricken.board.GameBoard;
 import stricken.board.collector.ITileCollector;
 import stricken.board.effect.AbstractEffect;
 import stricken.board.piece.Critter;
-import stricken.board.piece.CritterAction;
+import stricken.board.piece.TargetedAction;
 import stricken.board.piece.Tile;
 import stricken.event.Event;
 import stricken.event.IEventContext;
@@ -21,10 +21,10 @@ public class TargetingMode extends AbstractGameBoardControlMode {
 
 	private List<Tile> actualRange;
 	private int currentIndex;
-	private final CritterAction action;
+	private final TargetedAction action;
 
 	public TargetingMode(GameBoard board, IEventContext eventContext,
-			CritterAction action) {
+			TargetedAction action) {
 		super(board, eventContext);
 		this.action = action;
 	}

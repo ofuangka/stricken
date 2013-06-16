@@ -1,14 +1,14 @@
 package stricken.board.collector;
 
 import stricken.board.piece.Critter;
-import stricken.board.piece.Tile;
 import stricken.board.piece.Critter.Stat;
+import stricken.board.piece.Tile;
 
 public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 
 	private Critter critter;
 
-	public CombatMovementTileCollector(ITileFilter filter, Critter critter) {
+	public CombatMovementTileCollector(TileListFilter filter, Critter critter) {
 		super(filter);
 		this.critter = critter;
 	}
@@ -29,8 +29,8 @@ public class CombatMovementTileCollector extends AbstractDecayingTileCollector {
 
 	@Override
 	protected boolean isTileValid(Tile tile) {
-		return tile != null
-				&& tile.isWalkable() && (!tile.isOccupied() || tile.getOccupant() == critter);
+		return tile != null && tile.isWalkable()
+				&& (!tile.isOccupied() || tile.getOccupant() == critter);
 	}
 
 }

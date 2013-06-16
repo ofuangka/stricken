@@ -3,8 +3,8 @@ package stricken.board.mode;
 import java.util.List;
 
 import stricken.board.GameBoard;
-import stricken.board.collector.AbstractFilteredTileCollector;
 import stricken.board.collector.CombatMovementTileCollector;
+import stricken.board.collector.TileListFilter;
 import stricken.board.piece.Critter;
 import stricken.board.piece.Tile;
 import stricken.common.Direction;
@@ -24,7 +24,7 @@ public class CombatMovementMode extends AbstractGameBoardControlMode {
 	public void configureTileState() {
 
 		GameBoard board = getGameBoard();
-		
+
 		Critter me = board.getControllingCritter();
 
 		// figure out which tiles to enable and enable them
@@ -48,7 +48,7 @@ public class CombatMovementMode extends AbstractGameBoardControlMode {
 
 	private List<Tile> getMovementRange(Critter critter) {
 		CombatMovementTileCollector tileCollector = new CombatMovementTileCollector(
-				AbstractFilteredTileCollector.NO_FILTER, critter);
+				TileListFilter.NULL_TILE_FILTER, critter);
 		return tileCollector.collect(getGameBoard().getTile(origX, origY));
 	}
 

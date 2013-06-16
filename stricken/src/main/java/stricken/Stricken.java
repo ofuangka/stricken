@@ -25,7 +25,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import stricken.board.GameBoard;
 import stricken.board.mode.TargetingMode;
 import stricken.board.piece.Critter;
-import stricken.board.piece.CritterAction;
+import stricken.board.piece.TargetedAction;
 import stricken.common.StrickenConstants;
 import stricken.event.AbstractEventContext;
 import stricken.event.Event;
@@ -63,27 +63,29 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		stricken.bootstrap();
 	}
 
-	/* instance variables */
+	// registers
 	private List<JComponent> shownScreens = new ArrayList<JComponent>();
+	private IKeySink currentKeySink;
+
+	// ui swing
 	private JFrame window;
+	private JPanel screenPanel;
+	private JComponent gameScreen;
+
+	// menus
 	private Menu mainMenu;
 	private Menu systemMenu;
 	private Menu youDiedScreen;
 	private Menu youWinScreen;
-	private JPanel contentPane;
-	private JPanel glassPane;
-	private IKeySink currentKeySink;
 
-	private JComponent gameInterface;
 	private CritterListPane critterListPane;
 	private GameBoard board;
 	private InGameMenuLayer inGameMenuLayer;
 
 	private CritterMenuFactory critterMenuFactory;
 
-	private String startGameBoardId;
-
-	/* configuration variables */
+	// configuration variables
+	private String startingBoardId;
 	private Dimension windowSize;
 	private String windowTitle;
 
@@ -99,8 +101,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	public void bootstrap() {
 		LOG.info("Bootstrapping...");
 		createWindow();
-		createContentPane();
-		createGlassPane();
+		createScreenPanel();
 		showScreen(mainMenu);
 		showAndCenterWindow();
 	}
@@ -109,9 +110,9 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	 * This method creates a content pane and configures it to funnel key events
 	 * to the current keysink
 	 */
-	private void createContentPane() {
-		LOG.debug("Initializing content pane...");
-		contentPane = new JPanel(new GridBagLayout());
+	private void createScreenPanel() {
+		LOG.debug("Initializing screen panel...");
+		screenPanel = new JPanel(new GridBagLayout());
 		InputMap inputMap = new InputMap();
 		ActionMap actionMap = new ActionMap();
 
@@ -225,15 +226,9 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 		});
 
-		contentPane.setInputMap(JComponent.WHEN_FOCUSED, inputMap);
-		contentPane.setActionMap(actionMap);
-		window.setContentPane(contentPane);
-	}
-
-	private void createGlassPane() {
-		LOG.debug("Initializing glass pane...");
-		glassPane = new JPanel(new GridBagLayout());
-		window.setGlassPane(glassPane);
+		screenPanel.setInputMap(JComponent.WHEN_FOCUSED, inputMap);
+		screenPanel.setActionMap(actionMap);
+		window.setContentPane(screenPanel);
 	}
 
 	/**
@@ -256,7 +251,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	/* Event handlers */
-	public void handleCritterAction(CritterAction action) {
+	public void handleCritterAction(TargetedAction action) {
 		board.pushMode(new TargetingMode(board, this, action));
 		inGameMenuLayer.setVisible(false);
 	}
@@ -265,7 +260,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		board.removeCritter(deceased);
 		critterListPane.removeCritter(deceased);
 	}
-	
+
 	public void handleCritterSpawn(Critter spawn) {
 		critterListPane.addCritter(spawn);
 	}
@@ -293,7 +288,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			break;
 		}
 		case CRITTER_ACTION: {
-			handleCritterAction((CritterAction) arg);
+			handleCritterAction((TargetedAction) arg);
 			break;
 		}
 		case CRITTER_SPAWN: {
@@ -329,7 +324,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 			break;
 		}
 		case RETURN_TO_GAME: {
-			showScreen(gameInterface);
+			showScreen(gameScreen);
 			break;
 		}
 		case SHOW_MAIN_MENU: {
@@ -384,11 +379,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		board.clearBoardState();
 		critterListPane.clearCritters();
 		try {
-			board.load(startGameBoardId);
+			board.load(startingBoardId);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		showScreen(gameInterface);
+		showScreen(gameScreen);
 		board.nextTurn();
 	}
 
@@ -403,8 +398,8 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	@Required
-	public void setGameInterface(JComponent gameInterface) {
-		this.gameInterface = gameInterface;
+	public void setGameScreen(JComponent gameScreen) {
+		this.gameScreen = gameScreen;
 	}
 
 	@Required
@@ -420,7 +415,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	@Required
 	public void setStartGameBoardId(
 			@Qualifier("startGameBoardId") String startGameBoardId) {
-		this.startGameBoardId = startGameBoardId;
+		this.startingBoardId = startGameBoardId;
 	}
 
 	@Required
@@ -461,7 +456,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		window.setVisible(true);
 		window.pack();
 		window.setLocationRelativeTo(null);
-		contentPane.requestFocus();
+		screenPanel.requestFocus();
 	}
 
 	/**
@@ -489,9 +484,9 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		if (Menu.class.isAssignableFrom(screen.getClass())) {
 			((Menu) screen).reset();
 		}
-		contentPane.removeAll();
-		contentPane.add(screen, new GridBagConstraints());
-		contentPane.revalidate();
-		contentPane.repaint();
+		screenPanel.removeAll();
+		screenPanel.add(screen, new GridBagConstraints());
+		screenPanel.revalidate();
+		screenPanel.repaint();
 	}
 }
