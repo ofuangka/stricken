@@ -9,16 +9,16 @@ public class GameScreen extends JSplitPane implements IKeySink {
 	private static final long serialVersionUID = 5664713333844630418L;
 
 	private GameLayeredPane gameLayeredPane;
-	private CritterListPane unitListPane;
+	private GameInterface gameInterface;
 	private Dimension spriteSize;
 	private double distribution;
 
 	public GameScreen(GameLayeredPane gameLayeredPane,
-			CritterListPane unitListPane, Dimension spriteSize,
+			GameInterface gameInterface, Dimension spriteSize,
 			double distribution) {
-		super(JSplitPane.HORIZONTAL_SPLIT, gameLayeredPane, unitListPane);
+		super(JSplitPane.HORIZONTAL_SPLIT, gameLayeredPane, gameInterface);
 		this.gameLayeredPane = gameLayeredPane;
-		this.unitListPane = unitListPane;
+		this.gameInterface = gameInterface;
 		this.spriteSize = spriteSize;
 		this.distribution = distribution;
 		setOneTouchExpandable(false);
@@ -31,7 +31,7 @@ public class GameScreen extends JSplitPane implements IKeySink {
 		gameLayeredPane.setPreferredSize(new Dimension(
 				(int) (preferredSize.width * distribution / spriteSize.width)
 						* spriteSize.width, preferredSize.height));
-		unitListPane.setPreferredSize(new Dimension(preferredSize.width
+		gameInterface.setPreferredSize(new Dimension(preferredSize.width
 				- gameLayeredPane.getPreferredSize().width,
 				preferredSize.height));
 

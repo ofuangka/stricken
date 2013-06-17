@@ -31,7 +31,7 @@ import stricken.event.AbstractEventContext;
 import stricken.event.Event;
 import stricken.event.IEvent;
 import stricken.event.IEventHandler;
-import stricken.ui.CritterListPane;
+import stricken.ui.GameInterface;
 import stricken.ui.IKeySink;
 import stricken.ui.InGameMenuLayer;
 import stricken.ui.menu.CritterMenuFactory;
@@ -78,7 +78,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	private Menu youDiedScreen;
 	private Menu youWinScreen;
 
-	private CritterListPane critterListPane;
+	private GameInterface gameInterface;
 	private GameBoard board;
 	private InGameMenuLayer inGameMenuLayer;
 
@@ -258,11 +258,11 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public void handleCritterDeath(Critter deceased) {
 		board.removeCritter(deceased);
-		critterListPane.removeCritter(deceased);
+		gameInterface.removeCritter(deceased);
 	}
 
 	public void handleCritterSpawn(Critter spawn) {
-		critterListPane.addCritter(spawn);
+		gameInterface.addCritter(spawn);
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 		inGameMenuLayer.clearMenus();
 		inGameMenuLayer.setVisible(true);
 		board.nextTurn();
-		critterListPane.repaint();
+		gameInterface.repaint();
 	}
 
 	/**
@@ -377,7 +377,7 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 
 	public void handleStartGame() {
 		board.clearBoardState();
-		critterListPane.clearCritters();
+		gameInterface.clearCritters();
 		try {
 			board.load(startingBoardId);
 		} catch (IOException e) {
@@ -444,8 +444,8 @@ public class Stricken extends AbstractEventContext implements IEventHandler {
 	}
 
 	@Required
-	public void setCritterListPane(CritterListPane critterListPane) {
-		this.critterListPane = critterListPane;
+	public void setGameInterface(GameInterface gameInterface) {
+		this.gameInterface = gameInterface;
 	}
 
 	/**

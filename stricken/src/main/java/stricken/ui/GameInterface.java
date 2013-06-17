@@ -12,22 +12,22 @@ import javax.swing.JScrollPane;
 
 import stricken.board.piece.Critter;
 
-public class CritterListPane extends JScrollPane {
+public class GameInterface extends JScrollPane {
 
 	private static final long serialVersionUID = 4716145778679751281L;
 
-	private Map<Critter, CritterListItem> items = new HashMap<Critter, CritterListItem>();
+	private Map<Critter, CritterSticker> items = new HashMap<Critter, CritterSticker>();
 	
 	private JLabel spacer = new JLabel();
 
-	public CritterListPane() {
+	public GameInterface() {
 		super(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		setViewportView(new JPanel(new GridBagLayout()));
 	}
 
 	public void addCritter(Critter critter) {
-		CritterListItem critterItem = new CritterListItem(critter);
+		CritterSticker critterItem = new CritterSticker(critter);
 		items.put(critter, critterItem);
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;
