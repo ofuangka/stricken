@@ -163,9 +163,10 @@
 		<property name="targetedActionFactory" ref="targetedActionFactory" />
 	</bean>
 
-	<bean id="targetedActionFactory" class="stricken.board.piece.TargetedActionFactory">
+	<bean id="targetedActionFactory" class="stricken.talent.loader.TargetedActionFactory">
+		<constructor-arg value="classpath:actions.json" />
+		<constructor-arg ref="objectMapper" />
 		<constructor-arg ref="stricken" />
-		<constructor-arg value="classpath:actions.xml" />
 	</bean>
 
 </beans>

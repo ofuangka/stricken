@@ -18,15 +18,14 @@ import stricken.event.IEventContext;
  * @author ofuangka
  * 
  */
-public abstract class AbstractStatEffect extends
-		AbstractEffect {
+public abstract class AbstractStatEffect extends AbstractEffect {
 
 	private static final Logger LOG = Logger
 			.getLogger(AbstractStatEffect.class);
 
 	private final Stat affectedStat;
-	private final int effectRange;
-	private final int modifier;
+	private final int min;
+	private final int max;
 	private final boolean positive;
 	private IEventContext eventContext;
 
@@ -43,16 +42,16 @@ public abstract class AbstractStatEffect extends
 	 *            - An int that is always added to the resulting calculation
 	 * @param eventContext
 	 */
-	public AbstractStatEffect(Stat affectedStat, int effectRange,
-			int modifier, boolean positive, IEventContext eventContext) {
+	public AbstractStatEffect(Stat affectedStat, int min, int max,
+			boolean positive, IEventContext eventContext) {
 		this.affectedStat = affectedStat;
-		this.effectRange = effectRange;
-		this.modifier = modifier;
+		this.min = min;
+		this.max = max;
 		this.positive = positive;
 		this.eventContext = eventContext;
 	}
 
-	public abstract int getStartingValue(Tile targetTile);
+	public abstract int getModifier();
 
 	/**
 	 * This method checks that a Critter is occupying the target tile. If so, it
@@ -71,17 +70,11 @@ public abstract class AbstractStatEffect extends
 				Critter target = (Critter) targetPiece;
 
 				Random random = eventContext.getRandom();
-
-				int netEffect = getStartingValue(targetTile) + modifier
-						+ random.nextInt(effectRange);
-
-				if (!positive) {
-					netEffect *= -1;
-				}
-
-				int newValue = target.getStat(affectedStat) + netEffect;
+				int roll = (min + random.nextInt(max - min) + getModifier())
+						* ((positive) ? -1 : 1);
 
 				int maxValue = -1;
+				int newValue = target.getStat(affectedStat) - roll;
 
 				if (Critter.Stat.HP.equals(affectedStat)) {
 					maxValue = target.getStat(Critter.Stat.MAXHP);
@@ -106,5 +99,4 @@ public abstract class AbstractStatEffect extends
 			LOG.debug("No occupant in Tile " + targetTile);
 		}
 	}
-
 }

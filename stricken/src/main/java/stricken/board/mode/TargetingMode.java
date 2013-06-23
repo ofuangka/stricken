@@ -44,7 +44,7 @@ public class TargetingMode extends AbstractGameBoardControlMode {
 		if (!targetingRange.isEmpty()) {
 			getGameBoard().setTargetingRange(targetingRange);
 		}
-		actualRange = action.getActualRange().collect(targetTile);
+		actualRange = action.getActualRangeFilter().filter(targetingRange);
 
 		// if anything is in targeting range, render the crosshair on the first
 		// potential target

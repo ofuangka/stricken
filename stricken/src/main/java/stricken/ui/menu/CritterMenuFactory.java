@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 import stricken.board.piece.Critter;
 import stricken.board.piece.TargetedAction;
-import stricken.board.piece.TargetedActionFactory;
 import stricken.event.Event;
 import stricken.event.IEventContext;
+import stricken.talent.loader.TargetedActionFactory;
 
 public class CritterMenuFactory {
 
@@ -100,8 +100,7 @@ public class CritterMenuFactory {
 				TargetedAction critterAction = targetedActionFactory.get(item,
 						critter);
 				menuItems.add(new EventMenuItem(eventContext, critterAction
-						.getName(), Event.CRITTER_ACTION,
-						critterAction));
+						.getName(), Event.CRITTER_ACTION, critterAction));
 			}
 		}
 
@@ -119,11 +118,10 @@ public class CritterMenuFactory {
 			menuItems.add(new NoopMenuItem(eventContext, NO_TALENT_LABEL));
 		} else {
 			for (String talent : talents) {
-				TargetedAction critterAction = targetedActionFactory.get(talent,
-						critter);
+				TargetedAction critterAction = targetedActionFactory.get(
+						talent, critter);
 				menuItems.add(new EventMenuItem(eventContext, critterAction
-						.getName(), Event.CRITTER_ACTION,
-						critterAction));
+						.getName(), Event.CRITTER_ACTION, critterAction));
 			}
 		}
 

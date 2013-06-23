@@ -7,6 +7,10 @@ import stricken.board.piece.Critter;
 import stricken.board.piece.Tile;
 
 public class TileListFilter {
+	
+	public enum TileListFilterType {
+		NULL_TILE_FILTER, OCCUPIED_BY_CRITTER_FILTER
+	}
 
 	public static final TileListFilter NULL_TILE_FILTER = new TileListFilter(
 			new ITilePredicate() {

@@ -1,25 +1,20 @@
 package stricken.board.effect;
 
-import stricken.board.piece.Critter;
-import stricken.board.piece.Tile;
 import stricken.board.piece.Critter.Stat;
 import stricken.event.IEventContext;
 
-public class StatDrivenStatEffect extends
-		AbstractStatEffect {
+public class StatDrivenStatEffect extends AbstractStatEffect {
 
-	private final Critter.Stat drivingStat;
+	private final Stat drivingStat;
 
-	public StatDrivenStatEffect(Stat drivingStat,
-			Stat affectedStat, int effectRange, int modifier, boolean positive,
-			IEventContext eventContext) {
-		super(affectedStat, effectRange, modifier, positive, eventContext);
+	public StatDrivenStatEffect(Stat drivingStat, Stat affectedStat, int min,
+			int max, boolean positive, IEventContext eventContext) {
+		super(affectedStat, min, max, positive, eventContext);
 		this.drivingStat = drivingStat;
-
 	}
 
 	@Override
-	public int getStartingValue(Tile targetTile) {
+	public int getModifier() {
 		return getSource().getStat(drivingStat);
 	}
 

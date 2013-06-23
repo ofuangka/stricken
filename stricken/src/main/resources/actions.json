@@ -1,0 +1,112 @@
+{
+	"HTH_ATTACK" : {
+		"name" : "Attack",
+		"targetingRange" : {
+			"type" : "DECAYING",
+			"range" : 1,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : false
+		},
+		"actualRangeFilterType" : "OCCUPIED_BY_CRITTER_FILTER",
+		"areaOfEffect" : {
+			"type" : "DECAYING",
+			"range" : 0,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : true
+		},
+		"effect" : {
+			"min" : 1,
+			"max" : 3,
+			"drivingStat" : "STRENGTH",
+			"affectedStat" : "HP"
+		}
+	},
+	"FIRE_BOMB" : {
+		"name" : "Fire bomb",
+		"targetingRange" : {
+			"type" : "DECAYING",
+			"range" : 2,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : false
+		},
+		"actualRangeFilterType" : "OCCUPIED_BY_CRITTER_FILTER",
+		"areaOfEffect" : {
+			"type" : "DECAYING",
+			"range" : 1,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : true
+		},
+		"effect" : {
+			"min" : 1,
+			"max" : 3,
+			"drivingStat" : "WILL",
+			"affectedStat" : "HP"
+		}
+	},
+	"LIGHTNING_STRIKE" : {
+		"name" : "Lightning strike",
+		"targetingRange" : {
+			"type" : "DECAYING",
+			"range" : 4,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : false
+		},
+		"actualRangeFilterType" : "OCCUPIED_BY_CRITTER_FILTER",
+		"areaOfEffect" : {
+			"type" : "DECAYING",
+			"range" : 0,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : true
+		},
+		"effect" : {
+			"min" : 1,
+			"max" : 3,
+			"drivingStat" : "WILL",
+			"affectedStat" : "HP"
+		}
+	},
+	"METEOR_RAIN" : {
+		"name" : "Meteor rain",
+		"targetingRange" : {
+			"type" : "DECAYING",
+			"range" : 3,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : false
+		},
+		"actualRangeFilterType" : "OCCUPIED_BY_CRITTER_FILTER",
+		"areaOfEffect" : {
+			"type" : "DECAYING",
+			"range" : 2,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : true
+		},
+		"effect" : {
+			"min" : 1,
+			"max" : 3,
+			"drivingStat" : "WILL",
+			"affectedStat" : "HP"
+		}
+	},
+	"THROW_ROCK" : {
+		"name" : "Throw rock",
+		"targetingRange" : {
+			"type" : "DECAYING",
+			"range" : 3,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : false
+		},
+		"actualRangeFilterType" : "OCCUPIED_BY_CRITTER_FILTER",
+		"areaOfEffect" : {
+			"type" : "DECAYING",
+			"range" : 0,
+			"filterType" : "NULL_TILE_FILTER",
+			"inclusive" : true
+		},
+		"effect" : {
+			"min" : 1,
+			"max" : 3,
+			"drivingStat" : "STRENGTH",
+			"affectedStat" : "HP"
+		}
+	}
+}

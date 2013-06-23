@@ -1,6 +1,7 @@
 package stricken.board.piece;
 
 import stricken.board.collector.ITileCollector;
+import stricken.board.collector.TileListFilter;
 import stricken.board.effect.AbstractEffect;
 
 /**
@@ -13,22 +14,22 @@ import stricken.board.effect.AbstractEffect;
 public class TargetedAction {
 	private final String name;
 	private final ITileCollector targetingRange;
-	private final ITileCollector actualRange;
+	private final TileListFilter actualRangeFilter;
 	private final ITileCollector areaOfEffect;
 	private final AbstractEffect tileEffect;
 
 	public TargetedAction(String name, ITileCollector targetingRange,
-			ITileCollector actualRange, ITileCollector areaOfEffect,
+			TileListFilter actualRangeFilter, ITileCollector areaOfEffect,
 			AbstractEffect tileEffect) {
 		this.name = name;
 		this.targetingRange = targetingRange;
-		this.actualRange = actualRange;
+		this.actualRangeFilter = actualRangeFilter;
 		this.areaOfEffect = areaOfEffect;
 		this.tileEffect = tileEffect;
 	}
 
-	public ITileCollector getActualRange() {
-		return actualRange;
+	public TileListFilter getActualRangeFilter() {
+		return actualRangeFilter;
 	}
 
 	public ITileCollector getAreaOfEffect() {
