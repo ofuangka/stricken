@@ -1,7 +1,3 @@
-stricken
+Stricken
 ========
-A poorly designed and self effacing Java turn based strategy game.
-
-Introduction
-------------
-
+A Java turn based strategy game
